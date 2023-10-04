@@ -7,6 +7,9 @@ import java.util.Collection;
 @Entity
 @Table(name = "clientes", schema = "food_flow", catalog = "")
 public class ClientesEntity {
+    @Id
+    @Column(name = "codigoClient", nullable = false, length = 8)
+    private String codigoClient;
     @Basic
     @Column(name = "apellido", nullable = false, length = 100)
     private String apellido;
@@ -69,5 +72,13 @@ public class ClientesEntity {
 
     public void setOrdensByCodigoClient(Collection<OrdenEntity> ordensByCodigoClient) {
         this.ordensByCodigoClient = ordensByCodigoClient;
+    }
+
+    public void setCodigoClient(String codigoClient) {
+        this.codigoClient = codigoClient;
+    }
+
+    public String getCodigoClient() {
+        return codigoClient;
     }
 }
