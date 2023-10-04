@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Foodflow:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Foodflow</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Foodflow-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Foodflow:war exploded" />
+    </root>
+  </artifact>
+</component>
