@@ -22,42 +22,39 @@
 </h:head>
 
 <h:body>
-    <div class="container">
-        <div class="row">
-            <!-- Columna de la imagen (50%) -->
-            <div class="col-md-6">
-                <div class="central">
-                    <div class="banner">
-                        <a href="" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                            <img class="mr-2" id="ban"
-                                 src="resources/IMG/login.jpg" alt="logo"/>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- Columna del formulario (50%) -->
-            <div class="col-md-6">
-                <div class="central">
-                    <h:form>
-                        <div class="form-group">
-                            <h1 class="display-4 text-center">Inicio de Sesión</h1>
-                            <h:outputLabel for="exampleInputEmail1" value="Email address"/>
-                            <p:inputText id="exampleInputEmail1" placeholder="Enter email" styleClass="form-control"/>
-                            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                            <h:outputLabel for="exampleInputPassword1" value="Password"/>
-                            <p:password id="exampleInputPassword1" placeholder="Password" styleClass="form-control"/>
-                        </div>
-                        <div class="form-check">
-                            <p:selectBooleanCheckbox id="exampleCheck1" styleClass="form-check-input"/>
-                            <h:outputLabel for="exampleCheck1" value="Check me out" styleClass="form-check-label"/>
-                        </div>
-                        <p:commandButton value="Submit" ajax="false" class="btn btn-primary btn-block"/>
-                    </h:form>
+    <div >
+        <div>
+            <!-- Espacio para la imagen -->
+            <img id="header"
+                 src="resources/IMG/header.png" alt="logo"/>
+
+        </div>
+    </div>
+    <div class="principal">
+        <div class="col-md-6">
+            <div class="">
+                <div class="banner">
+                    <img id="ban"
+                         src="resources/IMG/login.jpg" alt="logo"/>
                 </div>
             </div>
         </div>
+
+        <div class="central">
+            <h:form>
+                <div class="form-group">
+                    <h1 class="display-4 text-center">Inicio de Sesión</h1>
+                    <h:outputLabel for="exampleInputEmail1" value="Ingrese el Correo"/>
+                    <p:inputText id="exampleInputEmail1" placeholder="alejandro23.am29@gmail.com" styleClass="form-control"/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel for="exampleInputPassword1" value="Contraseña"/>
+                    <p:password id="exampleInputPassword1" placeholder="********" styleClass="form-control"/>
+                </div>
+                <p:commandButton value="Rgistrarte" ajax="false" class="btn btn-primary btn-block"/>
+            </h:form>
+        </div>
     </div>
+
 </h:body>
 </html>

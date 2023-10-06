@@ -10,16 +10,66 @@
 /*    padding: 20px; !* Añade algún espacio interno para mejorar el aspecto *!*/
 /*}*/
 
-body{
-    background: #606c88;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #3f4c6b, #606c88);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #3f4c6b, #606c88); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+/* Estilos para el encabezado */
+#header {
+    max-width: 6.8vw;
+    height: 3.7vw;
+    margin-left: 3vw;
+    margin-top: 1vw;
 }
 
-#ban{
-    width: 5vw;
-    height: 5vw;
+
+#ban {
+    width: 99%;
+    height: auto;
 }
+
+
+h1{
+    color: aliceblue;
+    font-family: Calibri;
+}
+
+.principal {
+    margin-top: 1vw;
+    background: #d15a4c;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.central {
+    flex: 1;
+    padding: 10px;
+    box-sizing: border-box;
+    padding: 6vw 6vw;
+}
+
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+
+@media screen and (max-width: 768px) {
+    .principal {
+        flex-direction: column; /* Apilamos elementos en dispositivos pequeños */
+    }
+    .central {
+        flex: 1; /* Cada columna ocupará el 100% del ancho en dispositivos pequeños */
+        margin-bottom: 20px;
+    }
+}
+
+
 
 /*.display-4{
     color: white;
