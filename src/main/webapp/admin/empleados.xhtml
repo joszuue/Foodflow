@@ -14,7 +14,7 @@
             <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
                 <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
                 <f:selectItem itemValue="Cocina" itemLabel="Cocina" />
-                <f:selectItem itemValue="Mesero" itemLabel="Administrador" />
+                <f:selectItem itemValue="Admin" itemLabel="Administrador" />
             </h:selectOneMenu>
             <br/>
             <h:commandButton value="Registrar Empleado" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>

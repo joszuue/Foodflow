@@ -49,10 +49,9 @@ public class EmpleadoManaged {
         numero = random.nextInt(9000) + 1000;
 
         if (indiceEspacio != -1 && indiceEspacio < apellido.length() - 1) {
-            String letra1 = String.valueOf(apellido.charAt(indiceEspacio - 1));
             String letra2 = String.valueOf(apellido.charAt(indiceEspacio + 1));
 
-            codigo = letra1.toUpperCase() + letra2.toUpperCase() + anio + numero;
+            codigo = apellido.substring(0, 1).toUpperCase() + letra2.toUpperCase() + anio + numero;
         } else {
             String letra = apellido.substring(0, 2);
             codigo = letra.toUpperCase() + anio + numero;
