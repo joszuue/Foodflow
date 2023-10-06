@@ -1,0 +1,13 @@
+body{
+    background: #61677A;
+}
+
+.navbar{
+    background-color: #272829;
+    color: white;
+}
+
+.jumbotron{
+    background-color: rgba(216, 217, 218, 0.5); /* Color de fondo #D8D9DA con una transparencia del 50% */
+    padding: 20px; /* Añade algún espacio interno para mejorar el aspecto */
+}
