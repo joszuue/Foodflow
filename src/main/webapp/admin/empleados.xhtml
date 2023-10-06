@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/Plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <h:form>
+            <h:outputLabel for="nombres" value="Nombres del empleado: "/>
+            <h:inputText id="nombres" styleClass="form-control" value="#{empleadoManaged.empleado.nombres}" />
+            <br/>
+            <h:outputLabel for="apellidos" value="Apellidos del empleado: "/>
+            <h:inputText id="apellidos" styleClass="form-control" value="${empleadoManaged.empleado.apellidos}"/>
+            <br/>
+            <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
+                <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
+                <f:selectItem itemValue="Cocina" itemLabel="Cocina" />
+                <f:selectItem itemValue="Mesero" itemLabel="Administrador" />
+            </h:selectOneMenu>
+            <br/>
+            <h:commandButton value="Registrar Empleado" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
+            <h:commandButton value="Modificar Empleado" action="#{empleadoManaged.modificarEmpleado()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
+        </h:form>
+        <br/><br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">Código</th>
+                    <th scope="col">Nombres</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{empleadoManaged.listEmpleados()}" var="emple">
+                    <tr class="text-center">
+                        <td>#{emple.codigo}</td>
+                        <td>#{emple.nombres}</td>
+                        <td>#{emple.apellidos}</td>
+                        <td>#{emple.rol}</td>
+                        <td>
+                            <h:form>
+                                <h:commandButton value="Modificar" action="#{empleadoManaged.data(emple)}"/>
+                                <br/>
+                                <h:commandButton value="Eliminar" action="#{empleadoManaged.eliminarEmpleado(emple.codigo)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>
