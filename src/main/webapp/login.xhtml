@@ -17,38 +17,47 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://kit.fontawesome.com/f7c3a2243e.js"></script>
     <link rel="stylesheet" href="resources/css/login.css"/>
-    <link rel="shortcut icon" href="resources/img/logo.png" type="image/x-icon"/>
+    <link rel="shortcut icon" href="resources/IMG/logo.png" type="image/x-icon"/>
 
 </h:head>
 
 <h:body>
-    <div class="container center-container">
-        <div class="jumbotron">
-            <h1 class="display-4 text-center">Inicio de Sesión</h1>
-            <hr class="my-4"/>
-            <h:form>
-                <div class="grid ui-fluid">
-                    <div class="col-12 md:col-4">
-                        <div class="ui-inputgroup">
-                            <div class="ui-inputgroup-addon"><i class="pi pi-user"></i></div>
-                            <p:inputText placeholder="Código de empleado"/>
-                        </div>
+    <div class="container">
+        <div class="row">
+            <!-- Columna de la imagen (50%) -->
+            <div class="col-md-6">
+                <div class="central">
+                    <div class="banner">
+                        <a href="" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+                            <img class="w-8 h-8 mr-2"
+                                 src="resources/IMG/login.jpg" alt="logo"/>
+                        </a>
                     </div>
-                    <br/>
-                    <div class="col-12 md:col-4">
-                        <div class="ui-inputgroup">
-                            <div class="ui-inputgroup-addon"><i class="pi pi-lock"></i></div>
-                            <p:password placeholder="Contraseña" />
-                        </div>
-                    </div>
-                    <br/>
-                    <center>
-                        <h:commandButton value="Iniciar Sesión" styleClass="btn btn-outline-light"/>
-                    </center>
                 </div>
-            </h:form>
+            </div>
+            <!-- Columna del formulario (50%) -->
+            <div class="col-md-6">
+                <div class="central">
+                    <h:form>
+                        <div class="form-group">
+                            <h1 class="display-4 text-center">Inicio de Sesión</h1>
+                            <h:outputLabel for="exampleInputEmail1" value="Email address"/>
+                            <p:inputText id="exampleInputEmail1" placeholder="Enter email" styleClass="form-control"/>
+                            <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                            <h:outputLabel for="exampleInputPassword1" value="Password"/>
+                            <p:password id="exampleInputPassword1" placeholder="Password" styleClass="form-control"/>
+                        </div>
+                        <div class="form-check">
+                            <p:selectBooleanCheckbox id="exampleCheck1" styleClass="form-check-input"/>
+                            <h:outputLabel for="exampleCheck1" value="Check me out" styleClass="form-check-label"/>
+                        </div>
+                        <p:commandButton value="Submit" ajax="false" class="btn btn-primary btn-block"/>
+                    </h:form>
+                </div>
+            </div>
         </div>
     </div>
 </h:body>
-
 </html>
