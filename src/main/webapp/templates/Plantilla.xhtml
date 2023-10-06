@@ -48,9 +48,9 @@
             <h:panelGroup styleClass="form-inline my-2 my-lg-0">
                 <input type="hidden" name="accion" value="finalizar"/>
                 <div class="col-mb-4 d-flex align-items-center">
-                    <h:outputText styleClass="text-white mr-3 lead" value="Denis Josué Vásquez Rodríguez"/>
+                    <h:outputText styleClass="text-white mr-3 lead" value="#{sessionScope.emple.nombres} #{sessionScope.emple.apellidos}"/>
                     <h:form>
-                        <h:commandButton styleClass="btn btn-outline-light my-2 my-sm-0"  value="Cerrar Sesión"/>
+                        <h:commandButton styleClass="btn btn-outline-light my-2 my-sm-0"  value="Cerrar Sesión" action="#{loginManaged.logOut()}"/>
                     </h:form>
                 </div>
             </h:panelGroup>
