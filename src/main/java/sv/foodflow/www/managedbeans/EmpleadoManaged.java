@@ -1,11 +1,12 @@
 package sv.foodflow.www.managedbeans;
 
+import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.context.FacesContext;
 import org.mindrot.jbcrypt.BCrypt;
 import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.models.EmpleadoModel;
-import sv.foodflow.www.utils.Mensajes;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,9 +28,11 @@ public class EmpleadoManaged {
         empleado.setContraseña(BCrypt.hashpw(empleado.getCodigo(), BCrypt.gensalt()));
         empleado.setEstado("Activo");
         if (modelo.insertarEmpleado(empleado) != 1) {
-            Mensajes.setErrorMessage("Error", "El empleado no se ha podido registrar.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
         } else {
-            Mensajes.setInfoMessage("Éxito", "El empleado se ha registrado correctamente.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha registrado correctamente."));
         }
         return "/admin/empleados?faces-redirect=true";
     }
@@ -65,9 +68,11 @@ public class EmpleadoManaged {
 
     public String modificarEmpleado(){
         if (modelo.modificarEmpleado(empleado) == 1){
-            Mensajes.setInfoMessage("Éxito", "El empleado se ha modificado correctamente.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha modificado correctamente."));
         }else {
-            Mensajes.setErrorMessage("Error", "El empleado no se ha podido modificar.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido modificar."));
         }
         return "/admin/empleados?faces-redirect=true";
     }
@@ -78,9 +83,11 @@ public class EmpleadoManaged {
 
     public String eliminarEmpleado(String codigo){
         if (modelo.eliminarEmpleado(codigo) > 0){
-            Mensajes.setInfoMessage("Éxito", "El empleado se ha eliminado correctamente.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha eliminado correctamente."));
         }else {
-            Mensajes.setErrorMessage("Error", "El empleado no se ha podido eliminar.");
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido eliminar."));
         }
         return "/admin/empleados?faces-redirect=true";
     }

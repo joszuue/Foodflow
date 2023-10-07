@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuAdmin.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form>
+            <h:inputHidden value="#{mesasManaged.mesa.idMesa}"/>
+            <h:inputHidden value="#{mesasManaged.mesa.estado}"/>
+            <h:outputLabel for="mesa" value="Capacidad de mesa: "/>
+            <p:inputNumber id="mesa" styleClass="form-control" value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0" />
+            <br/>
+            <h:commandButton value="Ingresar Mesa" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
+            <h:commandButton value="Modificar Mesa" action="#{mesasManaged.modificarMesa()}" />
+        </h:form>
+        <p:messages id="messages" showDetail="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <br/><br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">Id Mesa</th>
+                    <th scope="col">Capacidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{mesasManaged.listMesas()}" var="mesa">
+                    <tr class="text-center">
+                        <td>#{mesa.idMesa}</td>
+                        <td>#{mesa.capacidad}</td>
+                        <td>
+                            <h:form>
+                                <h:commandButton value="Modificar" action="#{mesasManaged.data(mesa)}"/>
+                                <br/>
+                                <h:commandButton value="Eliminar" action="#{mesasManaged.eliminarMesa(mesa.idMesa)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

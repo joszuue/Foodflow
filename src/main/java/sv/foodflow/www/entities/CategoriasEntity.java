@@ -3,7 +3,10 @@ package sv.foodflow.www.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "categorias", schema = "food_flow", catalog = "")
+@Table(name = "categorias", schema = "food_flow")
+@NamedQueries({
+        @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c"),
+})
 public class CategoriasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
