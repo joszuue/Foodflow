@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuCocina.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:form>
+            <h:inputHidden value="#{categoriaManaged.categoria.idCategoria}"/>
+            <h:outputLabel for="nombre" value="Nombre de la categoria: "/>
+            <h:inputText id="nombre" styleClass="form-control" value="${categoriaManaged.categoria.nombre}"/>
+            <br/>
+            <h:commandButton value="Ingresar Categoria" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
+            <h:commandButton value="Modificar Modificar" action="#{categoriaManaged.modificarCategoria()}" />
+        </h:form>
+        <p:messages id="messages" showDetail="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <br/><br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">Id Categoria</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{categoriaManaged.listCategorias()}" var="cate">
+                    <tr class="text-center">
+                        <td>#{cate.idCategoria}</td>
+                        <td>#{cate.nombre}</td>
+                        <td>
+                            <h:form>
+                                <h:commandButton value="Modificar" action="#{categoriaManaged.data(cate)}"/>
+                                <br/>
+                                <h:commandButton value="Eliminar" action="#{categoriaManaged.eliminarCategoria(cate.idCategoria)}"/>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>
