@@ -5,14 +5,20 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
+        <h1 class="text-center display-4">Gestionar Mesas</h1>
+        <p class="lead">En este apartado usted podrá crear, actualizar o eliminar mesas y asignarle la capacida máxima, en la parte inferior usted puede visualizar a las mesas que se encuentran registradas.
+        </p>
+        <hr class="my-4"/>
+        <br/>
         <h:form>
             <h:inputHidden value="#{mesasManaged.mesa.idMesa}"/>
             <h:inputHidden value="#{mesasManaged.mesa.estado}"/>
-            <h:outputLabel for="mesa" value="Capacidad de mesa: "/>
-            <p:inputNumber id="mesa" styleClass="form-control" value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0" />
+            <h:outputLabel for="mesa" class="lead" value="Capacidad de mesa: "/>
             <br/>
-            <h:commandButton value="Ingresar Mesa" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
-            <h:commandButton value="Modificar Mesa" action="#{mesasManaged.modificarMesa()}" />
+            <p:inputNumber id="mesa"  value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0" />
+            <br/>
+            <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
+            <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" />
         </h:form>
         <p:messages id="messages" showDetail="true">
             <p:autoUpdate/>
@@ -34,9 +40,12 @@
                         <td>#{mesa.capacidad}</td>
                         <td>
                             <h:form>
-                                <h:commandButton value="Modificar" action="#{mesasManaged.data(mesa)}"/>
-                                <br/>
-                                <h:commandButton value="Eliminar" action="#{mesasManaged.eliminarMesa(mesa.idMesa)}"/>
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{mesasManaged.data(mesa)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa.idMesa)}"/>
+                                    </h:panelGrid>
+                                </center>
                             </h:form>
                         </td>
                     </tr>

@@ -20,7 +20,7 @@ public class CategoriaManaged {
         categoria = new CategoriasEntity();
     }
 
-    public String guardarCategoria() {
+    public void guardarCategoria() {
         if (modelo.insertarCategoria(categoria) != 1) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido registrar."));
@@ -28,14 +28,14 @@ public class CategoriaManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha registrado correctamente."));
         }
-        return "/jefeCocina/categorias?faces-redirect=true";
+        categoria = new CategoriasEntity();
     }
 
     public List<CategoriasEntity> listCategorias(){
         return modelo.listarCategorias();
     }
 
-    public String modificarCategoria(){
+    public void modificarCategoria(){
         if (modelo.modificarCategoria(categoria) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha modificado correctamente."));
@@ -43,14 +43,14 @@ public class CategoriaManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido modificar."));
         }
-        return "/jefeCocina/categorias?faces-redirect=true";
+        categoria = new CategoriasEntity();
     }
 
     public void data(CategoriasEntity cate){
         categoria = cate;
     }
 
-    public String eliminarCategoria(int id){
+    public void eliminarCategoria(int id){
         if (modelo.eliminarCategoria(id) > 0){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha eliminado correctamente."));
@@ -58,7 +58,7 @@ public class CategoriaManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar."));
         }
-        return "/jefeCocina/categorias?faces-redirect=true";
+        categoria = new CategoriasEntity();
     }
 
     public CategoriaModel getModelo() {

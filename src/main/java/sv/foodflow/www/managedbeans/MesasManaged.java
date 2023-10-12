@@ -24,7 +24,7 @@ public class MesasManaged {
         mesa = new MesasEntity();
     }
 
-    public String guardarMesa() {
+    public void guardarMesa() {
         mesa.setEstado("Disponible");
         if (modelo.insertarMesa(mesa) != 1) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
@@ -33,14 +33,14 @@ public class MesasManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha registrado correctamente."));
         }
-        return "/admin/mesas?faces-redirect=true";
+        mesa = new MesasEntity();
     }
 
     public List<MesasEntity> listMesas(){
         return modelo.listarMesa();
     }
 
-    public String modificarMesa(){
+    public void modificarMesa(){
         if (modelo.modificarMesa(mesa) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha modificado correctamente."));
@@ -48,14 +48,14 @@ public class MesasManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se ha podido modificar."));
         }
-        return "/admin/mesas?faces-redirect=true";
+        mesa = new MesasEntity();
     }
 
     public void data(MesasEntity mesaa){
         mesa = mesaa;
     }
 
-    public String eliminarMesa(int id){
+    public void eliminarMesa(int id){
         if (modelo.eliminarMesa(id) > 0){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha eliminado correctamente."));
@@ -63,7 +63,7 @@ public class MesasManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se ha podido eliminar."));
         }
-        return "/admin/mesas?faces-redirect=true";
+        mesa = new MesasEntity();
     }
 
     public MesasEntity getMesa() {

@@ -5,7 +5,12 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "clientes", schema = "food_flow", catalog = "")
+@Table(name = "clientes", schema = "food_flow")
+@NamedQueries({
+        @NamedQuery(name="ClientesEntity.findAll", query = "SELECT c FROM ClientesEntity c"),
+        @NamedQuery(name="ClientesEntity.findByMesa", query = "SELECT c FROM ClientesEntity c WHERE c.mesasByIdMesa = :idMesa AND c.estado = 'Activo'"),
+        @NamedQuery(name="ClientesEntity.findByCodigoyEstado", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.codigoClient = :codigo")
+})
 public class ClientesEntity {
     @Id
     @Column(name = "codigoClient", nullable = false, length = 8)
@@ -81,4 +86,6 @@ public class ClientesEntity {
     public String getCodigoClient() {
         return codigoClient;
     }
+
+
 }

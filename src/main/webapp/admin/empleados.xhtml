@@ -5,25 +5,32 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
+        <h1 class="text-center display-4">Gestionar Empleados</h1>
+        <p class="lead">En este apartado usted podrá crear, actualizar o eliminar a un empleado, en la parte inferior usted puede visualizar a los empleados que se encuentran registrados.
+            <br/><br/>Nota: Las contraseña del empleado será el mismo código generado automáticamente, cuando el usuario entre por primera vez al sistema se le pedirá que cambié su contraseña.
+        </p>
+        <hr class="my-4"/>
+        <br/>
         <h:form>
             <h:inputHidden value="#{empleadoManaged.empleado.codigo}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.contraseña}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.estado}"/>
-            <h:outputLabel for="nombres" value="Nombres del empleado: "/>
+            <h:outputLabel for="nombres" styleClass="lead" value="Nombres del empleado: "/>
             <h:inputText id="nombres" styleClass="form-control" value="#{empleadoManaged.empleado.nombres}" />
             <br/>
-            <h:outputLabel for="apellidos" value="Apellidos del empleado: "/>
+            <h:outputLabel for="apellidos" styleClass="lead" value="Apellidos del empleado: "/>
             <h:inputText id="apellidos" styleClass="form-control" value="${empleadoManaged.empleado.apellidos}"/>
             <br/>
+            <h:outputLabel for="rol" styleClass="lead" value="Seleccione el cargo del empleado: "/>
             <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
                 <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
                 <f:selectItem itemValue="Cocina" itemLabel="Cocina" />
                 <f:selectItem itemValue="Admin" itemLabel="Administrador" />
             </h:selectOneMenu>
             <br/>
-            <h:commandButton value="Registrar Empleado" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
-            <h:commandButton rendered="#{not empty empleadoManaged.empleado.codigo}" value="Modificar Empleado" action="#{empleadoManaged.modificarEmpleado()}"/>
-            <h:commandButton value="Modificar Empleado" action="#{empleadoManaged.modificarEmpleado()}" />
+            <h:commandButton value="Registrar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
+
+            <h:commandButton value="Modificar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
         </h:form>
         <p:messages id="messages" showDetail="true">
             <p:autoUpdate/>
@@ -49,9 +56,12 @@
                         <td>#{emple.rol}</td>
                         <td>
                             <h:form>
-                                <h:commandButton value="Modificar" action="#{empleadoManaged.data(emple)}"/>
-                                <br/>
-                                <h:commandButton value="Eliminar" action="#{empleadoManaged.eliminarEmpleado(emple.codigo)}"/>
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{empleadoManaged.data(emple)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple.codigo)}"/>
+                                    </h:panelGrid>
+                                </center>
                             </h:form>
                         </td>
                     </tr>

@@ -1,13 +1,25 @@
 body{
-    background: #61677A;
-}
-
-.navbar{
-    background-color: #272829;
-    color: white;
+    background: #2b5876;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4e4376, #2b5876);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4e4376, #2b5876); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .jumbotron{
-    background-color: rgba(216, 217, 218, 0.5); /* Color de fondo #D8D9DA con una transparencia del 50% */
-    padding: 20px; /* Añade algún espacio interno para mejorar el aspecto */
+    background-color: white;
+}
+
+.movimiento i {
+    transition: transform 0.3s ease;
+}
+
+.movimiento i:hover {
+    transform: scale(1.1);
+}
+
+.fade-text {
+    transition: opacity 0.3s ease;
+}
+
+.fade-text:hover {
+    opacity: 0.5;
 }

@@ -5,6 +5,73 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        <h>Productos</h>
+        <h1 class="text-center display-4">Gestionar Productos</h1>
+        <p class="lead">En este apartado usted podrá crear, actualizar o eliminar productos que se mostraran en el menú, en la parte inferior usted puede visualizar los productos que se encuentran registrados.
+        </p>
+        <hr class="my-4"/>
+        <br/>
+        <h:form enctype="multipart/form-data">
+            <h:inputHidden value="#{productoManaged.producto.idProducto}"/>
+            <h:inputHidden value="#{productoManaged.producto.estado}"/>
+            <h:outputLabel for="nombre" styleClass="lead" value="Nombre del producto: "/>
+            <h:inputText id="nombre" styleClass="form-control" value="${productoManaged.producto.nombre}"/>
+            <br/>
+            <h:outputLabel for="descri" styleClass="lead" value="Descripción del producto: "/>
+            <h:inputText id="descri" styleClass="form-control" value="${productoManaged.producto.descripcion}"/>
+            <br/>
+            <h:outputLabel for="precio" styleClass="lead" value="Precio del producto: "/>
+            <br/>
+            <p:inputNumber id="precio" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="2" />
+            <br/>
+            <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
+            <h:inputFile id="imagen" styleClass="form-control" value="${productoManaged.nombreTempImg}"/>
+            <br/>
+            <h:outputLabel for="categoria" styleClass="lead" value="Categoria del producto: "/>
+            <h:selectOneMenu id="categoria" styleClass="form-control" value="#{productoManaged.idCategoria}">
+                <f:selectItems value="#{categoriaManaged.listCategorias()}" var="c" itemLabel="#{c.nombre}" itemValue="#{c.idCategoria}"/>
+            </h:selectOneMenu>
+            <br/><br/>
+            <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
+            <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" />
+        </h:form>
+        <p:messages id="messages" showDetail="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <br/><br/>
+        <div class="row">
+            <ui:repeat value="#{productoManaged.listProductos()}" var="produ">
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top"/>
+                        <div class="card-body">
+                            <ui:fragment rendered="#{produ.estado eq 'Pendiente'}">
+                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-warning">#{produ.estado}</span></h5>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{produ.estado eq 'Rechazado'}">
+                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-danger">#{produ.estado}</span></h5>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{produ.estado eq 'Aprobado'}">
+                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-success">#{produ.estado}</span></h5>
+                            </ui:fragment>
+                            <p class="card-text">#{produ.descripcion}</p>
+                            <p class="card-text"><b>ID:</b> #{produ.idProducto}</p>
+                            <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
+                            <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
+                        </div>
+                        <div class="card-body">
+                            <h:form>
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.eliminarProducto(produ.idProducto)}"/>
+                                    </h:panelGrid>
+                                </center>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+        </div>
+
     </ui:define>
 </ui:composition>

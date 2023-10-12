@@ -3,14 +3,38 @@
                 template="../templates/menuAdmin.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
     <ui:define name="content">
-        <div class="jumbotron">
-            <h1 class="display-4">Bienvenido #{sessionScope.emple.nombres}</h1>
-            <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-            <hr class="my-4"/>
-            <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-            </p>
+        <h1 class="display-4">Hola #{sessionScope.emple.nombres} !</h1>
+        <p class="lead">¡Bienvenid@ a FoodFlow! Aquí, podrás administrar empleados, mesas y visualizar los resultados de las ventas.</p>
+        <hr class="my-4"/>
+        <br/>
+        <div class="card-deck">
+            <div class="card">
+                <br/>
+                <h:commandLink action="empleados.xhtml">
+                    <h1 class="text-center movimiento"><i class="fa-solid fa-users fa-2xl" style="color: #45448d;"></i></h1>
+                </h:commandLink>
+                <div class="card-body">
+                    <h5 class="card-title lead text-center fade-text">GESTIONAR EMPLEADOS</h5>
+                </div>
+            </div>
+            <div class="card">
+                <br/>
+                <h:commandLink action="mesas.xhtml">
+                    <h1 class="text-center movimiento"><i class="fa-solid fa-clipboard fa-2xl" style="color: #45448d;"></i></h1>
+                </h:commandLink>
+                <div class="card-body">
+                    <h5 class="card-title lead text-center fade-text">GESTIONAR MESAS</h5>
+                </div>
+            </div>
+            <div class="card">
+                <br/>
+                <h:commandLink action="ventas.xhtml">
+                    <h1 class="text-center movimiento"><i class="fa-solid fa-chart-simple fa-2xl" style="color: #45448d;"></i></h1>
+                </h:commandLink>
+                <div class="card-body">
+                    <h5 class="card-title lead text-center fade-text">GESTIONAR VENTAS</h5>
+                </div>
+            </div>
         </div>
     </ui:define>
 </ui:composition>

@@ -5,7 +5,10 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "productos", schema = "food_flow", catalog = "")
+@Table(name = "productos", schema = "food_flow")
+@NamedQueries({
+        @NamedQuery(name="ProductosEntity.findAll", query = "SELECT p FROM ProductosEntity p"),
+})
 public class ProductosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

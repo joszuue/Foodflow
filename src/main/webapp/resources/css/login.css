@@ -1,81 +1,26 @@
-/*.center-container {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    height: 100vh; !* Esto asegura que el contenedor ocupe toda la altura de la pantalla *!*/
-/*}*/
-
-/*.jumbotron {*/
-/*    background-color: rgba(0, 0, 0, 0.5); !* Color de fondo negro con una transparencia del 50% *!*/
-/*    padding: 20px; !* Añade algún espacio interno para mejorar el aspecto *!*/
-/*}*/
-
-
-/* Estilos para el encabezado */
-#header {
-    max-width: 6.8vw;
-    height: 3.7vw;
-    margin-left: 3vw;
-    margin-top: 1vw;
+body{
+    background: #2b5876;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #4e4376, #2b5876);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #4e4376, #2b5876); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-
-#ban {
-    width: 99%;
-    height: auto;
+.center-container {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+    height: 100vh;
 }
 
-
-h1{
-    color: aliceblue;
-    font-family: Calibri;
+.jumbotron {
+   background-color: rgba(0, 0, 0, 0.5);
+   padding: 20px;
 }
 
-.principal {
-    margin-top: 1vw;
-    background: #d15a4c;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-}
-
-
-.central {
-    flex: 1;
-    padding: 10px;
-    box-sizing: border-box;
-    padding: 6vw 6vw;
-}
-
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.btn-block {
-    width: 100%;
-}
-
-
-@media screen and (max-width: 768px) {
-    .principal {
-        flex-direction: column; /* Apilamos elementos en dispositivos pequeños */
-    }
-    .central {
-        flex: 1; /* Cada columna ocupará el 100% del ancho en dispositivos pequeños */
-        margin-bottom: 20px;
-    }
-}
-
-
-
-/*.display-4{
+.display-4{
     color: white;
 }
 
 .my-4{
     color: white;
     background-color: white;
-}*/
+}

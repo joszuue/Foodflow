@@ -19,14 +19,18 @@ public class EmpleadoManaged {
     EmpleadoModel modelo = new EmpleadoModel();
     private EmpleadosEntity empleado;
 
+    private String contraTemp;
+
+    private String contraTemp2;
+
     public EmpleadoManaged(){
         empleado = new EmpleadosEntity();
     }
 
-    public String guardarEmple() {
+    public void guardarEmple() {
         empleado.setCodigo(generateCodigo());
         empleado.setContraseña(BCrypt.hashpw(empleado.getCodigo(), BCrypt.gensalt()));
-        empleado.setEstado("Activo");
+        empleado.setEstado("no");
         if (modelo.insertarEmpleado(empleado) != 1) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
@@ -34,7 +38,7 @@ public class EmpleadoManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha registrado correctamente."));
         }
-        return "/admin/empleados?faces-redirect=true";
+        empleado = new EmpleadosEntity();
     }
 
     public String generateCodigo(){
@@ -66,7 +70,7 @@ public class EmpleadoManaged {
         return modelo.listarEmpleado();
     }
 
-    public String modificarEmpleado(){
+    public void modificarEmpleado(){
         if (modelo.modificarEmpleado(empleado) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha modificado correctamente."));
@@ -74,14 +78,14 @@ public class EmpleadoManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido modificar."));
         }
-        return "/admin/empleados?faces-redirect=true";
+        empleado = new EmpleadosEntity();
     }
 
     public void data(EmpleadosEntity emple){
         empleado = emple;
     }
 
-    public String eliminarEmpleado(String codigo){
+    public void eliminarEmpleado(String codigo){
         if (modelo.eliminarEmpleado(codigo) > 0){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha eliminado correctamente."));
@@ -89,9 +93,43 @@ public class EmpleadoManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido eliminar."));
         }
-        return "/admin/empleados?faces-redirect=true";
+        empleado = new EmpleadosEntity();
     }
 
+    public String cambiarContra(String codigo, String contraseña, String nombres, String apellidos, String rol){
+        String pagina = "";
+        if (BCrypt.checkpw(contraTemp,contraseña)){
+            empleado.setCodigo(codigo);
+            empleado.setNombres(nombres);
+            empleado.setApellidos(apellidos);
+            empleado.setRol(rol);
+            empleado.setContraseña(BCrypt.hashpw(contraTemp2, BCrypt.gensalt()));
+            empleado.setEstado("si");
+            if (modelo.modificarEmpleado(empleado) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La contraseña se ha cambiado correctamente."));
+                switch (empleado.getRol()){
+                    case "Admin":
+                        pagina = "/admin/inicio?faces-redirect=true";
+                        break;
+                    case "Cocina":
+                        pagina = "/jefeCocina/inicio?faces-redirect=true";
+                        break;
+                    case "Mesero":
+                        pagina = "/mesero/inicio?faces-redirect=true";
+                        break;
+                }
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error la contraseña no ha sido modificada."));
+            }
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La contraseña actual no coicide con la que has digitado."));
+            pagina = "/contraseña?faces-redirect=true";
+        }
+        return pagina;
+    }
 
     public EmpleadoModel getModelo() {
         return modelo;
@@ -107,5 +145,21 @@ public class EmpleadoManaged {
 
     public void setEmpleado(EmpleadosEntity empleado) {
         this.empleado = empleado;
+    }
+
+    public String getContraTemp() {
+        return contraTemp;
+    }
+
+    public void setContraTemp(String contraTemp) {
+        this.contraTemp = contraTemp;
+    }
+
+    public String getContraTemp2() {
+        return contraTemp2;
+    }
+
+    public void setContraTemp2(String contraTemp2) {
+        this.contraTemp2 = contraTemp2;
     }
 }

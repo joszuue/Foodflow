@@ -20,39 +20,24 @@
 </h:head>
 
 <h:body>
-    <div >
-        <div>
-            <!-- Espacio para la imagen
-            <h:graphicImage url="resources/img/header.png"/>-->
+    <div class="container center-container">
+        <div class="jumbotron">
+            <h:form>
+                <div class="form-group">
+                    <h1 class="display-4 text-center">Inicio de Sesión</h1>
+                    <p:inputText  placeholder="Ingrese su código de empleado" styleClass="form-control" value="#{loginManaged.empleado.codigo}"/>
+                </div>
+                <div class="form-group">
+                    <p:password  placeholder="Ingrese su contraseña" styleClass="form-control" value="#{loginManaged.empleado.contraseña}"/>
+                </div>
+                <p:messages id="messages" showDetail="true">
+                    <p:autoUpdate/>
+                </p:messages>
+                <center>
+                    <h:commandButton value="Iniciar Sesión" class="btn btn-outline-light" action="#{loginManaged.login()}"/>
+                </center>
+            </h:form>
         </div>
     </div>
-    <div class="principal">
-        <div class="col-md-6">
-            <div class="">
-                <div class="banner">
-                    <!-- <h:graphicImage url="resources/img/login.jpg"/>-->
-                 </div>
-             </div>
-         </div>
-
-         <div class="central">
-             <h:form>
-                 <div class="form-group">
-                     <h1 class="display-4 text-center">Inicio de Sesión</h1>
-                     <h:outputLabel for="exampleInputEmail1" value="Ingrese su código de empleado"/>
-                     <p:inputText id="exampleInputEmail1" placeholder="AB000000" styleClass="form-control" value="#{loginManaged.empleado.codigo}"/>
-                 </div>
-                 <div class="form-group">
-                     <h:outputLabel for="exampleInputPassword1" value="Contraseña"/>
-                     <p:password id="exampleInputPassword1" placeholder="********" styleClass="form-control" value="#{loginManaged.empleado.contraseña}"/>
-                 </div>
-                 <p:messages id="messages" showDetail="true">
-                     <p:autoUpdate/>
-                 </p:messages>
-                 <p:commandButton value="Iniciar Sesión" class="btn btn-primary btn-block" action="#{loginManaged.login()}"/>
-             </h:form>
-         </div>
-     </div>
-
  </h:body>
  </html>

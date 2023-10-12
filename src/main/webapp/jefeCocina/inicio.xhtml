@@ -5,6 +5,32 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
 <ui:define name="content">
-   <h>Cocina</h>
+   <h1 class="display-4">Hola #{sessionScope.emple.nombres} !</h1>
+   <p class="lead">¡Bienvenid@ a FoodFlow! Aquí, podrás administrar categorias, productos y visualizar los pedidos que hay en cocina.</p>
+   <hr class="my-4"/>
+   <br/>
+   <div class="card-deck">
+      <div class="card">
+         <br/>
+         <h1 class="text-center movimiento"><i class="fa-solid fa-tag fa-2xl" style="color: #45448d;"></i></h1>
+         <div class="card-body">
+            <h5 class="card-title lead text-center fade-text">GESTIONAR CATEGORIAS</h5>
+         </div>
+      </div>
+      <div class="card">
+         <br/>
+         <h1 class="text-center movimiento"><i class="fa-solid fa-pizza-slice fa-2xl" style="color: #45448d;"></i></h1>
+         <div class="card-body">
+            <h5 class="card-title lead text-center fade-text">GESTIONAR PRODUCTOS</h5>
+         </div>
+      </div>
+      <div class="card">
+         <br/>
+         <h1 class="text-center movimiento"><i class="fa-solid fa-check-to-slot fa-2xl" style="color: #45448d;"></i></h1>
+         <div class="card-body">
+            <h5 class="card-title lead text-center fade-text">GESTIONAR PEDIDOS</h5>
+         </div>
+      </div>
+   </div>
 </ui:define>
 </ui:composition>

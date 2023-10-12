@@ -5,13 +5,18 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
+        <h1 class="text-center display-4">Gestionar Categorias</h1>
+        <p class="lead">En este apartado usted podrá crear, actualizar o eliminar una nueva categoria de alimentos, en la parte inferior usted puede visualizar a las categorias que se encuentran registradas.
+        </p>
+        <hr class="my-4"/>
+        <br/>
         <h:form>
             <h:inputHidden value="#{categoriaManaged.categoria.idCategoria}"/>
-            <h:outputLabel for="nombre" value="Nombre de la categoria: "/>
+            <h:outputLabel for="nombre" styleClass="lead" value="Nombre de la categoria: "/>
             <h:inputText id="nombre" styleClass="form-control" value="${categoriaManaged.categoria.nombre}"/>
             <br/>
-            <h:commandButton value="Ingresar Categoria" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
-            <h:commandButton value="Modificar Modificar" action="#{categoriaManaged.modificarCategoria()}" />
+            <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
+            <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}"/>
         </h:form>
         <p:messages id="messages" showDetail="true">
             <p:autoUpdate/>
@@ -33,9 +38,12 @@
                         <td>#{cate.nombre}</td>
                         <td>
                             <h:form>
-                                <h:commandButton value="Modificar" action="#{categoriaManaged.data(cate)}"/>
-                                <br/>
-                                <h:commandButton value="Eliminar" action="#{categoriaManaged.eliminarCategoria(cate.idCategoria)}"/>
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{categoriaManaged.data(cate)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{categoriaManaged.eliminarCategoria(cate.idCategoria)}"/>
+                                    </h:panelGrid>
+                                </center>
                             </h:form>
                         </td>
                     </tr>
