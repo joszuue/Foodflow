@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: imjos
+  Date: 11/10/2023
+  Time: 17:55
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Inicio de Sesión</title>
+    <link rel="stylesheet" href="resources/css/main.css"/>
+    <link rel="stylesheet" href="resources/css/normalize.css"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@200;500;700;800&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous"/>
+</h:head>
+
+<h:body>
+    <div class="login-design">
+        <div class="waves">
+            <h:graphicImage url="../resources/img/no-bg.png" width="450" height="450"/>
+        </div>
+        <div class="login">
+            <div class="login-data">
+                <h:graphicImage url="../resources/img/logo2.png" width="310" height="340"/>
+                <h1 style="font-size: 40px"><b>Inicio de Sesión</b></h1>
+                <h:form class="login-form">
+                    <div class="input-group">
+                        <label class="input-fill" >
+                            <h:inputText name="email" id="email" styleClass="inpuut" value="#{loginManaged.cliente.codigoClient}" style="font-size: 25px"/>
+                            <span class="input-label" style="font-size: 20px">Ingrese su código de cliente</span>
+                            <i class="fas fa-lock"></i>
+                        </label>
+                    </div>
+                    <h:commandButton value="Iniciar Sesión" class="btn-login" action="#{loginManaged.loginClient()}"/>
+                </h:form>
+                <br/>
+                <p:messages id="messages" showDetail="true">
+                    <p:autoUpdate/>
+                </p:messages>
+            </div>
+        </div>
+    </div>
+</h:body>
+
+</html>

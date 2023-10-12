@@ -1,0 +1,248 @@
+*{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+
+.waves {
+    background-image: url('../img/wave.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.navbar.navbar-expand-lg.navbar-light.bg-light {
+    background-color: transparent !important;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    box-shadow: 0 0 10px rgba(108, 26, 239, 0.5);
+    /* Otros estilos para tu tarjeta aquí */
+}
+
+/* Contenedor */
+.contenedor{
+    padding-bottom: 40px;    
+}
+/* Header -Menu */
+.header{
+    padding-top: 10px;
+    width: 90%;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+/* Logo */
+.logo{
+    font-weight: 900;
+    font-size: 20px;
+}
+.logo span{
+    color: #6c1aef;
+}
+.hamburguesa{
+    width: 30px;
+}
+@media (min-width:768px) {
+    .hamburguesa{
+        display: none;
+    }
+}
+.hamburguesa:hover{
+    cursor: pointer;
+}
+/* Navegacion */
+.menu{
+    display: none;
+}
+@media (min-width:768px) {
+    .menu{
+        display: flex;
+    }
+}
+.navegacion{
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    list-style: none;
+}
+@media (min-width:768px) {
+    .navegacion{
+        gap: 30px;
+    }
+}
+@media (min-width:992px) {
+    .navegacion{
+        gap: 50px;
+    }
+}
+.navegacion a{
+    text-decoration: none;
+    color: rgb(97, 97, 97);
+    font-weight: 400;
+    font-size: 15px;
+}
+.navegacion a:hover{
+    color: black;
+}
+.navegacion li:last-child{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.navegacion li:last-child a{
+   font-weight: 700; 
+}
+.navegacion li:last-child a:last-child{
+    background-color: #6c1aef;
+    color: white;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid #6c1aef;
+}
+.navegacion li:last-child a:last-child:hover{
+    background-color: white;
+    color: #6c1aef;
+}
+/* Información Banner */
+.presentacion{
+    width: 90%;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+@media (min-width:768px) {
+    .presentacion{
+        flex-direction: row;
+    }
+}
+/* Información */
+.informacion{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+@media (min-width:768px) {
+    .informacion{
+        text-align: start;
+        align-items: flex-start;
+    }
+}
+.informacion--boton button{
+    padding: 10px;
+    background-color: #6c1aef;
+    border: 1px solid #6c1aef;
+    color: white;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+}
+.informacion--boton button:hover{
+    background-color: white;
+    color: #6c1aef;
+    cursor: pointer;
+}
+/* Información imagen */
+.presentacion--imagen{
+    max-width: 300px;
+    filter: drop-shadow(0 1mm 3mm rgba(108, 26, 239, 0.468));
+}
+@media (min-width:456px) {
+    .presentacion--imagen{
+        max-width: 500px;
+    }
+}
+@media (min-width:1024px) {
+    .presentacion--imagen{
+        max-width: 800px;
+    }
+}
+/* Seccion platos */
+.comida{
+    width: 90%;
+    margin-inline:auto;
+}
+.platos{
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 85px;
+}
+@media (min-width:768px) {
+    .platos{
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (min-width:992px) {
+    .platos{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+}
+.comida--titulo{
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 85px;
+}
+@media (min-width:768px) {
+    .comida--titulo{
+        text-align: start;
+    }
+}
+/* Contenedor de tarjetas */
+.plato{
+    width: 80%;
+    margin-inline:auto;
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid rgba(196, 196, 196, 0.426);
+}
+.plato img{
+    width: 150px;
+    filter: drop-shadow(0 0 0.9rem #6c1aef);
+    margin-top: -85px;
+}
+.plato p{
+    font-size: 15px;
+    color: rgb(63, 63, 63);
+}
+.plato--info{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
+}
+.plato--info p{
+    font-weight: 900;
+}
+.plato--info button{
+    background-color: #6c1aef;
+    color: white;
+    font-weight: 900;
+    padding: 5px 12px;
+    border-radius: 50%;
+    font-size: 25px;
+}
+.plato--info button:hover{
+    cursor: pointer;
+}

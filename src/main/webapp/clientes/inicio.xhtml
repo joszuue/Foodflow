@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: imjos
+  Date: 11/10/2023
+  Time: 17:51
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+    <title>FoodFlow</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://kit.fontawesome.com/f7c3a2243e.js"></script>
+    <h:outputStylesheet name="css/indexClient.css" />
+    <h:outputStylesheet name="css/normalizeClient.css" />
+</h:head>
+
+<h:body>
+    <div class="waves">
+        <div class="content">
+            <div class="navbar navbar-expand-lg navbar-light bg-light lead">
+                <h:commandLink styleClass="navbar-brand" action="inicio.xhtml">
+                    <h:graphicImage url="../resources/img/header.png" width="100" height="80"/>
+                </h:commandLink>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <h:panelGroup styleClass="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <h:outputLink styleClass="nav-link" value="#">Inicio</h:outputLink>
+                        </li>
+                    </ul>
+                    <h:panelGroup styleClass="form-inline my-2 my-lg-0">
+                        <input type="hidden" name="accion" value="finalizar"/>
+                        <div class="col-mb-4 d-flex align-items-center">
+                            <h:outputText styleClass="text-black mr-3 lead" value="Familia #{sessionScope.cliente.apellido}"/>
+                            <h:form>
+                                <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0 "  value="Cerrar Sesión" action="#{loginManaged.logOutCliente()}"/>
+                            </h:form>
+                        </div>
+                    </h:panelGroup>
+                </h:panelGroup>
+            </div>
+            <div class="contenedor">
+                <div class="presentacion">
+                    <div class="informacion">
+                        <h1 class="display-4">Bienvenida Familia #{sessionScope.cliente.apellido}</h1>
+                        <div class="lead">
+                            <p>Hola familia #{sessionScope.cliente.apellido}, nuestra deliciosa comida esta esperando por ti,</p>
+                            <p>siempre estamos cerca para ti con comida fresca.</p>
+                        </div>
+                        <div class="informacion--boton">
+                            <button type="button">Explorar Comida</button>
+                        </div>
+                    </div>
+                    <div class="presentacion--imagen">
+                        <h:graphicImage url="../resources/img/hamburguesa.png" height="500px" width="500px"/>
+                    </div>
+                </div>
+                <div class="jumbotron" style="background-color: white">
+                    <div class="comida">
+                        <h1 class="display-4">Platos populares</h1>
+                        <div class="platos">
+                            <ui:repeat value="#{productoManaged.listProductos()}" var="produ">
+                                <center>
+                                    <div class="col-md-4">
+                                        <div class="card" style="width: 18rem;">
+                                            <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top"/>
+                                            <div class="card-body">
+                                                <h5 class="card-title lead font-weight-bold">#{produ.nombre}</h5>
+                                                <p class="card-text">#{produ.descripcion}</p>
+                                                <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
+                                                <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </center>
+                            </ui:repeat>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</h:body>
+
+</html>

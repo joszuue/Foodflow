@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuMesero.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h1 class="display-4 text-center">Mesas y Clientes Activos</h1>
+        <p class="lead">Las fichas en color verde son las mesas que se encuentran disponibles y las fichas en color gris las mesas que se encuentran ocupadas.</p>
+        <hr class="my-4"/>
+        <br/>
+        <p:messages id="messages" showDetail="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <h:form>
+        <div class="row">
+            <ui:repeat value="#{mesasManaged.listMesas()}" var="mesa">
+                <div class="col-md-4">
+                    <ui:fragment rendered="#{mesa.estado eq 'Disponible'}">
+                        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                            <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
+                            <div class="card-body">
+                                <h5 class="card-title text-center">Registrar Cliente</h5>
+                                    <h:outputLabel styleClass="lead" value="Apellido: "/>
+                                    <h:inputText styleClass="form-control" value="#{clientesManaged.cliente.apellido}"/>
+                                    <br/>
+                                    <center>
+                                        <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa)}"/>
+                                    </center>
+                            </div>
+                        </div>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{mesa.estado eq 'Ocupada'}">
+                        <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                            <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
+                            <div class="card-body">
+                                <ui:repeat value="#{clientesManaged.obtenerClient(mesa.idMesa)}" var="client">
+                                    <h5 class="card-title text-center">Familia: #{client.apellido}</h5>
+                                        <br/>
+                                        <center>
+                                            <h:commandButton styleClass="btn btn-outline-light"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, mesa)}"/>
+                                        </center>
+                                </ui:repeat>
+                            </div>
+                        </div>
+                    </ui:fragment>
+                </div>
+            </ui:repeat>
+        </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
