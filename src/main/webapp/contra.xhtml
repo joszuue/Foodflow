@@ -59,14 +59,16 @@
                     <p:password  placeholder="Contraseña actual" styleClass="form-control" value="#{empleadoManaged.contraTemp}" validator="validaciones" id="contraseña_actual"/>
                 </div>
                 <div class="form-group">
-                    <p:password  placeholder="Contraseña nueva" match="repetición_de_contraseña_nueva" styleClass="form-control" value="#{empleadoManaged.contraTemp2}" validator="validaciones" id="contraseña_nueva"
-                                 feedback="true" inline="true" />
+                    <p:password  placeholder="Contraseña nueva" styleClass="form-control" value="#{empleadoManaged.contraTemp2}" validator="validaciones" id="contraseña_nueva"
+                                 feedback="true" />
                 </div>
                 <div class="form-group">
                     <p:password  placeholder="Vuelve a escribir la contraseña nueva" id="repetición_de_contraseña_nueva" styleClass="form-control" validator="validaciones"
-                                 feedback="true" inline="true" />
+                                 feedback="true"  value="#{empleadoManaged.contraTemp3}"/>
                 </div>
-
+                <p:messages id="messages" showDetail="true" showIcon="false">
+                    <p:autoUpdate/>
+                </p:messages>
                 <center>
                     <h:commandButton value="Cambiar Contraseña" class="btn btn-outline-light" action="#{empleadoManaged.cambiarContra(sessionScope.emple.codigo, sessionScope.emple.contraseña, sessionScope.emple.nombres, sessionScope.emple.apellidos, sessionScope.emple.rol)}"/>
                 </center>

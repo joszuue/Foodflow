@@ -8,6 +8,7 @@ import java.util.Collection;
 @Table(name = "productos", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="ProductosEntity.findAll", query = "SELECT p FROM ProductosEntity p"),
+        @NamedQuery(name="ProductosEntity.validateProdu", query = "SELECT p FROM ProductosEntity p WHERE p.nombre = :nombre")
 })
 public class ProductosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

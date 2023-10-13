@@ -3,6 +3,7 @@ package sv.foodflow.www.models;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import sv.foodflow.www.entities.CategoriasEntity;
 import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.utils.JpaUtil;
@@ -69,6 +70,20 @@ public class ProductoModel {
         } catch (Exception e) {
             em.close();
             return 0;
+        }
+    }
+
+    public ProductosEntity validarProdu(String nombre) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            TypedQuery<ProductosEntity> query = em.createNamedQuery("ProductosEntity.validateProdu", ProductosEntity.class);
+            query.setParameter("nombre", nombre);
+            ProductosEntity producto = query.getSingleResult();
+            em.close();
+            return producto;
+        } catch (Exception e) {
+            em.close();
+            return null;
         }
     }
 

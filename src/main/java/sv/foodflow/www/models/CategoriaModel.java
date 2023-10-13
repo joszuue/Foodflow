@@ -3,7 +3,9 @@ package sv.foodflow.www.models;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import sv.foodflow.www.entities.CategoriasEntity;
+import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.entities.MesasEntity;
 import sv.foodflow.www.utils.JpaUtil;
 
@@ -50,6 +52,20 @@ public class CategoriaModel {
         } catch (Exception e) {
             em.close();
             return 0;
+        }
+    }
+
+    public CategoriasEntity validarCate(String nombre) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            TypedQuery<CategoriasEntity> query = em.createNamedQuery("CategoriasEntity.ValidateCate", CategoriasEntity.class);
+            query.setParameter("nombre", nombre);
+            CategoriasEntity categoria = query.getSingleResult();
+            em.close();
+            return categoria;
+        } catch (Exception e) {
+            em.close();
+            return null;
         }
     }
 

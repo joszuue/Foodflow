@@ -32,27 +32,32 @@ public class ProductoManaged {
     }
 
     public void guardarProducto() {
-        if (nombreTempImg != null){
-            if (guardarImagen() != null){
-                producto.setEstado("Pendiente");
-                producto.setImagen(guardarImagen());
-                if (modelo.insertarProducto(producto, idCategoria) != 1) {
+        if (modelo.validarProdu(producto.getNombre()) == null){
+            if (nombreTempImg != null){
+                if (guardarImagen() != null){
+                    producto.setEstado("Pendiente");
+                    producto.setImagen(guardarImagen());
+                    if (modelo.insertarProducto(producto, idCategoria) != 1) {
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido registrar."));
+                    } else {
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha registrado correctamente."));
+                        producto = new ProductosEntity();
+                    }
+                }else{
                     FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido registrar."));
-                } else {
-                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                            FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha registrado correctamente."));
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato debe de ser de imagen png, jpg o jpeg."));
                 }
             }else{
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato debe de ser de imagen png, jpg o jpeg."));
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo imagen no puede quedar vacío."));
             }
-        }else{
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo imagen no puede quedar vacío."));
-        }
 
-        producto = new ProductosEntity();
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El nombre coicide con uno ya registrado."));
+        }
     }
 
     public String guardarImagen(){
@@ -104,15 +109,20 @@ public class ProductoManaged {
     }
 
     public void modificarProducto(){
-        producto.setImagen(guardarImagen());
-        if (modelo.modificarProducto(producto, idCategoria) == 1){
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));
+        if (modelo.validarProdu(producto.getNombre()) == null){
+            producto.setImagen(guardarImagen());
+            if (modelo.modificarProducto(producto, idCategoria) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido modificar."));
+            }
+            producto = new ProductosEntity();
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido modificar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El nombre coicide con uno ya registrado."));
         }
-        producto = new ProductosEntity();
     }
 
     public void data(ProductosEntity produ) throws FileNotFoundException {

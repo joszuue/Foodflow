@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "empleados", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="EmpleadosEntity.findAll", query = "SELECT e FROM EmpleadosEntity e"),
+        @NamedQuery(name="EmpleadosEntity.validateEmple", query = "SELECT e FROM EmpleadosEntity e WHERE e.nombres = :nombres AND e.apellidos = :apellidos")
 })
 public class EmpleadosEntity {
     @Id

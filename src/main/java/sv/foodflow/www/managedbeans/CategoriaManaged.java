@@ -21,14 +21,20 @@ public class CategoriaManaged {
     }
 
     public void guardarCategoria() {
-        if (modelo.insertarCategoria(categoria) != 1) {
+        if (modelo.validarCate(categoria.getNombre()) == null){
+            if (modelo.insertarCategoria(categoria) != 1) {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido registrar."));
+            } else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha registrado correctamente."));
+            }
+            categoria = new CategoriasEntity();
+        }else{
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido registrar."));
-        } else {
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha registrado correctamente."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El nombre de la categoria coicide con una ya registrada."));
         }
-        categoria = new CategoriasEntity();
+
     }
 
     public List<CategoriasEntity> listCategorias(){
@@ -36,14 +42,19 @@ public class CategoriaManaged {
     }
 
     public void modificarCategoria(){
-        if (modelo.modificarCategoria(categoria) == 1){
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha modificado correctamente."));
+        if (modelo.validarCate(categoria.getNombre()) == null){
+            if (modelo.modificarCategoria(categoria) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha modificado correctamente."));
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido modificar."));
+            }
+            categoria = new CategoriasEntity();
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido modificar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El nombre de la categoria coicide con una ya registrada."));
         }
-        categoria = new CategoriasEntity();
     }
 
     public void data(CategoriasEntity cate){

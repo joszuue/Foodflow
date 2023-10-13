@@ -3,6 +3,8 @@ package sv.foodflow.www.models;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
+import sv.foodflow.www.entities.ClientesEntity;
 import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.utils.JpaUtil;
 
@@ -35,6 +37,22 @@ public class EmpleadoModel {
         } catch (Exception e) {
             em.close();
             return 0;
+        }
+    }
+
+
+    public EmpleadosEntity validarEmple(String nombres, String apellidos) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            TypedQuery<EmpleadosEntity> query = em.createNamedQuery("EmpleadosEntity.validateEmple", EmpleadosEntity.class);
+            query.setParameter("nombres", nombres);
+            query.setParameter("apellidos", apellidos);
+            EmpleadosEntity empleado = query.getSingleResult();
+            em.close();
+            return empleado;
+        } catch (Exception e) {
+            em.close();
+            return null;
         }
     }
 

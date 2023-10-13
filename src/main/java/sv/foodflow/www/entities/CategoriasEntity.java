@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "categorias", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c"),
+        @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre")
 })
 public class CategoriasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
