@@ -6,6 +6,7 @@ import jakarta.faces.bean.RequestScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import sv.foodflow.www.entities.CategoriasEntity;
 import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.models.ProductoModel;
@@ -31,15 +32,26 @@ public class ProductoManaged {
     }
 
     public void guardarProducto() {
-        producto.setEstado("Pendiente");
-        producto.setImagen(guardarImagen());
-        if (modelo.insertarProducto(producto, idCategoria) != 1) {
+        if (nombreTempImg != null){
+            if (guardarImagen() != null){
+                producto.setEstado("Pendiente");
+                producto.setImagen(guardarImagen());
+                if (modelo.insertarProducto(producto, idCategoria) != 1) {
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido registrar."));
+                } else {
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha registrado correctamente."));
+                }
+            }else{
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato debe de ser de imagen png, jpg o jpeg."));
+            }
+        }else{
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido registrar."));
-        } else {
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha registrado correctamente."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo imagen no puede quedar vacío."));
         }
+
         producto = new ProductosEntity();
     }
 
@@ -48,13 +60,17 @@ public class ProductoManaged {
             // Obtener el nombre del archivo
             String fileName = nombreTempImg.getSubmittedFileName();
             String nuevoNombre = generateCodigo() + obtenerExtension(fileName);
-            // Guardar la imagen en el servidor
-            OutputStream output = new FileOutputStream(new File("C:\\wamp64\\www\\FoodFlow_img\\", nuevoNombre));
-            IOUtils.copy(input, output);
-            return nuevoNombre;
+            if (obtenerExtension(fileName).equals(".jpg") ||  obtenerExtension(fileName).equals(".png") || obtenerExtension(fileName).equals(".jpeg")){
+                // Guardar la imagen en la carpeta www de wamp
+                OutputStream output = new FileOutputStream(new File("C:\\wamp64\\www\\FoodFlow_img\\", nuevoNombre));
+                IOUtils.copy(input, output);
+                return nuevoNombre;
+            }else {
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
     }
 
@@ -103,6 +119,11 @@ public class ProductoManaged {
         producto = produ;
         String rutaImagen = "C:\\wamp64\\www\\FoodFlow_img\\" + produ.getImagen();
 
+    }
+
+    public void handleFileUpload(FileUploadEvent event) {
+        FacesMessage message = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void eliminarProducto(int id){

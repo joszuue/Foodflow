@@ -8,24 +8,30 @@
         <h1 class="text-center display-4">Gestionar Productos</h1>
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar productos que se mostraran en el menú, en la parte inferior usted puede visualizar los productos que se encuentran registrados.
         </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
         <hr class="my-4"/>
         <br/>
         <h:form enctype="multipart/form-data">
             <h:inputHidden value="#{productoManaged.producto.idProducto}"/>
             <h:inputHidden value="#{productoManaged.producto.estado}"/>
-            <h:outputLabel for="nombre" styleClass="lead" value="Nombre del producto: "/>
-            <h:inputText id="nombre" styleClass="form-control" value="${productoManaged.producto.nombre}"/>
+            <h:outputLabel for="nombre_del_producto" styleClass="lead" value="Nombre del producto: "/>
+            <h:inputText id="nombre_del_producto" styleClass="form-control" value="${productoManaged.producto.nombre}" validator="validaciones"/>
             <br/>
-            <h:outputLabel for="descri" styleClass="lead" value="Descripción del producto: "/>
-            <h:inputText id="descri" styleClass="form-control" value="${productoManaged.producto.descripcion}"/>
+            <h:outputLabel for="descripción_del_producto" styleClass="lead" value="Descripción del producto: "/>
+            <h:inputText id="descripción_del_producto" styleClass="form-control" value="${productoManaged.producto.descripcion}" validator="validaciones"/>
             <br/>
-            <h:outputLabel for="precio" styleClass="lead" value="Precio del producto: "/>
+            <h:outputLabel for="precio_del_producto" styleClass="lead" value="Precio del producto: "/>
             <br/>
-            <p:inputNumber id="precio" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="2" />
-            <br/>
+            <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="2" />
+            <br/><br/>
             <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
-            <h:inputFile id="imagen" styleClass="form-control" value="${productoManaged.nombreTempImg}"/>
-            <br/>
+            <div class="custom-file">
+                <h:inputFile id="imagen" class="custom-file-input" lang="es" value="${productoManaged.nombreTempImg}"/>
+                <label class="custom-file-label" for="customFileLang">Seleccionar Imagen</label>
+            </div>
+            <br/><br/>
             <h:outputLabel for="categoria" styleClass="lead" value="Categoria del producto: "/>
             <h:selectOneMenu id="categoria" styleClass="form-control" value="#{productoManaged.idCategoria}">
                 <f:selectItems value="#{categoriaManaged.listCategorias()}" var="c" itemLabel="#{c.nombre}" itemValue="#{c.idCategoria}"/>
@@ -34,9 +40,6 @@
             <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
             <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" />
         </h:form>
-        <p:messages id="messages" showDetail="true">
-            <p:autoUpdate/>
-        </p:messages>
         <br/><br/>
         <div class="row">
             <ui:repeat value="#{productoManaged.listProductos()}" var="produ">

@@ -9,17 +9,20 @@
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar a un empleado, en la parte inferior usted puede visualizar a los empleados que se encuentran registrados.
             <br/><br/>Nota: Las contraseña del empleado será el mismo código generado automáticamente, cuando el usuario entre por primera vez al sistema se le pedirá que cambié su contraseña.
         </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
         <hr class="my-4"/>
         <br/>
         <h:form>
             <h:inputHidden value="#{empleadoManaged.empleado.codigo}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.contraseña}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.estado}"/>
-            <h:outputLabel for="nombres" styleClass="lead" value="Nombres del empleado: "/>
-            <h:inputText id="nombres" styleClass="form-control" value="#{empleadoManaged.empleado.nombres}" />
+            <h:outputLabel for="nombres_del_empleado" styleClass="lead" value="Nombres del empleado: "/>
+            <h:inputText id="nombres_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.nombres}" validator="validaciones"/>
             <br/>
-            <h:outputLabel for="apellidos" styleClass="lead" value="Apellidos del empleado: "/>
-            <h:inputText id="apellidos" styleClass="form-control" value="${empleadoManaged.empleado.apellidos}"/>
+            <h:outputLabel for="apellidos_del_empleado" styleClass="lead" value="Apellidos del empleado: "/>
+            <h:inputText id="apellidos_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.apellidos}" validator="validaciones"/>
             <br/>
             <h:outputLabel for="rol" styleClass="lead" value="Seleccione el cargo del empleado: "/>
             <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
@@ -32,9 +35,6 @@
 
             <h:commandButton value="Modificar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
         </h:form>
-        <p:messages id="messages" showDetail="true">
-            <p:autoUpdate/>
-        </p:messages>
         <br/><br/>
         <div class="table-responsive">
             <table class="table">

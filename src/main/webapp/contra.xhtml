@@ -56,19 +56,17 @@
             <h:form>
                 <div class="form-group">
                     <h1 class="display-4 text-center">Cambiar Contraseña</h1>
-                    <p:password  placeholder="Contraseña actual" styleClass="form-control" value="#{empleadoManaged.contraTemp}" required="true" />
+                    <p:password  placeholder="Contraseña actual" styleClass="form-control" value="#{empleadoManaged.contraTemp}" validator="validaciones" id="contraseña_actual"/>
                 </div>
                 <div class="form-group">
-                    <p:password  placeholder="Contraseña nueva" match="pwd2" styleClass="form-control" value="#{empleadoManaged.contraTemp2}"
-                                 promptLabel="Ingresa tu contraseña" feedback="true" weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte" required="true" />
+                    <p:password  placeholder="Contraseña nueva" match="repetición_de_contraseña_nueva" styleClass="form-control" value="#{empleadoManaged.contraTemp2}" validator="validaciones" id="contraseña_nueva"
+                                 feedback="true" inline="true" />
                 </div>
                 <div class="form-group">
-                    <p:password  placeholder="Vuelve a escribir la contraseña nueva" id="pwd2" styleClass="form-control"
-                                 promptLabel="Ingresa tu contraseña" feedback="true" weakLabel="Débil" goodLabel="Buena" strongLabel="Fuerte" required="true" />
+                    <p:password  placeholder="Vuelve a escribir la contraseña nueva" id="repetición_de_contraseña_nueva" styleClass="form-control" validator="validaciones"
+                                 feedback="true" inline="true" />
                 </div>
-                <p:messages id="messages" showDetail="true">
-                    <p:autoUpdate/>
-                </p:messages>
+
                 <center>
                     <h:commandButton value="Cambiar Contraseña" class="btn btn-outline-light" action="#{empleadoManaged.cambiarContra(sessionScope.emple.codigo, sessionScope.emple.contraseña, sessionScope.emple.nombres, sessionScope.emple.apellidos, sessionScope.emple.rol)}"/>
                 </center>

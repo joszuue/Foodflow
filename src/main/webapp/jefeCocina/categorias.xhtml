@@ -8,19 +8,19 @@
         <h1 class="text-center display-4">Gestionar Categorias</h1>
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar una nueva categoria de alimentos, en la parte inferior usted puede visualizar a las categorias que se encuentran registradas.
         </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
         <hr class="my-4"/>
         <br/>
         <h:form>
             <h:inputHidden value="#{categoriaManaged.categoria.idCategoria}"/>
-            <h:outputLabel for="nombre" styleClass="lead" value="Nombre de la categoria: "/>
-            <h:inputText id="nombre" styleClass="form-control" value="${categoriaManaged.categoria.nombre}"/>
+            <h:outputLabel for="nombre_de_categoria" styleClass="lead" value="Nombre de la categoria: "/>
+            <h:inputText id="nombre_de_categoria" styleClass="form-control" value="${categoriaManaged.categoria.nombre}" validator="validaciones" />
             <br/>
             <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
             <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}"/>
         </h:form>
-        <p:messages id="messages" showDetail="true">
-            <p:autoUpdate/>
-        </p:messages>
         <br/><br/>
         <div class="table-responsive">
             <table class="table">

@@ -8,6 +8,9 @@
         <h1 class="text-center display-4">Gestionar Mesas</h1>
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar mesas y asignarle la capacida máxima, en la parte inferior usted puede visualizar a las mesas que se encuentran registradas.
         </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
         <hr class="my-4"/>
         <br/>
         <h:form>
@@ -15,14 +18,15 @@
             <h:inputHidden value="#{mesasManaged.mesa.estado}"/>
             <h:outputLabel for="mesa" class="lead" value="Capacidad de mesa: "/>
             <br/>
-            <p:inputNumber id="mesa"  value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0" />
-            <br/>
+            <p:inputNumber id="mesa" value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0"
+                           requiredMessage="Debes ingresar una capacidad de personas para la mesa"
+                           validatorMessage="La capacidad de personas debe de estar entre 2 y 12">
+                <f:validateLongRange minimum="2" maximum="12" />
+            </p:inputNumber>
+            <br/><br/>
             <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
             <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" />
         </h:form>
-        <p:messages id="messages" showDetail="true">
-            <p:autoUpdate/>
-        </p:messages>
         <br/><br/>
         <div class="table-responsive">
             <table class="table">

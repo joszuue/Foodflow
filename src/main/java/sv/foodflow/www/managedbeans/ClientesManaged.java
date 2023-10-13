@@ -25,21 +25,28 @@ public class ClientesManaged {
         cliente = new ClientesEntity();
     }
 
-    public void guardarCliente(MesasEntity mesa) {
-        cliente.setEstado("Activo");
-        cliente.setCodigoClient(generarCodigo());
-        if (modelo.insertarCliente(cliente, mesa.getIdMesa()) != 1) {
+    public String guardarCliente(MesasEntity mesa) {
+        if (cliente.getApellido().isEmpty()){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar." + getApe()));
-        } else {
-            MesasModel mesasModel = new MesasModel();
-            mesa.setEstado("Ocupada");
-            mesasModel.modificarMesa(mesa);
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha registrado correctamente." + getApe()));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe de ingresar un apellido."));
+        }else {
+            cliente.setEstado("Activo");
+            cliente.setCodigoClient(generarCodigo());
+            if (modelo.insertarCliente(cliente, mesa.getIdMesa()) != 1) {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar."));
+            } else {
+                MesasModel mesasModel = new MesasModel();
+                mesa.setEstado("Ocupada");
+                mesasModel.modificarMesa(mesa);
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha registrado correctamente. El código de cliente es: " + cliente.getCodigoClient()));
+            }
         }
-
+        return "/clientes?faces-redirect=true";
     }
+
+
 
     public String generarCodigo() {
         String caracteresPermitidos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

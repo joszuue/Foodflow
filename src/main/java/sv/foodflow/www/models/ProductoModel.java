@@ -34,10 +34,10 @@ public class ProductoModel {
             cateTemporal = em.find(CategoriasEntity.class,idCategoria);
             tran.begin();//Iniciando transacción
 
-            //Incluyendo en instancia de LibroEntity las instancias que corresponden a sus claves foraneas
+            //Incluyendo en instancia de producto las instancias que corresponden a sus claves foraneas
             producto.setCategoriasByIdCategoria(cateTemporal);
 
-            //Persistiendo entidad libro con todos los datos posibles asignados
+            //Persistiendo entidad producto con todos los datos posibles asignados
             em.persist(producto); //Guardando el objeto en la BD
             tran.commit();//Confirmando la transacción
             em.close();
@@ -58,10 +58,10 @@ public class ProductoModel {
             cateTemporal = em.find(CategoriasEntity.class,idCategoria);
             tran.begin();//Iniciando transacción
 
-            //Incluyendo en instancia de LibroEntity las instancias que corresponden a sus claves foraneas
+            //Incluyendo en instancia de producto las instancias que corresponden a sus claves foraneas
             producto.setCategoriasByIdCategoria(cateTemporal);
 
-            //Persistiendo entidad libro con todos los datos posibles asignados
+            //Persistiendo entidad producto con todos los datos posibles asignados
             em.merge(producto); //Guardando el objeto en la BD
             tran.commit();//Confirmando la transacción
             em.close();

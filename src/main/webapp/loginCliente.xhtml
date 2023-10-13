@@ -33,6 +33,9 @@
                 <h1 style="font-size: 40px"><b>Inicio de Sesión</b></h1>
                 <h:form class="login-form">
                     <div class="input-group">
+                        <p:messages id="messages" showDetail="true">
+                            <p:autoUpdate/>
+                        </p:messages>
                         <label class="input-fill" >
                             <h:inputText name="email" id="email" styleClass="inpuut" value="#{loginManaged.cliente.codigoClient}" style="font-size: 25px"/>
                             <span class="input-label" style="font-size: 20px">Ingrese su código de cliente</span>
@@ -42,9 +45,6 @@
                     <h:commandButton value="Iniciar Sesión" class="btn-login" action="#{loginManaged.loginClient()}"/>
                 </h:form>
                 <br/>
-                <p:messages id="messages" showDetail="true">
-                    <p:autoUpdate/>
-                </p:messages>
             </div>
         </div>
     </div>
