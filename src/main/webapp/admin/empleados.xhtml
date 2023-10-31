@@ -3,7 +3,8 @@
                 template="../templates/menuAdmin.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="content">
         <h1 class="text-center display-4">Gestionar Empleados</h1>
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar a un empleado, en la parte inferior usted puede visualizar a los empleados que se encuentran registrados.
@@ -18,22 +19,120 @@
             <h:inputHidden value="#{empleadoManaged.empleado.codigo}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.contraseña}"/>
             <h:inputHidden value="#{empleadoManaged.empleado.estado}"/>
-            <h:outputLabel for="nombres_del_empleado" styleClass="lead" value="Nombres del empleado: "/>
-            <h:inputText id="nombres_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.nombres}" validator="validaciones"/>
-            <br/>
-            <h:outputLabel for="apellidos_del_empleado" styleClass="lead" value="Apellidos del empleado: "/>
-            <h:inputText id="apellidos_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.apellidos}" validator="validaciones"/>
-            <br/>
-            <h:outputLabel for="rol" styleClass="lead" value="Seleccione el cargo del empleado: "/>
-            <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
-                <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
-                <f:selectItem itemValue="Cocina" itemLabel="Cocina" />
-                <f:selectItem itemValue="Admin" itemLabel="Administrador" />
-            </h:selectOneMenu>
-            <br/>
-            <h:commandButton value="Registrar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Datos Básicos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Datos Generales</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Datos de Contacto</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <h1 class="display-4 text-center">Datos Básicos</h1>
+                    <br/>
+                    <h:outputLabel for="DUI_del_empleado" styleClass="lead" value="Documento Único de identidad (DUI): "/>
+                    <h:inputText id="DUI_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.dui}" validator="validaciones"/>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h:outputLabel for="segundo_nombre_del_empleado" styleClass="lead" value="Primer Nombre: "/>
+                            <h:inputText id="primer_nombre_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.nombre1}" validator="validaciones"/>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="segundo_nombre_del_empleado" styleClass="lead" value="Segundo Nombre: "/>
+                            <h:inputText id="segundo_nombre_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.nombre2}" validator="validaciones"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h:outputLabel for="apellido_paterno_del_empleado" styleClass="lead" value="Apellido Paterno: "/>
+                            <h:inputText id="apellido_paterno_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.apellido1}" validator="validaciones"/>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="apellido_materno_del_empleado" styleClass="lead" value="Apellido Materno: "/>
+                            <h:inputText id="apellido_materno_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.apellido2}" validator="validaciones"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h:outputLabel for="fecha_de_nacimiento_del_empleado" styleClass="lead" value="Fecha de Nacimiento: "/>
+                            <h:inputText id="fecha_de_nacimiento_del_empleado" a:type="date" value="#{empleadoManaged.empleado.fechaNac}" validator="validaciones" styleClass="form-control"/>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="sexo_del_empleado" styleClass="lead" value="Sexo: "/>
+                            <h:selectOneMenu class="form-control" id="sexo_del_empleado" value="#{empleadoManaged.empleado.sexo}" >
+                                <f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+                                <f:selectItem itemValue="Femenino" itemLabel="Femenino" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="rol" styleClass="lead" value="Seleccione el cargo del empleado: "/>
+                            <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
+                                <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
+                                <f:selectItem itemValue="Jefe de cocina" itemLabel="Jefe de cocina" />
+                                <f:selectItem itemValue="Admin" itemLabel="Administrador" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <h1 class="display-4 text-center">Datos Generales</h1>
+                    <br/>
+                    <h:outputLabel for="dirección_del_empleado" styleClass="lead" value="Dirección de residencia: "/>
+                    <h:inputText id="dirección_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.direccion}" validator="validaciones"/>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h:outputLabel for="departamento" styleClass="lead" value="Departamento de residencia: "/>
+                            <h:selectOneMenu class="form-control" id="departamento" value="#{empleadoManaged.empleado.departamento}" >
+                                <f:selectItem itemLabel="Seleccione un departamento" />
+                                <f:selectItems value="#{empleadoManaged.departamentoList}"/>
+                                <f:ajax event="change" render="municipio" execute="departamento" listener="#{empleadoManaged.municipios}"/>
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="municipio" styleClass="lead" value="Municipio de residencia: "/>
+                            <h:selectOneMenu class="form-control" id="municipio" value="#{empleadoManaged.muni}" >
+                                <f:selectItems value="#{empleadoManaged.municipioList}" var="m" itemValue="#{m}" itemLabel="#{m}" />
+                            </h:selectOneMenu>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="civil" styleClass="lead" value="Estado civil: "/>
+                            <h:selectOneMenu class="form-control" id="civil" value="#{empleadoManaged.empleado.estadoCivil}" >
+                                <f:selectItem itemValue="Casada/o" itemLabel="Casada/o" />
+                                <f:selectItem itemValue="Viuda/o" itemLabel="Viuda/o" />
+                                <f:selectItem itemValue="Soltera/o" itemLabel="Soltera/o" />
+                            </h:selectOneMenu>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <h1 class="display-4 text-center">Datos de Contacto</h1>
+                    <br/>
+                    <div class="row">
+                        <div class="col">
+                            <h:outputLabel for="telefono" styleClass="lead" value="Número de teléfono: "/>
+                            <h:inputText id="telefono" styleClass="form-control" value="#{empleadoManaged.empleado.telefono}" validator="validaciones"/>
+                        </div>
+                        <div class="col">
+                            <h:outputLabel for="correo" styleClass="lead" value="Correo electrónico: "/>
+                            <h:inputText id="correo" styleClass="form-control" value="${empleadoManaged.empleado.correo}" validator="validaciones"/>
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <center>
+                        <h:commandButton value="Registrar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
 
-            <h:commandButton value="Modificar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
+                        <h:commandButton value="Modificar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
+                    </center>
+                </div>
+            </div>
         </h:form>
         <br/><br/>
         <div class="table-responsive">
@@ -43,7 +142,7 @@
                     <th scope="col">Código</th>
                     <th scope="col">Nombres</th>
                     <th scope="col">Apellidos</th>
-                    <th scope="col">Rol</th>
+                    <th scope="col">Cargo</th>
                     <th scope="col">Acciones</th>
                 </tr>
                 </thead>
@@ -51,8 +150,8 @@
                 <ui:repeat value="#{empleadoManaged.listEmpleados()}" var="emple">
                     <tr class="text-center">
                         <td>#{emple.codigo}</td>
-                        <td>#{emple.nombres}</td>
-                        <td>#{emple.apellidos}</td>
+                        <td>#{emple.nombre1}</td>
+                        <td>#{emple.apellido1}</td>
                         <td>#{emple.rol}</td>
                         <td>
                             <h:form>

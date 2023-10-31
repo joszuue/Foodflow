@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuAdmin.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h1 class="text-center display-4">Gestionar Sectores del Restaurante</h1>
+        <p class="lead">En este apartado usted podrá crear, actualizar o eliminar los sectores del restaurante y asignarle la capacida máxima de mesas, en la parte inferior usted puede visualizar a los sectores que se encuentran registradas.
+        </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
+        <hr class="my-4"/>
+        <br/>
+        <h:form>
+            <h:inputHidden value="#{sectorManaged.sector.idSector}"/>
+            <h:inputHidden value="#{sectorManaged.sector.estado}"/>
+            <h:outputLabel for="nombre" styleClass="lead" value="Nombre: "/>
+            <h:inputText id="nombre" styleClass="form-control" value="${sectorManaged.sector.nombre}" validator="validaciones"/>
+            <br/>
+            <h:outputLabel for="nombre" styleClass="lead" value="Capacidad máxima de mesas: "/>
+            <p:inputNumber id="mesa" value="#{sectorManaged.sector.capacidad}" minValue="1" decimalPlaces="0"
+                           requiredMessage="Debes ingresar una capacidad de mesas para el sector"
+                           validatorMessage="La capacidad minima debe de ser de 1">
+                <f:validateLongRange minimum="1"  />
+            </p:inputNumber>
+            <br/>
+            <h:outputLabel for="descripcion" styleClass="lead" value="Descripción: "/>
+            <h:inputText id="descripcion" styleClass="form-control" value="${sectorManaged.sector.descripcion}" validator="validaciones"/>
+            <br/><br/>
+            <h:commandButton value="Ingresar Sector" class="btn btn-outline-success" action="#{sectorManaged.guardarSector()}" rendered="#{sectorManaged.sector.idSector == 0}"/>
+            <h:commandButton value="Modificar Sector" class="btn btn-outline-success" action="#{sectorManaged.modificarSector()}" />
+        </h:form>
+        <br/><br/>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark text-center">
+                <tr>
+                    <th scope="col">Id Sector</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Capacidad</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <ui:repeat value="#{sectorManaged.listSector()}" var="sec">
+                    <tr class="text-center">
+                        <td>#{sec.idSector}</td>
+                        <td>#{sec.nombre}</td>
+                        <td>#{sec.descripcion}</td>
+                        <td>#{sec.capacidad}</td>
+                        <td>
+                            <h:form>
+                                <center>
+                                    <h:panelGrid columns="2">
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{sectorManaged.data(sec)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{sectorManaged.eliminarSector(sect.idSector)}"/>
+                                    </h:panelGrid>
+                                </center>
+                            </h:form>
+                        </td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+        </div>
+    </ui:define>
+</ui:composition>

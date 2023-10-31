@@ -2,6 +2,8 @@ package sv.foodflow.www.entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "categorias", schema = "food_flow")
 @NamedQueries({
@@ -16,6 +18,8 @@ public class CategoriasEntity {
     @Basic
     @Column(name = "Nombre", nullable = false, length = 100)
     private String nombre;
+    @OneToMany(mappedBy = "categoriasByIdCategoria")
+    private Collection<ProductosEntity> productosByIdCategoria;
 
     public int getIdCategoria() {
         return idCategoria;
@@ -51,5 +55,13 @@ public class CategoriasEntity {
         int result = idCategoria;
         result = 31 * result + (nombre != null ? nombre.hashCode() : 0);
         return result;
+    }
+
+    public Collection<ProductosEntity> getProductosByIdCategoria() {
+        return productosByIdCategoria;
+    }
+
+    public void setProductosByIdCategoria(Collection<ProductosEntity> productosByIdCategoria) {
+        this.productosByIdCategoria = productosByIdCategoria;
     }
 }

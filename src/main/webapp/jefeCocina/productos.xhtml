@@ -24,7 +24,7 @@
             <br/>
             <h:outputLabel for="precio_del_producto" styleClass="lead" value="Precio del producto: "/>
             <br/>
-            <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="2" />
+            <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" />
             <br/><br/>
             <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
             <div class="custom-file">
@@ -45,7 +45,7 @@
             <ui:repeat value="#{productoManaged.listProductos()}" var="produ">
                 <div class="col-md-4">
                     <div class="card" style="width: 18rem;">
-                        <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top"/>
+                        <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top" width="286px" height="214px"/>
                         <div class="card-body">
                             <ui:fragment rendered="#{produ.estado eq 'Pendiente'}">
                                 <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-warning">#{produ.estado}</span></h5>
@@ -53,7 +53,7 @@
                             <ui:fragment rendered="#{produ.estado eq 'Rechazado'}">
                                 <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-danger">#{produ.estado}</span></h5>
                             </ui:fragment>
-                            <ui:fragment rendered="#{produ.estado eq 'Aprobado'}">
+                            <ui:fragment rendered="#{produ.estado eq 'Aceptado'}">
                                 <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-success">#{produ.estado}</span></h5>
                             </ui:fragment>
                             <p class="card-text">#{produ.descripcion}</p>
@@ -66,7 +66,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.eliminarProducto(produ.idProducto)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

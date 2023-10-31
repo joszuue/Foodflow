@@ -13,7 +13,7 @@
         <hr class="my-4"/>
         <br/>
             <div class="row">
-                <ui:repeat value="#{mesasManaged.listMesas()}" var="mesa">
+                <ui:repeat value="#{mesasManaged.listMesas()}" var="mesa" id="repeatToUpdate">
                     <div class="col-md-4">
                         <ui:fragment rendered="#{mesa.estado eq 'Disponible'}">
                             <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
@@ -25,8 +25,8 @@
                                         <h:inputText styleClass="form-control" value="#{clientesManaged.cliente.apellido}"/>
                                         <br/>
                                         <center>
-                                            <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa)}">
-                                                <f:ajax execute="@form" render="@form"/>
+                                            <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa, mesa.sectorByIdSector.idSector)}">
+                                                <f:ajax execute="@form" render="repeatToUpdate updateMesa"/>
                                             </h:commandButton>
                                         </center>
                                     </h:form>
@@ -37,13 +37,13 @@
                             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                 <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
                                 <div class="card-body">
-                                    <ui:repeat value="#{clientesManaged.obtenerClient(mesa.idMesa)}" var="client">
+                                    <ui:repeat value="#{clientesManaged.obtenerClient(mesa.idMesa)}" var="client" id="updateMesa">
                                         <h:form id="cerrar#{mesa.idMesa}">
                                             <h5 class="card-title text-center">Familia: #{client.apellido}</h5>
                                             <br/>
                                             <center>
-                                                <h:commandButton styleClass="btn btn-outline-light"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, mesa)}">
-                                                    <f:ajax execute="@form" render="@form" />
+                                                <h:commandButton styleClass="btn btn-outline-light"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, mesa, mesa.sectorByIdSector.idSector)}">
+                                                    <f:ajax execute="@form" render="repeatToUpdate updateMesa"/>
                                                 </h:commandButton>
                                             </center>
                                         </h:form>

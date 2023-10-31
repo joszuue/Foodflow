@@ -40,10 +40,13 @@
                     <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
                 </li>
                 <li class="nav-item active">
-                    <h:outputLink styleClass="nav-link" value="empleados.xhtml">Gestionar Empleados</h:outputLink>
+                    <h:outputLink styleClass="nav-link" value="empleados.xhtml">Empleados</h:outputLink>
                 </li>
                 <li class="nav-item active">
-                    <h:outputLink styleClass="nav-link" value="mesas.xhtml">Gestionar Mesas</h:outputLink>
+                    <h:outputLink styleClass="nav-link" value="mesas.xhtml">Mesas</h:outputLink>
+                </li>
+                <li class="nav-item active">
+                    <h:outputLink styleClass="nav-link" value="sectores.xhtml">Sectores</h:outputLink>
                 </li>
                 <li class="nav-item active">
                     <h:outputLink styleClass="nav-link" value="#">Ventas</h:outputLink>
@@ -55,7 +58,7 @@
             <h:panelGroup styleClass="form-inline my-2 my-lg-0">
                 <input type="hidden" name="accion" value="finalizar"/>
                 <div class="col-mb-4 d-flex align-items-center">
-                    <h:outputText styleClass="text-black mr-3 lead" value="#{sessionScope.emple.nombres} #{sessionScope.emple.apellidos}"/>
+                    <h:outputText styleClass="text-black mr-3 lead" value="#{sessionScope.emple.nombre1} #{sessionScope.emple.apellido1}"/>
                     <h:form>
                         <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Cerrar Sesión" action="#{loginManaged.logOut()}"/>
                     </h:form>

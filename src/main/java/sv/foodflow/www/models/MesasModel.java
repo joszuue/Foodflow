@@ -3,8 +3,7 @@ package sv.foodflow.www.models;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import sv.foodflow.www.entities.EmpleadosEntity;
-import sv.foodflow.www.entities.MesasEntity;
+import sv.foodflow.www.entities.*;
 import sv.foodflow.www.utils.JpaUtil;
 
 import java.util.List;
@@ -23,13 +22,22 @@ public class MesasModel {
         }
     }
 
-    public int insertarMesa(MesasEntity mesa) {
+    public int insertarMesa(MesasEntity mesa, int idSector) {
+        SectorEntity sector;
+
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
         try {
-            tran.begin();
-            em.persist(mesa);
-            tran.commit();
+            //Encontrando las instancias de cada clave foranea
+            sector = em.find(SectorEntity.class,idSector);
+            tran.begin();//Iniciando transacción
+
+            //Incluyendo en instancia de producto las instancias que corresponden a sus claves foraneas
+            mesa.setSectorByIdSector(sector);
+
+            //Persistiendo entidad producto con todos los datos posibles asignados
+            em.persist(mesa); //Guardando el objeto en la BD
+            tran.commit();//Confirmando la transacción
             em.close();
             return 1;
         } catch (Exception e) {
@@ -38,13 +46,22 @@ public class MesasModel {
         }
     }
 
-    public int modificarMesa(MesasEntity mesa) {
+    public int modificarMesa(MesasEntity mesa, int idSector) {
+        SectorEntity sector;
+
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
         try {
-            tran.begin();
-            em.merge(mesa);
-            tran.commit();
+            //Encontrando las instancias de cada clave foranea
+            sector = em.find(SectorEntity.class,idSector);
+            tran.begin();//Iniciando transacción
+
+            //Incluyendo en instancia de producto las instancias que corresponden a sus claves foraneas
+            mesa.setSectorByIdSector(sector);
+
+            //Persistiendo entidad producto con todos los datos posibles asignados
+            em.merge(mesa); //Guardando el objeto en la BD
+            tran.commit();//Confirmando la transacción
             em.close();
             return 1;
         } catch (Exception e) {

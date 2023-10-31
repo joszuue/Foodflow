@@ -21,7 +21,7 @@ public class CategoriaManaged {
     }
 
     public void guardarCategoria() {
-        if (modelo.validarCate(categoria.getNombre()) == null){
+        if (modelo.validarCate(categoria.getNombre()) == 0){
             if (modelo.insertarCategoria(categoria) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido registrar."));
@@ -42,7 +42,7 @@ public class CategoriaManaged {
     }
 
     public void modificarCategoria(){
-        if (modelo.validarCate(categoria.getNombre()) == null){
+        if (modelo.validarCate(categoria.getNombre()) == categoria.getIdCategoria() || modelo.validarCate(categoria.getNombre()) == 0){
             if (modelo.modificarCategoria(categoria) == 1){
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha modificado correctamente."));
@@ -67,7 +67,7 @@ public class CategoriaManaged {
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha eliminado correctamente."));
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar posee productos asociados"));
         }
         categoria = new CategoriasEntity();
     }

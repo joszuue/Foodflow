@@ -24,9 +24,11 @@ public class MesasManaged {
         mesa = new MesasEntity();
     }
 
+    private int idSector;
+
     public void guardarMesa() {
         mesa.setEstado("Disponible");
-        if (modelo.insertarMesa(mesa) != 1) {
+        if (modelo.insertarMesa(mesa, idSector) != 1) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se ha podido registrar."));
         } else {
@@ -41,7 +43,7 @@ public class MesasManaged {
     }
 
     public void modificarMesa(){
-        if (modelo.modificarMesa(mesa) == 1){
+        if (modelo.modificarMesa(mesa, idSector) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha modificado correctamente."));
         }else {
@@ -51,8 +53,9 @@ public class MesasManaged {
         mesa = new MesasEntity();
     }
 
-    public void data(MesasEntity mesaa){
+    public void data(MesasEntity mesaa, int id){
         mesa = mesaa;
+        idSector = id;
     }
 
     public void eliminarMesa(int id){
@@ -80,5 +83,13 @@ public class MesasManaged {
 
     public void setModelo(MesasModel modelo) {
         this.modelo = modelo;
+    }
+
+    public int getIdSector() {
+        return idSector;
+    }
+
+    public void setIdSector(int idSector) {
+        this.idSector = idSector;
     }
 }

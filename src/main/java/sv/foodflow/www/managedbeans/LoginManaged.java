@@ -41,7 +41,7 @@ public class LoginManaged {
                         case "Admin":
                             pagina = "/admin/inicio?faces-redirect=true";
                             break;
-                        case "Cocina":
+                        case "Jefe de cocina":
                             pagina = "/jefeCocina/inicio?faces-redirect=true";
                             break;
                         case "Mesero":

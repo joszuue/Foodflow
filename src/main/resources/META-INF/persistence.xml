@@ -11,6 +11,7 @@
         <class>sv.foodflow.www.entities.MesasEntity</class>
         <class>sv.foodflow.www.entities.OrdenEntity</class>
         <class>sv.foodflow.www.entities.ProductosEntity</class>
+        <class>sv.foodflow.www.entities.SectorEntity</class>
         <properties>
             <property name="eclipselink.jdbc.url"
                       value="jdbc:mysql://localhost:3306/food_flow?useSSL=false&amp;allowPublicKeyRetrieval=true"/>

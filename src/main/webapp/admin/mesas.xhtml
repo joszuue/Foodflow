@@ -16,13 +16,22 @@
         <h:form>
             <h:inputHidden value="#{mesasManaged.mesa.idMesa}"/>
             <h:inputHidden value="#{mesasManaged.mesa.estado}"/>
-            <h:outputLabel for="mesa" class="lead" value="Capacidad de mesa: "/>
+            <h:outputLabel for="descripción" styleClass="lead" value="Descripción de la mesa: "/>
+            <h:inputText id="descripción" styleClass="form-control" value="${mesasManaged.mesa.descripcion}" validator="validaciones"/>
             <br/>
-            <p:inputNumber id="mesa" value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0"
-                           requiredMessage="Debes ingresar una capacidad de personas para la mesa"
-                           validatorMessage="La capacidad de personas debe de estar entre 2 y 12">
-                <f:validateLongRange minimum="2" maximum="12" />
-            </p:inputNumber>
+            <h:outputLabel for="sector" styleClass="lead" value="Sector de la mesa: "/>
+            <h:selectOneMenu class="form-control" id="sector" value="#{mesasManaged.idSector}" >
+                <f:selectItems value="#{sectorManaged.listSector()}" var="sec" itemValue="#{sec.idSector}" itemLabel="#{sec.nombre}" />
+            </h:selectOneMenu>
+            <br/>
+            <h:panelGrid columns="2">
+                <h:outputLabel for="mesa" class="lead" value="Capacidad máxima de personas: "/>
+                <p:inputNumber id="mesa" value="#{mesasManaged.mesa.capacidad}" minValue="2" decimalPlaces="0"
+                               requiredMessage="Debes ingresar una capacidad de personas para la mesa"
+                               validatorMessage="La capacidad de personas debe de estar entre 2 y 12">
+                    <f:validateLongRange minimum="2" maximum="12" />
+                </p:inputNumber>
+            </h:panelGrid>
             <br/><br/>
             <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
             <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" />
@@ -34,6 +43,8 @@
                 <tr>
                     <th scope="col">Id Mesa</th>
                     <th scope="col">Capacidad</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Sector</th>
                     <th scope="col">Acciones</th>
                 </tr>
                 </thead>
@@ -42,11 +53,13 @@
                     <tr class="text-center">
                         <td>#{mesa.idMesa}</td>
                         <td>#{mesa.capacidad}</td>
+                        <td>#{mesa.descripcion}</td>
+                        <td>#{mesa.sectorByIdSector.nombre}</td>
                         <td>
                             <h:form>
                                 <center>
                                     <h:panelGrid columns="2">
-                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{mesasManaged.data(mesa)}"/>
+                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{mesasManaged.data(mesa, mesa.sectorByIdSector.idSector)}"/>
                                         <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa.idMesa)}"/>
                                     </h:panelGrid>
                                 </center>

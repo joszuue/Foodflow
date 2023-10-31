@@ -7,7 +7,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "mesas", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="MesasEntity.findAll", query = "SELECT m FROM MesasEntity m"),
+        @NamedQuery(name="MesasEntity.findAll", query = "SELECT m FROM MesasEntity m")
 })
 public class MesasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,12 @@ public class MesasEntity {
     private String estado;
     @OneToMany(mappedBy = "mesasByIdMesa")
     private Collection<ClientesEntity> clientesByIdMesa;
+    @Basic
+    @Column(name = "descripcion", nullable = false, length = 300)
+    private String descripcion;
+    @ManyToOne
+    @JoinColumn(name = "id_Sector", referencedColumnName = "id_Sector", nullable = false)
+    private SectorEntity sectorByIdSector;
 
     public int getIdMesa() {
         return idMesa;
@@ -75,5 +81,21 @@ public class MesasEntity {
 
     public void setClientesByIdMesa(Collection<ClientesEntity> clientesByIdMesa) {
         this.clientesByIdMesa = clientesByIdMesa;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public SectorEntity getSectorByIdSector() {
+        return sectorByIdSector;
+    }
+
+    public void setSectorByIdSector(SectorEntity sectorByIdSector) {
+        this.sectorByIdSector = sectorByIdSector;
     }
 }

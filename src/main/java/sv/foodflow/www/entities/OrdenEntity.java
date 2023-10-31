@@ -6,7 +6,7 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "orden", schema = "food_flow", catalog = "")
+@Table(name = "orden", schema = "food_flow")
 public class OrdenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,8 +22,8 @@ public class OrdenEntity {
     @Column(name = "tiempoEspera", nullable = false)
     private Time tiempoEspera;
     @Basic
-    @Column(name = "total", nullable = false)
-    private int total;
+    @Column(name = "total", nullable = false, precision = 0)
+    private double total;
     @Basic
     @Column(name = "estado", nullable = false, length = 25)
     private String estado;
@@ -33,6 +33,9 @@ public class OrdenEntity {
     @ManyToOne
     @JoinColumn(name = "idProducto", referencedColumnName = "idProducto", nullable = false)
     private ProductosEntity productosByIdProducto;
+    @Basic
+    @Column(name = "comentario", nullable = false, length = 200)
+    private String comentario;
 
     public int getIdOrden() {
         return idOrden;
@@ -66,8 +69,12 @@ public class OrdenEntity {
         this.tiempoEspera = tiempoEspera;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public void setTotal(int total) {
@@ -105,7 +112,7 @@ public class OrdenEntity {
         result = 31 * result + cantidad;
         result = 31 * result + (fecha != null ? fecha.hashCode() : 0);
         result = 31 * result + (tiempoEspera != null ? tiempoEspera.hashCode() : 0);
-        result = 31 * result + total;
+        result = (int) (31 * result + total);
         result = 31 * result + (estado != null ? estado.hashCode() : 0);
         return result;
     }
@@ -124,5 +131,13 @@ public class OrdenEntity {
 
     public void setProductosByIdProducto(ProductosEntity productosByIdProducto) {
         this.productosByIdProducto = productosByIdProducto;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 }

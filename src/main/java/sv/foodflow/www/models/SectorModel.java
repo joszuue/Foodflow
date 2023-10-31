@@ -4,19 +4,17 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import sv.foodflow.www.entities.ClientesEntity;
-import sv.foodflow.www.entities.EmpleadosEntity;
+import sv.foodflow.www.entities.SectorEntity;
 import sv.foodflow.www.utils.JpaUtil;
 
 import java.util.List;
 
-public class EmpleadoModel {
-
-    public List<EmpleadosEntity> listarEmpleado() {
+public class SectorModel {
+    public List<SectorEntity> listarSectores() {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            Query consulta = em.createNamedQuery("EmpleadosEntity.findAll");
-            List<EmpleadosEntity> lista = consulta.getResultList();
+            Query consulta = em.createNamedQuery("findAll");
+            List<SectorEntity> lista = consulta.getResultList();
             em.close();
             return lista;
         } catch (Exception e) {
@@ -25,12 +23,12 @@ public class EmpleadoModel {
         }
     }
 
-    public int insertarEmpleado(EmpleadosEntity empleado) {
+    public int insertarSector(SectorEntity sector) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
         try {
             tran.begin();
-            em.persist(empleado);
+            em.persist(sector);
             tran.commit();
             em.close();
             return 1;
@@ -40,27 +38,12 @@ public class EmpleadoModel {
         }
     }
 
-
-    public EmpleadosEntity validarEmple(String dui) {
-        EntityManager em = JpaUtil.getEntityManager();
-        try {
-            TypedQuery<EmpleadosEntity> query = em.createNamedQuery("EmpleadosEntity.validateEmple", EmpleadosEntity.class);
-            query.setParameter("dui", dui);
-            EmpleadosEntity empleado = query.getSingleResult();
-            em.close();
-            return empleado;
-        } catch (Exception e) {
-            em.close();
-            return null;
-        }
-    }
-
-    public int modificarEmpleado(EmpleadosEntity empleado) {
+    public int modificarSector(SectorEntity sector) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
         try {
             tran.begin();
-            em.merge(empleado);
+            em.merge(sector);
             tran.commit();
             em.close();
             return 1;
@@ -70,15 +53,29 @@ public class EmpleadoModel {
         }
     }
 
-    public int eliminarEmpleado(String codigo) {
+    public int validar(String nombre) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            TypedQuery<SectorEntity> query = em.createNamedQuery("validacion", SectorEntity.class);
+            query.setParameter("nombre", nombre);
+            SectorEntity sector = query.getSingleResult();
+            em.close();
+            return sector.getIdSector();
+        } catch (Exception e) {
+            em.close();
+            return 0;
+        }
+    }
+
+    public int eliminarSector(int id) {
         EntityManager em = JpaUtil.getEntityManager();
         int filasBorradas = 0;
         try {
-            EmpleadosEntity emple = em.find(EmpleadosEntity.class, codigo);
-            if (emple != null) {
+            SectorEntity sector = em.find(SectorEntity.class, id);
+            if (sector != null) {
                 EntityTransaction tran = em.getTransaction();
                 tran.begin();
-                em.remove(emple);
+                em.remove(sector);
                 tran.commit();
                 filasBorradas = 1;
             }
@@ -89,6 +86,4 @@ public class EmpleadoModel {
             return 0;
         }
     }
-
-
 }

@@ -79,12 +79,12 @@ public class ClientesEntity {
         this.ordensByCodigoClient = ordensByCodigoClient;
     }
 
-    public void setCodigoClient(String codigoClient) {
-        this.codigoClient = codigoClient;
-    }
-
     public String getCodigoClient() {
         return codigoClient;
+    }
+
+    public void setCodigoClient(String codigoClient) {
+        this.codigoClient = codigoClient;
     }
 
 

@@ -73,19 +73,20 @@ public class ProductoModel {
         }
     }
 
-    public ProductosEntity validarProdu(String nombre) {
+    public int validarProdu(String nombre) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
-            TypedQuery<ProductosEntity> query = em.createNamedQuery("ProductosEntity.validateProdu", ProductosEntity.class);
+            TypedQuery<ProductosEntity> query = em.createNamedQuery("ProductosEntity.validateInsertProdu", ProductosEntity.class);
             query.setParameter("nombre", nombre);
             ProductosEntity producto = query.getSingleResult();
             em.close();
-            return producto;
+            return producto.getIdProducto();
         } catch (Exception e) {
             em.close();
-            return null;
+            return 0;
         }
     }
+
 
     public int eliminarProducto(int id) {
         EntityManager em = JpaUtil.getEntityManager();

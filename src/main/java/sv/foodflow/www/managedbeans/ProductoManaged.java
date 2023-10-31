@@ -26,15 +26,14 @@ public class ProductoManaged {
 
     private Part nombreTempImg;
 
-
     public ProductoManaged(){
         producto = new ProductosEntity();
     }
 
     public void guardarProducto() {
-        if (modelo.validarProdu(producto.getNombre()) == null){
+        if (modelo.validarProdu(producto.getNombre()) == 0){
             if (nombreTempImg != null){
-                if (guardarImagen() != null){
+                if (validarFormato() == true){
                     producto.setEstado("Pendiente");
                     producto.setImagen(guardarImagen());
                     if (modelo.insertarProducto(producto, idCategoria) != 1) {
@@ -62,12 +61,22 @@ public class ProductoManaged {
 
     public String guardarImagen(){
         try (InputStream input = nombreTempImg.getInputStream()) {
+
             // Obtener el nombre del archivo
             String fileName = nombreTempImg.getSubmittedFileName();
-            String nuevoNombre = generateCodigo() + obtenerExtension(fileName);
+
+            //Obteniendo la extension
+            int lastIndex = fileName.lastIndexOf(".");
+
+            //Asignando el nuevo nombre de la imagen
+            String nuevoNombre = generateCodigo() + fileName.substring(lastIndex);
+
+            //Verificando que sean las extensiones permitidas
             if (obtenerExtension(fileName).equals(".jpg") ||  obtenerExtension(fileName).equals(".png") || obtenerExtension(fileName).equals(".jpeg")){
-                // Guardar la imagen en la carpeta www de wamp
+                // Guardar la imagen en la carpeta asignada
                 OutputStream output = new FileOutputStream(new File("C:\\wamp64\\www\\FoodFlow_img\\", nuevoNombre));
+
+                //Copiando los datos de la imagen original a la imagen modificada con la dirección asignada
                 IOUtils.copy(input, output);
                 return nuevoNombre;
             }else {
@@ -104,22 +113,53 @@ public class ProductoManaged {
         return nombreArchivo.substring(lastIndex);
     }
 
+    public boolean validarFormato() {
+        try (InputStream input = nombreTempImg.getInputStream()) {
+            String fileName = nombreTempImg.getSubmittedFileName();
+            int lastIndex = fileName.lastIndexOf(".");
+            if (lastIndex == -1) {
+                // No se encontró una extensión, puedes manejar este caso de manera diferente si es necesario
+                return false;
+            }
+            String extension = fileName.substring(lastIndex);
+            if (extension.equals(".jpg") || extension.equals(".png") || extension.equals(".jpeg")){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public List<ProductosEntity> listProductos(){
         return modelo.listarProductos();
     }
 
-    public void modificarProducto(){
-        if (modelo.validarProdu(producto.getNombre()) == null){
-            producto.setImagen(guardarImagen());
-            if (modelo.modificarProducto(producto, idCategoria) == 1){
+    public void modificarProducto() throws IOException {
+        if (modelo.validarProdu(producto.getNombre()) == producto.getIdProducto() || modelo.validarProdu(producto.getNombre()) == 0){
+            if (nombreTempImg != null){
+                if (validarFormato() == true){
+                    producto.setImagen(guardarImagen());
+                    producto.setEstado("Pendiente");
+                    if (modelo.modificarProducto(producto, idCategoria) == 1){
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));
+                    }else {
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido modificar."));
+                    }
+                    producto = new ProductosEntity();
+                }else {
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato debe de ser de imagen png, jpg o jpeg."));
+                }
+            }else{
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));
-            }else {
-                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido modificar."));
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo imagen no puede quedar vacío."));
             }
-            producto = new ProductosEntity();
-        }else {
+        }else{
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El nombre coicide con uno ya registrado."));
         }
@@ -127,8 +167,6 @@ public class ProductoManaged {
 
     public void data(ProductosEntity produ) throws FileNotFoundException {
         producto = produ;
-        String rutaImagen = "C:\\wamp64\\www\\FoodFlow_img\\" + produ.getImagen();
-
     }
 
     public void handleFileUpload(FileUploadEvent event) {
@@ -136,15 +174,19 @@ public class ProductoManaged {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public void eliminarProducto(int id){
-        if (modelo.eliminarProducto(id) > 0){
+    public void updateEstado(ProductosEntity produ, int idcate, String estado){
+        if (estado.equals("Aceptado")){
+            produ.setPrecio(producto.getPrecio());
+        }
+        produ.setEstado(estado);
+        if (modelo.modificarProducto(produ, idcate) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha eliminado correctamente."));
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha " + produ.getPrecio() +" correctamente."));
+            producto = new ProductosEntity();
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido eliminar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido " + estado +"."));
         }
-        producto = new ProductosEntity();
     }
 
     public ProductoModel getModelo() {

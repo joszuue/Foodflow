@@ -55,17 +55,17 @@ public class CategoriaModel {
         }
     }
 
-    public CategoriasEntity validarCate(String nombre) {
+    public int validarCate(String nombre) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             TypedQuery<CategoriasEntity> query = em.createNamedQuery("CategoriasEntity.ValidateCate", CategoriasEntity.class);
             query.setParameter("nombre", nombre);
             CategoriasEntity categoria = query.getSingleResult();
             em.close();
-            return categoria;
+            return categoria.getIdCategoria();
         } catch (Exception e) {
             em.close();
-            return null;
+            return 0;
         }
     }
 

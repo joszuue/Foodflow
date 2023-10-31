@@ -20,12 +20,11 @@ public class ClientesManaged {
     private ClientesEntity cliente;
 
     private String ape;
-
     public ClientesManaged(){
         cliente = new ClientesEntity();
     }
 
-    public String guardarCliente(MesasEntity mesa) {
+    public String guardarCliente(MesasEntity mesa, int idSector) {
         if (cliente.getApellido().isEmpty()){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe de ingresar un apellido."));
@@ -38,7 +37,7 @@ public class ClientesManaged {
             } else {
                 MesasModel mesasModel = new MesasModel();
                 mesa.setEstado("Ocupada");
-                mesasModel.modificarMesa(mesa);
+                mesasModel.modificarMesa(mesa, idSector);
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha registrado correctamente. El código de cliente es: " + cliente.getCodigoClient()));
             }
@@ -85,12 +84,12 @@ public class ClientesManaged {
         cliente = client;
     }
 
-    public void cerrarCuenta(ClientesEntity client, MesasEntity mesas){
+    public void cerrarCuenta(ClientesEntity client, MesasEntity mesas, int idSector){
         client.setEstado("Inactivo");
         if (modelo.modificarCliente(client) == 1){
             MesasModel mesasModel = new MesasModel();
             mesas.setEstado("Disponible");
-            mesasModel.modificarMesa(mesas);
+            mesasModel.modificarMesa(mesas, idSector);
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La cuenta del cliente ha sido cerrada correctamente."));
         }else {
