@@ -3,6 +3,7 @@ package sv.foodflow.www.managedbeans;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.event.AjaxBehaviorEvent;
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,13 +11,10 @@ import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.models.EmpleadoModel;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class EmpleadoManaged {
     EmpleadoModel modelo = new EmpleadoModel();
     private EmpleadosEntity empleado;
@@ -29,7 +27,6 @@ public class EmpleadoManaged {
 
     private ArrayList<String> departamentoList = new ArrayList<>();
     private ArrayList<String> municipioList = new ArrayList<>();
-    private String muni;
 
     public EmpleadoManaged(){
         empleado = new EmpleadosEntity();
@@ -37,12 +34,10 @@ public class EmpleadoManaged {
     }
 
     public void guardarEmple() {
-
         if (modelo.validarEmple(empleado.getDui()) == null){
             empleado.setCodigo(generateCodigo());
             empleado.setContraseña(BCrypt.hashpw(empleado.getCodigo(), BCrypt.gensalt()));
             empleado.setEstado("no");
-            empleado.setMunicipio(muni);
             if (modelo.insertarEmpleado(empleado) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
@@ -90,8 +85,28 @@ public class EmpleadoManaged {
 
     public void data(EmpleadosEntity emple){
         empleado = emple;
-        muni = emple.getMunicipio();
     }
+
+    public void dataUsu(){
+        // Obtiene el objeto completo almacenado en sessionScope.emple
+        empleado = (EmpleadosEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emple");
+    }
+
+    public void cancelar(){
+        empleado = new EmpleadosEntity();
+    }
+
+    public String regresar(){
+        empleado = new EmpleadosEntity();
+        return "empleados.xhtml";
+    }
+
+    public String verPerfil(EmpleadosEntity emple) {
+        this.empleado = emple;
+        // Realiza alguna lógica aquí si es necesario
+        return "perfil.xhtml";
+    }
+
 
     public void eliminarEmpleado(String codigo){
         if (modelo.eliminarEmpleado(codigo) > 0){
@@ -104,14 +119,11 @@ public class EmpleadoManaged {
         empleado = new EmpleadosEntity();
     }
 
-   /* public String cambiarContra(String codigo, String contraseña, String nombres, String apellidos, String rol){
+    public String cambiarContra(){
         String pagina = "";
-        if (BCrypt.checkpw(contraTemp,contraseña)){
+        empleado = (EmpleadosEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emple");
+        if (BCrypt.checkpw(contraTemp,empleado.getContraseña())){
             if (contraTemp2.equals(contraTemp3)){
-                empleado.setCodigo(codigo);
-                empleado.setNombres(nombres);
-                empleado.setApellidos(apellidos);
-                empleado.setRol(rol);
                 empleado.setContraseña(BCrypt.hashpw(contraTemp2, BCrypt.gensalt()));
                 empleado.setEstado("si");
                 if (modelo.modificarEmpleado(empleado) == 1){
@@ -137,12 +149,13 @@ public class EmpleadoManaged {
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las nuevas contraseñas no coiciden."));
             }
         }else {
+            empleado = new EmpleadosEntity();
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La contraseña actual no coicide con la que has digitado."));
             pagina = "/contraseña?faces-redirect=true";
         }
         return pagina;
-    }*/
+    }
 
     public EmpleadoModel getModelo() {
         return modelo;
@@ -200,14 +213,6 @@ public class EmpleadoManaged {
         this.municipioList = municipioList;
     }
 
-    public String getMuni() {
-        return muni;
-    }
-
-    public void setMuni(String muni) {
-        this.muni = muni;
-    }
-
     public void departamentos(){
         //Llenando la lista de departamento
         departamentoList.add("Ahuachapán");
@@ -228,6 +233,7 @@ public class EmpleadoManaged {
     }
 
     public void municipios(AjaxBehaviorEvent e){
+        municipioList.clear();
         switch (empleado.getDepartamento()){
             case "Ahuachapán":
                 municipioList.add("Ahuachapán Norte");

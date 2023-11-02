@@ -7,4 +7,13 @@
         <validator-id>validaciones</validator-id>
         <validator-class>sv.foodflow.www.utils.validaciones</validator-class>
     </validator>
+    <navigation-rule>
+        <from-view-id>*</from-view-id>
+        <navigation-case>
+            <from-outcome>perfil</from-outcome>
+            <to-view-id>/perfil.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+
 </faces-config>

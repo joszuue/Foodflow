@@ -13,11 +13,11 @@
         </p:messages>
         <hr class="my-4"/>
         <br/>
-        <h:form enctype="multipart/form-data">
+        <h:form enctype="multipart/form-data" id="formulario">
             <h:inputHidden value="#{productoManaged.producto.idProducto}"/>
-            <h:inputHidden value="#{productoManaged.producto.estado}"/>
+            <h:inputText value="#{productoManaged.producto.estado}"/>
             <h:outputLabel for="nombre_del_producto" styleClass="lead" value="Nombre del producto: "/>
-            <h:inputText id="nombre_del_producto" styleClass="form-control" value="${productoManaged.producto.nombre}" validator="validaciones"/>
+            <h:inputText styleClass="form-control" id="nombre_del_producto" value="${productoManaged.producto.nombre}" disabled="#{productoManaged.producto.estado eq 'Aceptado'}" />
             <br/>
             <h:outputLabel for="descripción_del_producto" styleClass="lead" value="Descripción del producto: "/>
             <h:inputText id="descripción_del_producto" styleClass="form-control" value="${productoManaged.producto.descripcion}" validator="validaciones"/>
@@ -40,8 +40,22 @@
             <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
             <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" />
         </h:form>
-        <br/><br/>
-        <div class="row">
+        <br/>
+        <div class="container">
+            <div class="form-group narrow-div float-right" style="width: 25%;">
+                <h:form>
+                    <h:outputText value="Ordenar por:" class="lead font-weight-bold"/>
+                    <h:selectOneMenu class="form-control float-right" id="ordenar" value="#{productoManaged.opcion}" immediate="true">
+                        <f:selectItem itemLabel="Pendientes" itemValue="Pendiente"/>
+                        <f:selectItem itemLabel="Aprobados" itemValue="Aceptado"/>
+                        <f:selectItem itemLabel="Rechazados" itemValue="Rechazado"/>
+                        <f:ajax event="change" render=":updateProducts" execute="ordenar" listener="#{productoManaged.listProductos()}"/>
+                    </h:selectOneMenu>
+                </h:form>
+            </div>
+        </div>
+        <br/><br/><br/><br/>
+        <h:form id="updateProducts" class="row">
             <ui:repeat value="#{productoManaged.listProductos()}" var="produ">
                 <div class="col-md-4">
                     <div class="card" style="width: 18rem;">
@@ -62,19 +76,18 @@
                             <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
                         </div>
                         <div class="card-body">
-                            <h:form>
-                                <center>
-                                    <h:panelGrid columns="2">
-                                        <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}"/>
-                                    </h:panelGrid>
-                                </center>
-                            </h:form>
+                            <center>
+                                <h:panelGrid columns="2">
+                                    <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}">
+                                        <f:ajax execute="@form" render=":formulario"/>
+                                    </h:commandButton>
+                                    <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}"/>
+                                </h:panelGrid>
+                            </center>
                         </div>
                     </div>
                 </div>
             </ui:repeat>
-        </div>
-
+        </h:form>
     </ui:define>
 </ui:composition>

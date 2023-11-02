@@ -12,10 +12,11 @@ import java.util.List;
 
 public class ProductoModel {
 
-    public List<ProductosEntity> listarProductos() {
+    public List<ProductosEntity> listarProductos(String opcion) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             Query consulta = em.createNamedQuery("ProductosEntity.findAll");
+            consulta.setParameter("estado", opcion);
             List<ProductosEntity> lista = consulta.getResultList();
             em.close();
             return lista;

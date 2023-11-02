@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+    <title>Perfil </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://kit.fontawesome.com/f7c3a2243e.js"></script>
+    <h:outputStylesheet name="css/admin.css" />
+</h:head>
+
+<h:body>
+    <div class="navbar navbar-expand-lg navbar-light bg-light lead">
+        <h:commandLink styleClass="navbar-brand" action="inicio.xhtml">
+            <h:graphicImage url="resources/img/logo.png" width="100" height="50"/>
+        </h:commandLink>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h:panelGroup styleClass="collapse navbar-collapse" id="navbarSupportedContent">
+            <ui:fragment rendered="#{sessionScope.emple.rol eq 'Admin'}">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="empleados.xhtml">Empleados</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="mesas.xhtml">Mesas</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="sectores.xhtml">Sectores</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="#">Ventas</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="productos.xhtml">Productos</h:outputLink>
+                    </li>
+                </ul>
+            </ui:fragment>
+            <ui:fragment rendered="#{sessionScope.emple.rol eq 'Jefe de cocina'}">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="categorias.xhtml">Gestionar Categorias</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="productos.xhtml">Gestionar Productos</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="#">Pedidos</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="../contra.xhtml">Cambiar Contraseña</h:outputLink>
+                    </li>
+                </ul>
+            </ui:fragment>
+            <ui:fragment rendered="#{sessionScope.emple.rol eq 'Mesero'}">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="clientes.xhtml">Cuenta de Clientes</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="../contra.xhtml">Cambiar Contraseña</h:outputLink>
+                    </li>
+                </ul>
+            </ui:fragment>
+            <h:panelGroup styleClass="form-inline my-2 my-lg-0">
+                <input type="hidden" name="accion" value="finalizar"/>
+                <div class="col-mb-4 d-flex align-items-center">
+                    <h:outputText styleClass="text-black mr-3 lead" value="#{sessionScope.emple.nombre1} #{sessionScope.emple.apellido1}"/>
+                    <h:form>
+                        <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Cerrar Sesión" action="#{loginManaged.logOut()}"/>
+                    </h:form>
+                </div>
+            </h:panelGroup>
+        </h:panelGroup>
+    </div>
+    <br/><br/>
+    <div class="container">
+        <div class="jumbotron" style="padding: 0; margin: 0; background-color: white" >
+            <div style="background-color: black; text-align: center; position: relative;">
+                <ui:fragment rendered="#{sessionScope.emple.rol eq 'Admin'}">
+                    <h:graphicImage url="resources/img/admin.jpeg" style="width: 100%; height: 300px; opacity: 0.3;"/>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; padding: 10px;">
+                        <h1 class="display-4 text-center">ADMINISTRADOR</h1>
+                    </div>
+                </ui:fragment>
+                <ui:fragment rendered="#{sessionScope.emple.rol eq 'Jefe de cocina'}">
+                    <h:graphicImage url="resources/img/cocina.jpg" style="width: 100%; height: 300px; opacity: 0.3;"/>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; padding: 10px;">
+                        <h1 class="display-4 text-center">JEFE DE COCINA</h1>
+                    </div>
+                </ui:fragment>
+                <ui:fragment rendered="#{sessionScope.emple.rol eq 'Mesero'}">
+                    <h:graphicImage url="resources/img/mesero.jpg" style="width: 100%; height: 300px; opacity: 0.3;"/>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; padding: 10px;">
+                        <h1 class="display-4 text-center">MESERO</h1>
+                    </div>
+                </ui:fragment>
+                <div style="position: absolute; bottom: 10px; right: 10px;">
+                    <h:form>
+                        <h:commandButton class="btn btn-outline-light mr-2" value="Editar información" action="#{empleadoManaged.dataUsu()}"/>
+                        <h:commandButton class="btn btn-outline-light mr-2" value="Cancelar" action="#{empleadoManaged.cancelar()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
+                        <h:commandButton class="btn btn-outline-light" value="Cambiar Contraseña" action="contra"/>
+                    </h:form>
+                </div>
+            </div>
+
+            <div class="container">
+                <br/>
+                <ui:fragment rendered="#{empty empleadoManaged.empleado.codigo}">
+                    <h1 class="display-4 text-center">#{sessionScope.emple.nombre1} #{sessionScope.emple.nombre2} #{sessionScope.emple.apellido1} #{sessionScope.emple.apellido2}</h1>
+                    <p class="lead text-center">#{sessionScope.emple.codigo}</p>
+                    <hr class="my-4"/>
+                    <h1 class="display-4">Datos Básicos</h1>
+                    <dl class="row lead">
+                        <dt class="col-sm-5 text-right">Documento Único de identidad (DUI):</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.dui}</dd>
+
+                        <dt class="col-sm-5 text-right">Fecha de nacimiento:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.fechaNac}</dd>
+
+                        <dt class="col-sm-5 text-right">Sexo:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.sexo}</dd>
+
+                        <dt class="col-sm-5 text-right">Cargo:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.rol}</dd>
+                    </dl>
+                    <hr class="my-4"/>
+                    <h1 class="display-4">Datos Generales</h1>
+                    <dl class="row lead">
+                        <dt class="col-sm-5 text-right">Dirección:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.direccion}</dd>
+
+                        <dt class="col-sm-5 text-right">Departamento:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.departamento}</dd>
+
+                        <dt class="col-sm-5 text-right">Municipio:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.municipio}</dd>
+
+                        <dt class="col-sm-5 text-right">Estado civil:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.estadoCivil}</dd>
+                    </dl>
+                    <hr class="my-4"/>
+                    <h1 class="display-4">Datos de Contacto</h1>
+                    <dl class="row lead">
+                        <dt class="col-sm-5 text-right">Telefono:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.telefono}</dd>
+
+                        <dt class="col-sm-5 text-right">Correo electrónico:</dt>
+                        <dd class="col-sm-7">#{sessionScope.emple.correo}</dd>
+                    </dl>
+                </ui:fragment>
+                <ui:fragment rendered="#{not empty empleadoManaged.empleado.codigo}">
+                    <h:form>
+                        <h:inputHidden value="#{empleadoManaged.empleado.codigo}"/>
+                        <h:inputHidden value="#{empleadoManaged.empleado.contraseña}"/>
+                        <h:inputHidden value="#{empleadoManaged.empleado.estado}"/>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Datos Básicos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Datos Generales</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Datos de Contacto</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <h1 class="display-4 text-center">Datos Básicos</h1>
+                                <br/>
+                                <h:outputLabel for="DUI_del_empleado" styleClass="lead" value="Documento Único de identidad (DUI): "/>
+                                <h:inputText id="DUI_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.dui}" disabled="true"/>
+                                <br/>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputLabel for="segundo_nombre_del_empleado" styleClass="lead" value="Primer Nombre: "/>
+                                        <h:inputText id="primer_nombre_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.nombre1}" disabled="true" />
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="segundo_nombre_del_empleado" styleClass="lead" value="Segundo Nombre: "/>
+                                        <h:inputText id="segundo_nombre_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.nombre2}" disabled="true"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputLabel for="apellido_paterno_del_empleado" styleClass="lead" value="Apellido Paterno: "/>
+                                        <h:inputText id="apellido_paterno_del_empleado" styleClass="form-control" value="#{empleadoManaged.empleado.apellido1}" disabled="true"/>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="apellido_materno_del_empleado" styleClass="lead" value="Apellido Materno: "/>
+                                        <h:inputText id="apellido_materno_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.apellido2}" disabled="true"/>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputLabel for="fecha_de_nacimiento_del_empleado" styleClass="lead" value="Fecha de Nacimiento: "/>
+                                        <h:inputText id="fecha_de_nacimiento_del_empleado" a:type="date" value="#{empleadoManaged.empleado.fechaNac}" disabled="true" styleClass="form-control"/>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="sexo_del_empleado" styleClass="lead" value="Sexo: "/>
+                                        <h:selectOneMenu class="form-control" id="sexo_del_empleado" value="#{empleadoManaged.empleado.sexo}" disabled="true">
+                                            <f:selectItem itemValue="Masculino" itemLabel="Masculino" />
+                                            <f:selectItem itemValue="Femenino" itemLabel="Femenino" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="rol" styleClass="lead" value="Seleccione el cargo del empleado: "/>
+                                        <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" disabled="true">
+                                            <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
+                                            <f:selectItem itemValue="Jefe de cocina" itemLabel="Jefe de cocina" />
+                                            <f:selectItem itemValue="Admin" itemLabel="Administrador" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                <h1 class="display-4 text-center">Datos Generales</h1>
+                                <br/>
+                                <h:outputLabel for="dirección_del_empleado" styleClass="lead" value="Dirección de residencia: "/>
+                                <h:inputText id="dirección_del_empleado" styleClass="form-control" value="${empleadoManaged.empleado.direccion}" validator="validaciones"/>
+                                <br/>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputLabel for="departamento" styleClass="lead" value="Departamento de residencia: "/>
+                                        <h:selectOneMenu class="form-control" id="departamento" value="#{empleadoManaged.empleado.departamento}" >
+                                            <f:selectItem itemLabel="Seleccione un departamento" />
+                                            <f:selectItems value="#{empleadoManaged.departamentoList}"/>
+                                            <f:ajax event="change" render="municipio" execute="departamento" listener="#{empleadoManaged.municipios}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="municipio" styleClass="lead" value="Municipio de residencia: "/>
+                                        <h:selectOneMenu class="form-control" id="municipio" value="#{empleadoManaged.empleado.municipio}" >
+                                            <f:selectItems value="#{empleadoManaged.municipioList}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="civil" styleClass="lead" value="Estado civil: "/>
+                                        <h:selectOneMenu class="form-control" id="civil" value="#{empleadoManaged.empleado.estadoCivil}" >
+                                            <f:selectItem itemValue="Casada/o" itemLabel="Casada/o" />
+                                            <f:selectItem itemValue="Viuda/o" itemLabel="Viuda/o" />
+                                            <f:selectItem itemValue="Soltera/o" itemLabel="Soltera/o" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                <h1 class="display-4 text-center">Datos de Contacto</h1>
+                                <br/>
+                                <div class="row">
+                                    <div class="col">
+                                        <h:outputLabel for="telefono" styleClass="lead" value="Número de teléfono: "/>
+                                        <h:inputText id="telefono" styleClass="form-control" value="#{empleadoManaged.empleado.telefono}" validator="validaciones"/>
+                                    </div>
+                                    <div class="col">
+                                        <h:outputLabel for="correo" styleClass="lead" value="Correo electrónico: "/>
+                                        <h:inputText id="correo" styleClass="form-control" value="${empleadoManaged.empleado.correo}" validator="validaciones"/>
+                                    </div>
+                                </div>
+                                <br/><br/>
+                                <center>
+                                    <h:commandButton value="Guardar Cambios" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
+                                </center>
+                            </div>
+                        </div>
+                    </h:form>
+                </ui:fragment>
+                <br/>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+</h:body>
+
+</html>

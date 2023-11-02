@@ -26,6 +26,8 @@ public class ProductoManaged {
 
     private Part nombreTempImg;
 
+    private String opcion = "Pendiente";
+
     public ProductoManaged(){
         producto = new ProductosEntity();
     }
@@ -134,7 +136,7 @@ public class ProductoManaged {
     }
 
     public List<ProductosEntity> listProductos(){
-        return modelo.listarProductos();
+        return modelo.listarProductos(opcion);
     }
 
     public void modificarProducto() throws IOException {
@@ -165,13 +167,10 @@ public class ProductoManaged {
         }
     }
 
-    public void data(ProductosEntity produ) throws FileNotFoundException {
+    public void data(ProductosEntity produ)  {
+        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", produ.getEstado()));
         producto = produ;
-    }
-
-    public void handleFileUpload(FileUploadEvent event) {
-        FacesMessage message = new FacesMessage("Successful", event.getFile().getFileName() + " is uploaded.");
-        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void updateEstado(ProductosEntity produ, int idcate, String estado){
@@ -219,5 +218,13 @@ public class ProductoManaged {
 
     public void setNombreTempImg(Part nombreTempImg) {
         this.nombreTempImg = nombreTempImg;
+    }
+
+    public String getOpcion() {
+        return opcion;
+    }
+
+    public void setOpcion(String opcion) {
+        this.opcion = opcion;
     }
 }

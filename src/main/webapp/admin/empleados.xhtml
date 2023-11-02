@@ -98,8 +98,8 @@
                         </div>
                         <div class="col">
                             <h:outputLabel for="municipio" styleClass="lead" value="Municipio de residencia: "/>
-                            <h:selectOneMenu class="form-control" id="municipio" value="#{empleadoManaged.muni}" >
-                                <f:selectItems value="#{empleadoManaged.municipioList}" var="m" itemValue="#{m}" itemLabel="#{m}" />
+                            <h:selectOneMenu class="form-control" id="municipio" value="#{empleadoManaged.empleado.municipio}" >
+                                <f:selectItems value="#{empleadoManaged.municipioList}"/>
                             </h:selectOneMenu>
                         </div>
                         <div class="col">
@@ -128,8 +128,8 @@
                     <br/><br/>
                     <center>
                         <h:commandButton value="Registrar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
-
-                        <h:commandButton value="Modificar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.modificarEmpleado()}"/>
+                        <h:commandButton value="Modificar Empleado" class="btn btn-outline-success mr-2" action="#{empleadoManaged.modificarEmpleado()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
+                        <h:commandButton class="btn btn-outline-danger" value="Cancelar" action="#{empleadoManaged.cancelar()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
                     </center>
                 </div>
             </div>
@@ -150,13 +150,14 @@
                 <ui:repeat value="#{empleadoManaged.listEmpleados()}" var="emple">
                     <tr class="text-center">
                         <td>#{emple.codigo}</td>
-                        <td>#{emple.nombre1}</td>
-                        <td>#{emple.apellido1}</td>
+                        <td>#{emple.nombre1} #{emple.nombre2}</td>
+                        <td>#{emple.apellido1} #{emple.apellido2}</td>
                         <td>#{emple.rol}</td>
                         <td>
                             <h:form>
                                 <center>
-                                    <h:panelGrid columns="2">
+                                    <h:panelGrid columns="3">
+                                        <h:commandButton value="Ver perfil" class="btn btn-outline-success" action="#{empleadoManaged.verPerfil(emple)}"/>
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{empleadoManaged.data(emple)}"/>
                                         <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple.codigo)}"/>
                                     </h:panelGrid>
