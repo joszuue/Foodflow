@@ -28,7 +28,7 @@
         </div>
         <br/><br/><br/><br/>
         <h:form id="updateProducts" class="row">
-            <ui:repeat value="#{productoManaged.listProductos()}" var="produ" >
+            <ui:repeat value="#{productoManaged.listProductos()}" var="produ">
                 <div class="col-md-4">
                     <div class="card" style="width: 18rem;">
                         <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top" width="286px" height="214px"/>
@@ -45,19 +45,33 @@
                             <p class="card-text">#{produ.descripcion}</p>
                             <p class="card-text"><b>ID:</b> #{produ.idProducto}</p>
                             <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
+                            <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
+                            <h:outputLabel for="precio_del_producto" styleClass="lead" value="Precio del producto: "/>
                             <br/>
                             <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" />
-                            <span>Precio sugerido por el jefe de cocina: $#{produ.precio}</span>
                         </div>
                         <div class="card-body">
                             <center>
                                 <h:panelGrid columns="2">
-                                    <h:commandButton value="Aceptar" class="btn btn-outline-primary" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Aceptado')}">
-                                        <f:ajax execute="@form" render="@form"/>
+                                    <h:commandButton value="Aceptar" class="btn btn-outline-primary" action="#{productoManaged.aceptarProducto(produ, produ.categoriasByIdCategoria.idCategoria)}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
-                                    <h:commandButton value="Rechazar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Rechazado')}"/>
+                                    <a class="btn btn-outline-danger" data-toggle="collapse" href="#collapseExample#{produ.idProducto}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        Rechazar
+                                    </a>
                                 </h:panelGrid>
                             </center>
+                            <div class="collapse" id="collapseExample#{produ.idProducto}">
+                                <br/>
+                                <div class="card card-body">
+                                    <h:outputLabel for="comentario" styleClass="lead" value="Observaciones:"/>
+                                    <h:inputText id="comentario" value="#{productoManaged.comentario.comentario}" styleClass="form-control"/>
+                                    <br/>
+                                    <h:commandButton value="Enviar" class="btn btn-outline-primary" action="#{productoManaged.rechazarProducto(produ, produ.categoriasByIdCategoria.idCategoria)}">
+                                        <f:ajax execute="comentario" render="updateProducts"/>
+                                    </h:commandButton>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

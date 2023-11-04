@@ -15,7 +15,7 @@
         <br/>
         <h:form enctype="multipart/form-data" id="formulario">
             <h:inputHidden value="#{productoManaged.producto.idProducto}"/>
-            <h:inputText value="#{productoManaged.producto.estado}"/>
+            <h:inputHidden value="#{productoManaged.producto.estado}"/>
             <h:outputLabel for="nombre_del_producto" styleClass="lead" value="Nombre del producto: "/>
             <h:inputText styleClass="form-control" id="nombre_del_producto" value="${productoManaged.producto.nombre}" disabled="#{productoManaged.producto.estado eq 'Aceptado'}" />
             <br/>
@@ -24,7 +24,7 @@
             <br/>
             <h:outputLabel for="precio_del_producto" styleClass="lead" value="Precio del producto: "/>
             <br/>
-            <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" />
+            <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" disabled="#{productoManaged.producto.estado eq 'Aceptado'}"/>
             <br/><br/>
             <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
             <div class="custom-file">
@@ -33,12 +33,14 @@
             </div>
             <br/><br/>
             <h:outputLabel for="categoria" styleClass="lead" value="Categoria del producto: "/>
-            <h:selectOneMenu id="categoria" styleClass="form-control" value="#{productoManaged.idCategoria}">
+            <h:selectOneMenu id="categoria" styleClass="form-control" value="#{productoManaged.idCategoria}" disabled="#{productoManaged.producto.estado eq 'Aceptado'}">
                 <f:selectItems value="#{categoriaManaged.listCategorias()}" var="c" itemLabel="#{c.nombre}" itemValue="#{c.idCategoria}"/>
             </h:selectOneMenu>
             <br/><br/>
-            <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
-            <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" />
+            <center>
+                <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
+                <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" rendered="#{productoManaged.producto.idProducto > 0}"/>
+            </center>
         </h:form>
         <br/>
         <div class="container">

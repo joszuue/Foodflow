@@ -8,7 +8,8 @@ import java.util.Collection;
 @Table(name = "categorias", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c"),
-        @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre")
+        @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre"),
+        @NamedQuery(name="showCategoria", query = "SELECT DISTINCT c FROM CategoriasEntity c JOIN c.productosByIdCategoria p")
 })
 public class CategoriasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

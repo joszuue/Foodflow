@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: imjos
+  Date: 5/10/2023
+  Time: 13:36
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   <title>FoodFlow</title>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shorthandcss@1.1.1/dist/shorthand.min.css" />
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:200,300,400,500,600,700,800,900&amp;display=swap" />
+   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
+   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+   <link rel="shortcut icon" href="/assets/images/mini.png" />
+   <script type="text/javascript" src="https://kit.fontawesome.com/b7bea40bc9.js" crossorigin="anonymous"></script>
+   <script type="text/javascript" src="https://cdn.tailwindcss.com"></script>
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="/assets/css/root.css"/>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+   <script type="text/javascript" src="https://unpkg.com/feather-icons"></script>
+   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
+   <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/cferdinandi/smooth-scroll@15.0.0/dist/smooth-scroll.polyfills.min.js"></script>
+   <script type="text/javascript" src="../resources/js/script.js"></script>
+</h:head>
+
+<h:body class="bg-white muli">
+   <div class="w-100pc flex flex-column md-flex-row md-px-10 py-5 bg-white">
+      <div class="flex justify-between">
+         <a href="index.html" class="flex items-center p-2 mr-4 no-underline">
+            <img class="max-h-10 w-20vw" src="../resources/img/logoMin.png" />
+         </a>
+         <a data-toggle="toggle-nav" data-target="#nav-items" href="#"
+            class="flex items-center ml-auto md-hidden indigo-lighter opacity-50 hover-opacity-100 ease-300 p-1 m-3">
+            <i data-feather="menu"></i>
+         </a>
+      </div>
+      <div id="nav-items" class="hidden flex sm-w-100pc flex-column md-flex md-flex-row md-justify-end items-center">
+         <b><a href="inicio.xhtml" class="fs-s1 mx-3 py-3 purple-dark no-underline ">Inicio</a></b>
+         <b><a href="#famous" class="fs-s1 mx-3 py-3 purple-dark no-underline ">Platillos más populares</a></b>
+         <b><a href="menu.xhtml" class="fs-s1 mx-3 py-3 purple-dark no-underline">Menú de platillos</a></b>
+         <b><a href="#" data-toggle="modal" data-target="#compra" class="fs-s1 mx-3 py-3 purple-dark no-underline">Ver orden</a></b>
+         <h:form>
+            <h:commandButton class="button bg-purple-dark white fw-800 no-underline mx-5"  value="Cerrar Sesión" action="#{loginManaged.logOutCliente()}"/>
+         </h:form>
+      </div>
+   </div>
+   <ui:insert name="content">Content</ui:insert>
+
+   <!-- MODALES -->
+   <div id="compra" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+      <div class="bg-white mx-auto mt-l5 w-60pc border br-8 overflow-hidden">
+         <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
+            <h3 class="black opacity-80">Listado de Compras</h3>
+            <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
+         </div>
+         <div class="scrollable-content">
+            <div class="flex m-l2">
+               <div class="w-100pc br-8 border m-3 flex items-stretch">
+                  <img class="w-33pc bg-cover br-l-8" src="/assets/images/Hamburguesa.png"/>
+                  <div class="w-66pc p-5">
+                     <h2 class="gray-darkest fs-m2 fw-600">Hamburguesa triple Carne</h2>
+                     <p class="black">
+                        Especificaciones:
+                     </p>
+                     <p class="my-3 lh-3 gray-darker opacity-60">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                        Voluptatibus quia, nulla! Maiores et perferendis eaque,
+                        exercitationem praesentium nihil.
+                     </p>
+                     <button data-toggle="modal" data-target="#cancelar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-red-dark pointer hover-bg-red-light">
+                        Cancelar
+                     </button>
+                     <button data-toggle="modal" data-target="#modificar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-gray pointer hover-bg-gray-light">
+                        Modificar Orden
+                     </button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="px-5 py-3 border-t flex justify-between items-center">
+            <button data-dismiss="modal" class="button bg-green">Realizar Compra</button>
+            <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
+         </div>
+      </div>
+   </div>
+</h:body>
+
+</html>

@@ -1,0 +1,28 @@
+/* Estilos para el elemento seleccionado */
+.selected {
+    background: #840DCE;
+    color: #fff;
+    border: 1px solid #840DCE;
+}
+
+.selected i {
+    color: #fff;
+}
+
+/* Estilos para el elemento no seleccionado */
+.item {
+    background: #fff;
+    color: #000;
+    border: 1px solid #000;
+}
+
+.item i {
+    color: #000;
+}
+
+.scrollable-content {
+    max-height: 400px;
+    /* Ajusta esta altura máxima según tus necesidades */
+    overflow-y: auto;
+    /* Esto permite el desplazamiento vertical cuando el contenido excede la altura máxima */
+}

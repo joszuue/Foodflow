@@ -3,11 +3,13 @@ package sv.foodflow.www.managedbeans;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.Part;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import sv.foodflow.www.entities.CategoriasEntity;
+import sv.foodflow.www.entities.ComentarioEntity;
 import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.models.ProductoModel;
 
@@ -18,18 +20,23 @@ import java.util.List;
 import java.util.Random;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class ProductoManaged {
     ProductoModel modelo = new ProductoModel();
     private int idCategoria;
     private ProductosEntity producto;
+    
+    private ComentarioEntity comentario;
 
     private Part nombreTempImg;
 
     private String opcion = "Pendiente";
 
+    private double precioTemp = 0;
+
     public ProductoManaged(){
         producto = new ProductosEntity();
+        comentario = new ComentarioEntity();
     }
 
     public void guardarProducto() {
@@ -139,12 +146,15 @@ public class ProductoManaged {
         return modelo.listarProductos(opcion);
     }
 
+    public List<ProductosEntity> productosClientes(){
+        return modelo.listarProductos("Aceptado");
+    }
+
     public void modificarProducto() throws IOException {
         if (modelo.validarProdu(producto.getNombre()) == producto.getIdProducto() || modelo.validarProdu(producto.getNombre()) == 0){
             if (nombreTempImg != null){
                 if (validarFormato() == true){
                     producto.setImagen(guardarImagen());
-                    producto.setEstado("Pendiente");
                     if (modelo.modificarProducto(producto, idCategoria) == 1){
                         FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                                 FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));
@@ -168,24 +178,70 @@ public class ProductoManaged {
     }
 
     public void data(ProductosEntity produ)  {
-        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", produ.getEstado()));
         producto = produ;
     }
 
     public void updateEstado(ProductosEntity produ, int idcate, String estado){
-        if (estado.equals("Aceptado")){
-            produ.setPrecio(producto.getPrecio());
+        switch (estado){
+            case "Aceptado":
+                if (producto.getPrecio() != 0){
+                    produ.setPrecio(producto.getPrecio());
+                }
+                break;
+            case "Rechazado":
+                comentario.setIdProducto(producto.getIdProducto());
+                modelo.insertarComentario(comentario);
+
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "RECHAZADO"));
+                break;
         }
         produ.setEstado(estado);
         if (modelo.modificarProducto(produ, idcate) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha " + produ.getPrecio() +" correctamente."));
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha " + produ.getEstado() +" correctamente. " + produ.getIdProducto()));
             producto = new ProductosEntity();
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha podido " + estado +"."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha " + estado +"."));
         }
+    }
+
+    public void aceptarProducto(ProductosEntity produ, int idCate){
+        produ.setEstado("Aceptado");
+        if (producto.getPrecio() != 0){
+            produ.setPrecio(producto.getPrecio());
+        }
+
+        if (modelo.modificarProducto(produ, idCate) == 1){
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + " ha sido aceptado. Ahora se mostrará en el menú del cliente"));
+
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error."));
+        }
+        producto = new ProductosEntity();
+    }
+
+    public void rechazarProducto(ProductosEntity produ, int idCate){
+        produ.setEstado("Rechazado");
+        comentario.setIdProducto(produ.getIdProducto());
+        if (modelo.insertarComentario(comentario) == 1){
+            if (modelo.modificarProducto(produ, idCate) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + "ha sido rechazado. Se ha enviado las observaciones al jefe de cocina.,"));
+
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error."));
+            }
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido agregar el comentario."));
+        }
+
+        producto = new ProductosEntity();
     }
 
     public ProductoModel getModelo() {
@@ -226,5 +282,21 @@ public class ProductoManaged {
 
     public void setOpcion(String opcion) {
         this.opcion = opcion;
+    }
+
+    public ComentarioEntity getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(ComentarioEntity comentario) {
+        this.comentario = comentario;
+    }
+
+    public double getPrecioTemp() {
+        return precioTemp;
+    }
+
+    public void setPrecioTemp(double precioTemp) {
+        this.precioTemp = precioTemp;
     }
 }

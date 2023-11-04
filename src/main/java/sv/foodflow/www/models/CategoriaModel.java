@@ -25,6 +25,19 @@ public class CategoriaModel {
         }
     }
 
+    public List<CategoriasEntity> categoriaClientes() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("showCategoria");
+            List<CategoriasEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public int insertarCategoria(CategoriasEntity categoria) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
