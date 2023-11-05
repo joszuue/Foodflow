@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "comentario", schema = "food_flow")
+@NamedQueries({
+        @NamedQuery(name="comentarios", query = "SELECT c FROM ComentarioEntity  c WHERE c.idProducto = :id")
+})
 public class ComentarioEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

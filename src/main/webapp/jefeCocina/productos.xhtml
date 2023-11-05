@@ -46,11 +46,13 @@
         <div class="container">
             <div class="form-group narrow-div float-right" style="width: 25%;">
                 <h:form>
-                    <h:outputText value="Ordenar por:" class="lead font-weight-bold"/>
+                    <h:outputText value="Mostrar productos:" class="lead font-weight-bold"/>
                     <h:selectOneMenu class="form-control float-right" id="ordenar" value="#{productoManaged.opcion}" immediate="true">
                         <f:selectItem itemLabel="Pendientes" itemValue="Pendiente"/>
                         <f:selectItem itemLabel="Aprobados" itemValue="Aceptado"/>
                         <f:selectItem itemLabel="Rechazados" itemValue="Rechazado"/>
+                        <f:selectItem itemLabel="Retirados" itemValue="Quitar"/>
+                        <f:selectItem itemLabel="Solicitudes de eliminación" itemValue="Eli"/>
                         <f:ajax event="change" render=":updateProducts" execute="ordenar" listener="#{productoManaged.listProductos()}"/>
                     </h:selectOneMenu>
                 </h:form>
@@ -64,14 +66,54 @@
                         <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="card-img-top" width="286px" height="214px"/>
                         <div class="card-body">
                             <ui:fragment rendered="#{produ.estado eq 'Pendiente'}">
-                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-warning">#{produ.estado}</span></h5>
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() > 0}">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal#{produ.idProducto}"><h5 class="card-title lead font-weight-bold"><span class="text-primary">#{produ.nombre}</span> <span class="badge badge-warning">#{produ.estado}</span></h5></a>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() == 0}">
+                                    <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-warning">#{produ.estado}</span></h5>
+                                </ui:fragment>
                             </ui:fragment>
+
                             <ui:fragment rendered="#{produ.estado eq 'Rechazado'}">
-                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-danger">#{produ.estado}</span></h5>
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() > 0}">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal#{produ.idProducto}"><h5 class="card-title lead font-weight-bold"><span class="text-primary">#{produ.nombre}</span> <span class="badge badge-danger">#{produ.estado}</span></h5></a>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() == 0}">
+                                    <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-danger">#{produ.estado}</span></h5>
+                                </ui:fragment>
                             </ui:fragment>
+
                             <ui:fragment rendered="#{produ.estado eq 'Aceptado'}">
-                                <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-success">#{produ.estado}</span></h5>
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() > 0}">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal#{produ.idProducto}"><h5 class="card-title lead font-weight-bold"><span class="text-primary">#{produ.nombre}</span> <span class="badge badge-success">#{produ.estado}</span></h5></a>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() == 0}">
+                                    <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-success">#{produ.estado}</span></h5>
+                                </ui:fragment>
                             </ui:fragment>
+
+                            <ui:fragment rendered="#{produ.estado eq 'Quitar'}">
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() > 0}">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal#{produ.idProducto}"><h5 class="card-title lead font-weight-bold"><span class="text-primary">#{produ.nombre}</span> <span class="badge badge-primary">Retirado</span></h5></a>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() == 0}">
+                                    <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-primary">Retirado</span></h5>
+                                </ui:fragment>
+                            </ui:fragment>
+
+                            <ui:fragment rendered="#{produ.estado eq 'Eli'}">
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() > 0}">
+                                    <a href="#" data-toggle="modal" data-target="#exampleModal#{produ.idProducto}"><h5 class="card-title lead font-weight-bold"><span class="text-primary">#{produ.nombre}</span> <span class="badge badge-secondary">Anulado</span></h5></a>
+                                </ui:fragment>
+                                <ui:fragment rendered="#{productoManaged.modelo.listarComentarios(produ.idProducto).size() == 0}">
+                                    <h5 class="card-title lead font-weight-bold">#{produ.nombre} <span class="badge badge-secondary">Anulado</span></h5>
+                                </ui:fragment>
+                            </ui:fragment>
+
                             <p class="card-text">#{produ.descripcion}</p>
                             <p class="card-text"><b>ID:</b> #{produ.idProducto}</p>
                             <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
@@ -79,13 +121,48 @@
                         </div>
                         <div class="card-body">
                             <center>
-                                <h:panelGrid columns="2">
-                                    <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}">
+                                <h:panelGrid columns="3" >
+                                    <h:commandButton rendered="#{produ.estado eq 'Pendiente' or produ.estado eq 'Aceptado' or produ.estado eq 'Quitar' or produ.estado eq 'Rechazado'}" value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}">
                                         <f:ajax execute="@form" render=":formulario"/>
                                     </h:commandButton>
-                                    <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}"/>
+                                    <h:commandButton rendered="#{produ.estado eq 'Pendiente'}" value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado' or produ.estado eq 'Quitar'}" value="Eliminar" data-toggle="tooltip" data-placement="top" title="Se enviará una solicitud al administrador para eliminar este producto." class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eli')}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Retirar" class="btn btn-outline-warning" data-toggle="tooltip" data-placement="top" title="Este producto no será visible para los clientes" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Quitar')}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{produ.estado eq 'Quitar'}" value="Restaurar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Aceptado')}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
+                                    </h:commandButton>
+                                    <h:commandButton rendered="#{produ.estado eq 'Eli'}" value="Cancelar" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="El producto regresara a estar en un estado pendiente" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Pendiente')}">
+                                        <f:ajax execute="precio_del_producto" render="updateProducts"/>
+                                    </h:commandButton>
                                 </h:panelGrid>
                             </center>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal#{produ.idProducto}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Observaciones de: #{produ.nombre}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">x</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <ui:repeat value="#{productoManaged.modelo.listarComentarios(produ.idProducto)}" var="coment">
+                                    <p class="lead"><b>#{coment.comentario}</b></p>
+                                    <hr class="my-4"/>
+                                </ui:repeat>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
                         </div>
                     </div>
                 </div>

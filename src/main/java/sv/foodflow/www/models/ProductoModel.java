@@ -28,6 +28,20 @@ public class ProductoModel {
         }
     }
 
+    public List<ComentarioEntity> listarComentarios(int idProdu) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("comentarios");
+            consulta.setParameter("id", idProdu);
+            List<ComentarioEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public int insertarProducto(ProductosEntity producto, int idCategoria) {
         CategoriasEntity cateTemporal;
 

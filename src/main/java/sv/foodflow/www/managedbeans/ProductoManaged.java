@@ -182,28 +182,14 @@ public class ProductoManaged {
     }
 
     public void updateEstado(ProductosEntity produ, int idcate, String estado){
-        switch (estado){
-            case "Aceptado":
-                if (producto.getPrecio() != 0){
-                    produ.setPrecio(producto.getPrecio());
-                }
-                break;
-            case "Rechazado":
-                comentario.setIdProducto(producto.getIdProducto());
-                modelo.insertarComentario(comentario);
-
-                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "RECHAZADO"));
-                break;
-        }
         produ.setEstado(estado);
         if (modelo.modificarProducto(produ, idcate) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha " + produ.getEstado() +" correctamente. " + produ.getIdProducto()));
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El estado del producto " + produ.getNombre() + " ha cambiado."));
             producto = new ProductosEntity();
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El producto no se ha " + estado +"."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error"));
         }
     }
 
@@ -227,10 +213,34 @@ public class ProductoManaged {
     public void rechazarProducto(ProductosEntity produ, int idCate){
         produ.setEstado("Rechazado");
         comentario.setIdProducto(produ.getIdProducto());
+        String mensaje = "Solicitud de aprobación denegada - " + comentario.getComentario();
+        comentario.setComentario(mensaje);
         if (modelo.insertarComentario(comentario) == 1){
             if (modelo.modificarProducto(produ, idCate) == 1){
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + "ha sido rechazado. Se ha enviado las observaciones al jefe de cocina.,"));
+
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error."));
+            }
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido agregar el comentario."));
+        }
+
+        producto = new ProductosEntity();
+    }
+
+    public void denegarProducto(ProductosEntity produ, int idCate){
+        produ.setEstado("Pendiente");
+        comentario.setIdProducto(produ.getIdProducto());
+        String mensaje = "Solicitud de eliminación denegada - " + comentario.getComentario();
+        comentario.setComentario(mensaje);
+        if (modelo.insertarComentario(comentario) == 1){
+            if (modelo.modificarProducto(produ, idCate) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + " ha sido denegado. Se ha enviado las observaciones al jefe de cocina.,"));
 
             }else {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
