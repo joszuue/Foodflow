@@ -23,7 +23,7 @@ import java.util.Random;
 @SessionScoped
 public class ProductoManaged {
     ProductoModel modelo = new ProductoModel();
-    private int idCategoria;
+    private int idCategoria = 0;
     private ProductosEntity producto;
     
     private ComentarioEntity comentario;
@@ -146,8 +146,12 @@ public class ProductoManaged {
         return modelo.listarProductos(opcion);
     }
 
-    public List<ProductosEntity> productosClientes(){
-        return modelo.listarProductos("Aceptado");
+    public List<ProductosEntity> menuClientes(){
+        if (idCategoria == 0){
+            return modelo.listarProductos("Aceptado");
+        }else{
+            return modelo.menuCliente(idCategoria);
+        }
     }
 
     public void modificarProducto() throws IOException {

@@ -22,6 +22,7 @@ public class CategoriaManaged {
 
     public void guardarCategoria() {
         if (modelo.validarCate(categoria.getNombre()) == 0){
+            categoria.setEstado("Disponible");
             if (modelo.insertarCategoria(categoria) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido registrar."));
@@ -61,7 +62,24 @@ public class CategoriaManaged {
         categoria = cate;
     }
 
-    public void eliminarCategoria(int id){
+
+    public void eliminarCategoria(CategoriasEntity cate){
+        if (modelo.obtenerCate(cate.getIdCategoria()).size() == 0){
+            cate.setEstado("Eliminada");
+            if (modelo.modificarCategoria(cate) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se ha eliminado la categoria."));
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar."));
+            }
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar posee productos asociados"));
+        }
+    }
+
+    /*public void eliminarCategoria(int id){
         if (modelo.eliminarCategoria(id) > 0){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La categoria se ha eliminado correctamente."));
@@ -70,7 +88,7 @@ public class CategoriaManaged {
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La categoria no se ha podido eliminar posee productos asociados"));
         }
         categoria = new CategoriasEntity();
-    }
+    }*/
 
     public CategoriaModel getModelo() {
         return modelo;

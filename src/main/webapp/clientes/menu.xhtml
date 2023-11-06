@@ -7,34 +7,20 @@
     <ui:define name="content">
         <div id="home" class="p-10 md-p-l5">
             <h1 class="purple fs-l3 ml-l10 lh-2 md-fs-xl1 md-lh-1 fw-900 ">Food</h1>
-            <h1 class="purple-dark fs-l3 ml-l10 lh-2 md-fs-m1 md-lh-1 fw-900 mb-l4">Seleccione la categoria de la comida*</h1>
-            <div id="slider-3" class=" ml-l10 mr-l10 mt-l2 mb-l6">
-                <div class="no-underline">
-                    <div class="hover-opacity-80 flex flex-column bg-purple-dark w-l5 border br-round border-purple-dark flex items-center justify-center">
-                        <div class="mt-l1 p-l1 bg-purple-90 border-purple-dark border br-round ">
-                            <i class="fa-solid fa-pizza-slice" style="color: #fff; font-size: 25px;"></i>
-                        </div>
-                        <h1 class="white fs-m1 mt-l1 mb-l2">All</h1>
-                    </div>
-                </div>
-                <ui:repeat value="#{categoriaManaged.modelo.categoriaClientes()}" var="cate">
-                    <div class="no-underline">
-                        <div class="hover-opacity-80 flex flex-column bg-purple-dark w-l5 border br-round border-purple-dark flex items-center justify-center">
-                            <div class="mt-l1 p-l1 bg-purple-90 border-purple-dark border br-round ">
-                                <i class="fa-solid fa-pizza-slice" style="color: #fff; font-size: 25px;"></i>
-                            </div>
-                            <h1 class="white fs-m1 mt-l1 mb-l2">#{cate.nombre}</h1>
-                        </div>
-                    </div>
-                </ui:repeat>
-            </div>
+            <h1 class="purple-dark fs-l3 ml-l10 lh-2 md-fs-m1 md-lh-1 fw-900">Seleccione la categoria de la comida*</h1>
+            <h:form>
+                <h:selectOneMenu class="select focus-purple-300 border-purple-600 bg-purple-600 white ml-l10 select full" id="ordenar" value="#{productoManaged.idCategoria}" immediate="true">
+                    <f:selectItem itemLabel="Todas" itemValue="#{0}"/>
+                    <f:selectItems value="#{categoriaManaged.modelo.categoriaClientes()}" var="cate" itemLabel="#{cate.nombre}" itemValue="#{cate.idCategoria}"/>
+                    <f:ajax event="change" render=":updateProducts" execute="ordenar" listener="#{productoManaged.menuClientes()}"/>
+                </h:selectOneMenu>
+            </h:form>
         </div>
-
-        <div class="flex flex-wrap flex-row justify-between mt-l4">
-            <ui:repeat value="#{productoManaged.productosClientes()}" var="produ">
+        <h:form id="updateProducts" class="flex flex-wrap flex-row justify-around">
+            <ui:repeat value="#{productoManaged.menuClientes()}" var="produ">
                 <div class="bg-purple-600 w-100pc md-w-25pc border br-8 m-l1 ">
-                    <div href="#" class="bg-purple-300 br-t-4 items-center justify-center" style="width: 286px; height: 214px">
-                        <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="rounded-t-lg w-100pc h-1by2 items-center mx-auto" width="286px" height="214px"/>
+                    <div href="#" class="bg-purple-300 br-t-4 items-center justify-center" >
+                            <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="rounded-t-lg items-center w-l10 h-l10 mx-auto"/>
                     </div>
                     <div class="p-5">
                         <a href="#">
@@ -47,7 +33,7 @@
                             <span class="text-3xl font-bold text-gray-900 dark:text-white"> $#{produ.precio}</span>
                         </div>
                         <div class="p-3">
-                            <button data-toggle="modal" data-target="#carrito#{produ.idProducto}" class="button full bg-white purple ease-300">Ordenar</button>
+                            <a data-toggle="modal" data-target="#carrito#{produ.idProducto}" class="button full bg-white purple ease-300" href="#">Ordenar</a>
                         </div>
                     </div>
                 </div>
@@ -76,8 +62,7 @@
                     </div>
                 </div>
             </ui:repeat>
-        </div>
-
+        </h:form>
         <!-- MODALES -->
         <div id="cancelar" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
             <div class="bg-white mx-auto mt-l10 w-30pc border br-8 overflow-hidden">

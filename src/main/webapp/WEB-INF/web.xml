@@ -15,4 +15,5 @@
     <welcome-file-list>
         <welcome-file>faces/loginEmple.xhtml</welcome-file>
     </welcome-file-list>
+
 </web-app>

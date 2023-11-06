@@ -19,7 +19,7 @@
             <h:inputText id="nombre_de_categoria" styleClass="form-control" value="${categoriaManaged.categoria.nombre}" validator="validaciones" />
             <br/>
             <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
-            <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}"/>
+            <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
         </h:form>
         <br/><br/>
         <div class="table-responsive">
@@ -41,7 +41,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{categoriaManaged.data(cate)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{categoriaManaged.eliminarCategoria(cate.idCategoria)}"/>
+                                        <h:commandButton value="Eliminar" action="#{categoriaManaged.eliminarCategoria(cate)}" class="btn btn-outline-danger"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

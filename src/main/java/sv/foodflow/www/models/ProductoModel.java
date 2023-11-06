@@ -28,6 +28,20 @@ public class ProductoModel {
         }
     }
 
+    public List<ProductosEntity> menuCliente(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("produCliente");
+            consulta.setParameter("id", id);
+            List<ProductosEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public List<ComentarioEntity> listarComentarios(int idProdu) {
         EntityManager em = JpaUtil.getEntityManager();
         try {

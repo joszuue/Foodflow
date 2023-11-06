@@ -7,6 +7,7 @@ import jakarta.persistence.TypedQuery;
 import sv.foodflow.www.entities.CategoriasEntity;
 import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.entities.MesasEntity;
+import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.utils.JpaUtil;
 
 import java.util.List;
@@ -79,6 +80,20 @@ public class CategoriaModel {
         } catch (Exception e) {
             em.close();
             return 0;
+        }
+    }
+
+    public List<ProductosEntity> obtenerCate(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("obtenerCate");
+            consulta.setParameter("id", id);
+            List<ProductosEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
         }
     }
 

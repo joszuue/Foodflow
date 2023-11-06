@@ -7,9 +7,9 @@ import java.util.Collection;
 @Entity
 @Table(name = "categorias", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c"),
-        @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre"),
-        @NamedQuery(name="showCategoria", query = "SELECT DISTINCT c FROM CategoriasEntity c JOIN c.productosByIdCategoria p")
+        @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c WHERE c.estado = 'Disponible'"),
+        @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre and c.estado = 'Disponible'"),
+        @NamedQuery(name="showCategoria", query = "SELECT DISTINCT c FROM CategoriasEntity c JOIN c.productosByIdCategoria p  WHERE c.estado = 'Disponible'")
 })
 public class CategoriasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,10 @@ public class CategoriasEntity {
     @Basic
     @Column(name = "Nombre", nullable = false, length = 100)
     private String nombre;
+
+    @Basic
+    @Column(name = "estado", nullable = false, length = 100)
+    private String estado;
     @OneToMany(mappedBy = "categoriasByIdCategoria")
     private Collection<ProductosEntity> productosByIdCategoria;
 
@@ -36,6 +40,14 @@ public class CategoriasEntity {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     @Override
