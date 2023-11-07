@@ -66,31 +66,31 @@
             <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
          </div>
          <div class="scrollable-content">
-            <div class="flex m-l2">
-               <div class="w-100pc br-8 border m-3 flex items-stretch">
-                  <img class="w-33pc bg-cover br-l-8" src="/assets/images/Hamburguesa.png"/>
-                  <div class="w-66pc p-5">
-                     <h2 class="gray-darkest fs-m2 fw-600">Hamburguesa triple Carne</h2>
-                     <p class="black">
-                        Especificaciones:
-                     </p>
-                     <p class="my-3 lh-3 gray-darker opacity-60">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                        Voluptatibus quia, nulla! Maiores et perferendis eaque,
-                        exercitationem praesentium nihil.
-                     </p>
-                     <button data-toggle="modal" data-target="#cancelar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-red-dark pointer hover-bg-red-light">
-                        Cancelar
-                     </button>
-                     <button data-toggle="modal" data-target="#modificar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-gray pointer hover-bg-gray-light">
-                        Modificar Orden
-                     </button>
+            <ui:repeat value="#{ordenManaged.modelo.carrito(sessionScope.cliente.codigoClient)}" var="carrito">
+               <div class="flex m-l2">
+                  <div class="w-100pc br-8 border m-3 flex items-stretch">
+                     <h:graphicImage url="http://localhost/FoodFlow_img/#{carrito.productosByIdProducto.imagen}" class="w-33pc bg-cover br-l-8 w-l10 h-l10"/>
+                     <div class="w-66pc p-5">
+                        <h2 class="gray-darkest fs-m2 fw-600">#{carrito.productosByIdProducto.nombre}</h2>
+                        <p class="black">
+                           Especificaciones:
+                        </p>
+                        <p class="my-3 lh-3 gray-darker opacity-60">#{carrito.comentario}</p>
+                        <button data-toggle="modal" data-target="#cancelar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-red-dark pointer hover-bg-red-light">
+                           Cancelar
+                        </button>
+                        <button data-toggle="modal" data-target="#modificar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-gray pointer hover-bg-gray-light">
+                           Modificar Orden
+                        </button>
+                     </div>
                   </div>
                </div>
-            </div>
+            </ui:repeat>
          </div>
          <div class="px-5 py-3 border-t flex justify-between items-center">
-            <button data-dismiss="modal" class="button bg-green">Realizar Compra</button>
+            <h:form>
+               <h:commandButton data-dismiss="modal" class="button bg-green" value="Enviar pedido" action="#{ordenManaged.realizarPedido(sessionScope.cliente.codigoClient)}"/>
+            </h:form>
             <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
          </div>
       </div>

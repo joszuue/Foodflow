@@ -4,9 +4,15 @@ import jakarta.persistence.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "orden", schema = "food_flow")
+@NamedQueries({
+        @NamedQuery(name="carrito", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Carrito' AND o.clientesByCodigoClient.codigoClient = :id"),
+        @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' ORDER BY o.idOrden ASC"),
+        @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo")
+})
 public class OrdenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -17,9 +23,9 @@ public class OrdenEntity {
     private int cantidad;
     @Basic
     @Column(name = "fecha", nullable = false)
-    private Timestamp fecha;
+    private Date fecha;
     @Basic
-    @Column(name = "tiempoEspera", nullable = false)
+    @Column(name = "tiempoEspera", nullable = true)
     private Time tiempoEspera;
     @Basic
     @Column(name = "total", nullable = false, precision = 0)
@@ -53,11 +59,11 @@ public class OrdenEntity {
         this.cantidad = cantidad;
     }
 
-    public Timestamp getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(Timestamp fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -100,7 +106,6 @@ public class OrdenEntity {
         if (cantidad != that.cantidad) return false;
         if (total != that.total) return false;
         if (fecha != null ? !fecha.equals(that.fecha) : that.fecha != null) return false;
-        if (tiempoEspera != null ? !tiempoEspera.equals(that.tiempoEspera) : that.tiempoEspera != null) return false;
         if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
 
         return true;

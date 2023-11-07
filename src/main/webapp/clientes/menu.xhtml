@@ -9,7 +9,7 @@
             <h1 class="purple fs-l3 ml-l10 lh-2 md-fs-xl1 md-lh-1 fw-900 ">Food</h1>
             <h1 class="purple-dark fs-l3 ml-l10 lh-2 md-fs-m1 md-lh-1 fw-900">Seleccione la categoria de la comida*</h1>
             <h:form>
-                <h:selectOneMenu class="select focus-purple-300 border-purple-600 bg-purple-600 white ml-l10 select full" id="ordenar" value="#{productoManaged.idCategoria}" immediate="true">
+                <h:selectOneMenu class="select focus-purple-300 border-purple-600 bg-purple-600 white ml-l10 " id="ordenar" value="#{productoManaged.idCategoria}" immediate="true">
                     <f:selectItem itemLabel="Todas" itemValue="#{0}"/>
                     <f:selectItems value="#{categoriaManaged.modelo.categoriaClientes()}" var="cate" itemLabel="#{cate.nombre}" itemValue="#{cate.idCategoria}"/>
                     <f:ajax event="change" render=":updateProducts" execute="ordenar" listener="#{productoManaged.menuClientes()}"/>
@@ -20,7 +20,7 @@
             <ui:repeat value="#{productoManaged.menuClientes()}" var="produ">
                 <div class="bg-purple-600 w-100pc md-w-25pc border br-8 m-l1 ">
                     <div href="#" class="bg-purple-300 br-t-4 items-center justify-center" >
-                            <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="rounded-t-lg items-center w-l10 h-l10 mx-auto"/>
+                        <h:graphicImage url="http://localhost/FoodFlow_img/#{produ.imagen}" class="rounded-t-lg items-center w-l10 h-l10 mx-auto"/>
                     </div>
                     <div class="p-5">
                         <a href="#">
@@ -49,14 +49,19 @@
                             <div class="m-l2 flex flex-column ">
                                 <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">#{produ.nombre}</h1>
                                 <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
-                                <input type="number" class="input full mb-l1 rounded-md border-gray-400" placeholder="Cantidad deseada" min="1" max="50"/>
+                                <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0"
+                                               requiredMessage="Debes ingresar una cantidad"
+                                               validatorMessage="El minimo de productos es 1">
+                                    <f:validateLongRange minimum="1"  />
+                                </p:inputNumber>
+
                                 <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
-                                <textarea class="textarea-md" rows="5" placeholder="Escriba especificaciones para la orden" cols="5"/>
+                                <h:inputText value="#{ordenManaged.orden.comentario}" class="textarea-md" placeholder="Escriba especificaciones para la orden"/>
                             </div>
 
                         </div>
                         <div class="px-5 py-3 border-t flex justify-between items-center">
-                            <button data-dismiss="modal" class="button bg-green">Guardar Orden</button>
+                            <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,produ.idProducto,produ.precio)}"/>
                             <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
                         </div>
                     </div>
