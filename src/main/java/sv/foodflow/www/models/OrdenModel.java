@@ -3,10 +3,7 @@ package sv.foodflow.www.models;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
-import sv.foodflow.www.entities.CategoriasEntity;
-import sv.foodflow.www.entities.ClientesEntity;
-import sv.foodflow.www.entities.OrdenEntity;
-import sv.foodflow.www.entities.ProductosEntity;
+import sv.foodflow.www.entities.*;
 import sv.foodflow.www.utils.JpaUtil;
 
 import java.util.Date;
@@ -102,34 +99,25 @@ public class OrdenModel {
         }
     }
 
-    /*public int carritoOrden(OrdenEntity orden, String codigoCliente, int idProducto) {
-        ClientesEntity clientes;
-        ProductosEntity producto;
-
+    public int eliminarOrden(int id) {
         EntityManager em = JpaUtil.getEntityManager();
-        EntityTransaction tran = em.getTransaction();
+        int filasBorradas = 0;
         try {
-            //Encontrando las instancias de cada clave foranea
-            producto = em.find(ProductosEntity.class, idProducto);
-            clientes = em.find(ClientesEntity.class,codigoCliente);
-            tran.begin();//Iniciando transacción
-
-            //Incluyendo en instancia de producto las instancias que corresponden a sus claves foraneas
-            orden.setClientesByCodigoClient(clientes);
-            orden.setProductosByIdProducto(producto);
-
-            Query query = em.createNamedQuery("update");
-            query.setParameter("orden", orden);
-            query.setParameter("codigo", codigoCliente);
-
-            int filasActualizadas = query.executeUpdate();
-
-            tran.commit(); // Confirmando la transacción
+            OrdenEntity orden = em.find(OrdenEntity.class, id);
+            if (orden != null) {
+                EntityTransaction tran = em.getTransaction();
+                tran.begin();
+                em.remove(orden);
+                tran.commit();
+                filasBorradas = 1;
+            }
             em.close();
-            return filasActualizadas; // Devuelve la cantidad de filas actualizadas
+            return filasBorradas;
         } catch (Exception e) {
             em.close();
             return 0;
         }
-    }*/
+    }
+
+
 }

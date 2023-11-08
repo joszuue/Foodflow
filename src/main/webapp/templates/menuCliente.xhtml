@@ -13,7 +13,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://java.sun.com/jsp/jstl/core">
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 
 <h:head>
    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -22,11 +23,11 @@
    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:200,300,400,500,600,700,800,900&amp;display=swap" />
    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css" />
    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
-   <link rel="shortcut icon" href="/assets/images/mini.png" />
+   <link rel="shortcut icon" href="../resources/img/mini.png" />
    <script type="text/javascript" src="https://kit.fontawesome.com/b7bea40bc9.js" crossorigin="anonymous"></script>
    <script type="text/javascript" src="https://cdn.tailwindcss.com"></script>
    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-   <link rel="stylesheet" href="/assets/css/root.css"/>
+   <link rel="stylesheet" href="../resources/css/root.css"/>
    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
    <script type="text/javascript" src="https://unpkg.com/feather-icons"></script>
@@ -51,14 +52,28 @@
          <b><a href="#famous" class="fs-s1 mx-3 py-3 purple-dark no-underline ">Platillos más populares</a></b>
          <b><a href="menu.xhtml" class="fs-s1 mx-3 py-3 purple-dark no-underline">Menú de platillos</a></b>
          <b><a href="#" data-toggle="modal" data-target="#compra" class="fs-s1 mx-3 py-3 purple-dark no-underline">Ver orden</a></b>
-         <h:form>
-            <h:commandButton class="button bg-purple-dark white fw-800 no-underline mx-5"  value="Cerrar Sesión" action="#{loginManaged.logOutCliente()}"/>
-         </h:form>
+         <a data-toggle="modal" data-target="#modal-one" href="#" class="button bg-purple-dark white fw-800 no-underline mx-5">Cerrar Sesión</a>
       </div>
    </div>
    <ui:insert name="content">Content</ui:insert>
-
    <!-- MODALES -->
+   <div id="modal-one" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+      <div class="bg-white mx-auto mt-l5 w-50pc border br-8 overflow-hidden">
+         <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
+            <h3 class="black opacity-80">Cerrar Sesión</h3>
+            <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
+         </div>
+         <div class="px-5 py-10 fs-s1">
+            Deseas, cerrar sesión?
+         </div>
+         <div class="px-5 py-3 border-t flex justify-between items-center">
+            <h:form>
+               <h:commandButton data-dismiss="modal" class="button bg-red-dark"  value="Cerrar Sesión" action="#{loginManaged.logOutCliente()}"/>
+            </h:form>
+            <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
+         </div>
+      </div>
+   </div>
    <div id="compra" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
       <div class="bg-white mx-auto mt-l5 w-60pc border br-8 overflow-hidden">
          <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
@@ -72,19 +87,67 @@
                      <h:graphicImage url="http://localhost/FoodFlow_img/#{carrito.productosByIdProducto.imagen}" class="w-33pc bg-cover br-l-8 w-l10 h-l10"/>
                      <div class="w-66pc p-5">
                         <h2 class="gray-darkest fs-m2 fw-600">#{carrito.productosByIdProducto.nombre}</h2>
+                        <h2 class="gray-darkest fs-m2 fw-600">Cantidad: #{carrito.cantidad}</h2>
                         <p class="black">
                            Especificaciones:
                         </p>
                         <p class="my-3 lh-3 gray-darker opacity-60">#{carrito.comentario}</p>
-                        <button data-toggle="modal" data-target="#cancelar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-red-dark pointer hover-bg-red-light">
+                        <button data-toggle="modal" data-target="#cancelar#{carrito.idOrden}" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-red-dark pointer hover-bg-red-light">
                            Cancelar
                         </button>
-                        <button data-toggle="modal" data-target="#modificar" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-gray pointer hover-bg-gray-light">
-                           Modificar Orden
-                        </button>
+                        <a data-toggle="modal" data-target="#modificar#{carrito.idOrden}" class="inline-block white fw-600 mr-3 mt-5 br-3 bw-0 px-3 py-2 fs-s2 bg-gray pointer hover-bg-gray-light">Modificar Orden</a>
                      </div>
                   </div>
                </div>
+
+               <div id="modificar#{carrito.idOrden}" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+                  <div class="bg-white mx-auto mt-l5 w-50pc border br-8 overflow-hidden">
+                     <div class="">
+                        <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
+                           <h3 class="black opacity-80">Orden</h3>
+                           <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
+                        </div>
+                        <div class="m-l2 flex flex-column ">
+                           <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">#{carrito.nombre}</h1>
+                           <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
+                           <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0" class="full mb-l1 rounded-md border-gray-400"
+                                          requiredMessage="Debes ingresar una cantidad"
+                                          validatorMessage="El minimo de productos es 1">
+                              <f:validateLongRange minimum="1"  />
+                           </p:inputNumber>
+
+                           <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
+                           <h:inputText value="#{ordenManaged.orden.comentario}" placeholder="Escriba especificaciones para la orden"/>
+                        </div>
+                     </div>
+                     <div class="px-5 py-3 border-t flex justify-between items-center">
+                        <button data-dismiss="modal" class="button bg-green">Guardar Orden</button>
+                        <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
+                     </div>
+                  </div>
+               </div>
+
+
+               <div id="cancelar#{carrito.idOrden}" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+                  <div class="bg-white mx-auto mt-l10 w-30pc border br-8 overflow-hidden">
+                     <div class="m-l1">
+                        <div class="m-l2 flex flex-column justify-center items-center">
+                           <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" style="color: red;" />
+                           </svg>
+                           <h3 class="text-lg font-normal text-black ">¿Estás seguro que quieres eliminar este producto de tú orden?</h3>
+                        </div>
+                     </div>
+                     <div class="px-5 py-3 border-t flex justify-between items-center">
+                        <h:form>
+                           <h:commandButton data-dismiss="modal" class="button bg-red" value="Eliminar de la orden" action="#{ordenManaged.eliminarOrden(carrito.idOrden)}"/>
+                        </h:form>
+                        <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
+                     </div>
+                  </div>
+               </div>
+
             </ui:repeat>
          </div>
          <div class="px-5 py-3 border-t flex justify-between items-center">
@@ -95,6 +158,8 @@
          </div>
       </div>
    </div>
+
+
 </h:body>
 
 </html>

@@ -11,7 +11,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name="carrito", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Carrito' AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' ORDER BY o.idOrden ASC"),
-        @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo")
+        @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'")
 })
 public class OrdenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

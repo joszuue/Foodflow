@@ -44,6 +44,20 @@ public class OrdenManaged {
         orden = new OrdenEntity();
     }
 
+    public void eliminarOrden(int id) {
+        if (modelo.eliminarOrden(id) > 0){
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se ha eliminado de tu orden."));
+        }else{
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido eliminar"));
+        }
+    }
+
+    public void data(OrdenEntity ordeen){
+        orden = ordeen;
+    }
+
     public Date fecha(){
         Date fechaHoraActual = new Date();
         return fechaHoraActual;

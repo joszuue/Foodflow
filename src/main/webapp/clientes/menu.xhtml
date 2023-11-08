@@ -5,6 +5,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
         <div id="home" class="p-10 md-p-l5">
             <h1 class="purple fs-l3 ml-l10 lh-2 md-fs-xl1 md-lh-1 fw-900 ">Food</h1>
             <h1 class="purple-dark fs-l3 ml-l10 lh-2 md-fs-m1 md-lh-1 fw-900">Seleccione la categoria de la comida*</h1>
@@ -49,14 +52,14 @@
                             <div class="m-l2 flex flex-column ">
                                 <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">#{produ.nombre}</h1>
                                 <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
-                                <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0"
+                                <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0" class="full mb-l1 rounded-md border-gray-400"
                                                requiredMessage="Debes ingresar una cantidad"
                                                validatorMessage="El minimo de productos es 1">
                                     <f:validateLongRange minimum="1"  />
                                 </p:inputNumber>
 
                                 <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
-                                <h:inputText value="#{ordenManaged.orden.comentario}" class="textarea-md" placeholder="Escriba especificaciones para la orden"/>
+                                <h:inputText value="#{ordenManaged.orden.comentario}" placeholder="Escriba especificaciones para la orden"/>
                             </div>
 
                         </div>
@@ -69,44 +72,6 @@
             </ui:repeat>
         </h:form>
         <!-- MODALES -->
-        <div id="cancelar" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
-            <div class="bg-white mx-auto mt-l10 w-30pc border br-8 overflow-hidden">
-                <div class="m-l1">
-                    <div class="m-l2 flex flex-column justify-center items-center">
-                        <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
-                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" style="color: red;" />
-                        </svg>
-                        <h3 class="text-lg font-normal text-black ">¿Estás seguro que quieres eliminar este producto de tú carrito de compra?</h3>
-                    </div>
-                </div>
-                <div class="px-5 py-3 border-t flex justify-between items-center">
-                    <button data-dismiss="modal" class="button bg-red">Eliminar de la orden</button>
-                    <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
-                </div>
-            </div>
-        </div>
 
-        <div id="modificar" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
-            <div class="bg-white mx-auto mt-l5 w-50pc border br-8 overflow-hidden">
-                <div class="">
-                    <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
-                        <h3 class="black opacity-80">Orden</h3>
-                        <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
-                    </div>
-                    <div class="m-l2 flex flex-column ">
-                        <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">Hamburguesa</h1>
-                        <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
-                        <input type="number" class="input full mb-l1 rounded-md border-gray-400" placeholder="Cantidad deseada" min="1" max="50"/>
-                        <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
-                        <textarea class="textarea-md" rows="5" placeholder="Escriba especificaciones para la orden" cols="5"></textarea>
-                    </div>
-                </div>
-                <div class="px-5 py-3 border-t flex justify-between items-center">
-                    <button data-dismiss="modal" class="button bg-green">Guardar Orden</button>
-                    <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
-                </div>
-            </div>
-        </div>
     </ui:define>
 </ui:composition>
