@@ -59,12 +59,14 @@
                                 </p:inputNumber>
 
                                 <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
-                                <h:inputText value="#{ordenManaged.orden.comentario}" placeholder="Escriba especificaciones para la orden"/>
+                                <h:inputText id="comentario" value="#{ordenManaged.orden.comentario}" placeholder="Escriba especificaciones para la orden"/>
                             </div>
 
                         </div>
                         <div class="px-5 py-3 border-t flex justify-between items-center">
-                            <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,produ.idProducto,produ.precio)}"/>
+                            <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,produ.idProducto,produ.precio)}">
+                                <f:ajax execute="comentario cantidad" render="@all"/>
+                            </h:commandButton>
                             <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
                         </div>
                     </div>

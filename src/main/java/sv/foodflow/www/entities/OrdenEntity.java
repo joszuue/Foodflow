@@ -11,7 +11,8 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name="carrito", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Carrito' AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' ORDER BY o.idOrden ASC"),
-        @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'")
+        @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'"),
+        @NamedQuery(name = "populares", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' GROUP BY o.productosByIdProducto.idProducto ORDER BY SUM(o.cantidad) DESC")
 })
 public class OrdenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -107,7 +108,7 @@ public class OrdenEntity {
         if (total != that.total) return false;
         if (fecha != null ? !fecha.equals(that.fecha) : that.fecha != null) return false;
         if (estado != null ? !estado.equals(that.estado) : that.estado != null) return false;
-
+        if (comentario != null ? !comentario.equals(that.comentario) : that.comentario != null) return false;
         return true;
     }
 
@@ -119,6 +120,7 @@ public class OrdenEntity {
         result = 31 * result + (tiempoEspera != null ? tiempoEspera.hashCode() : 0);
         result = (int) (31 * result + total);
         result = 31 * result + (estado != null ? estado.hashCode() : 0);
+        result = 31 * result + (comentario != null ? comentario.hashCode() : 0);
         return result;
     }
 

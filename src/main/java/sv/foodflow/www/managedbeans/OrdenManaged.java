@@ -54,8 +54,17 @@ public class OrdenManaged {
         }
     }
 
-    public void data(OrdenEntity ordeen){
-        orden = ordeen;
+    public void modificarCarrito(OrdenEntity ordeen, String codigo, int idProdu){
+        ordeen.setCantidad(orden.getCantidad());
+        ordeen.setComentario(orden.getComentario());
+        if (modelo.modificarOrden(ordeen,codigo, idProdu) == 1){
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se ha modificado."));
+        }else{
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido modificar"));
+        }
+        orden = new OrdenEntity();
     }
 
     public Date fecha(){

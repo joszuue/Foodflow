@@ -25,6 +25,21 @@ public class OrdenModel {
         }
     }
 
+    public List<OrdenEntity> populares() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("populares");
+            consulta.setFirstResult(0); // La posición inicial (0 para el primer resultado)
+            consulta.setMaxResults(5);
+            List<OrdenEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public int insertarOrden(OrdenEntity orden, String codigoClient, int idProducto) {
         ClientesEntity clientes;
         ProductosEntity producto;

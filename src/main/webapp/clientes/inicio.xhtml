@@ -34,34 +34,62 @@
             <h1 class="purple-dark fs-l3 lh-2 md-fs-xl1 md-lh-1 fw-900 mb-10">Platillos Populares <br /> </h1>
         </center>
         <div id="slider-2">
-            <div class="flex ">
-                <div class="w-75pc bg-purple-300 br-8 border m-3 flex flex-column items-center">
-                    <div class="w-66pc p-5">
-                        <h2 class="black fs-m2 fw-600">Hamburguesa Vegana</h2>
+            <ui:repeat value="#{ordenManaged.modelo.populares()}" var="populares" varStatus="loop">
+                <div class="flex ">
+                    <div class="bg-purple-600 w-75pc br-8 border m-3 flex flex-column items-center">
+                        <div href="#" class="bg-purple-300 br-t-4 items-center justify-center" >
+                            <h:graphicImage url="http://localhost/FoodFlow_img/#{populares.productosByIdProducto.imagen}" class="rounded-t-lg items-center w-l10 h-l10 mx-auto"/>
+                        </div>
+                        <div class="p-5">
+                            <a href="#">
+                                <center>
+                                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">TOP: ##{loop.index + 1}</h5>
+                                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">#{populares.productosByIdProducto.nombre}</h5>
+                                </center>
+                            </a>
+                            <p class="mb-3 font-normal text-gray-700 dark:text-white">#{populares.productosByIdProducto.descripcion}</p>
+                            <div class="flex items-center justify-center">
+                                <span class="text-3xl font-bold text-gray-900 dark:text-white mr-l1">Precio: </span>
+
+                                <span class="text-3xl font-bold text-gray-900 dark:text-white"> $#{populares.productosByIdProducto.precio}</span>
+                            </div>
+                            <div class="p-3">
+                                <a data-toggle="modal" data-target="#carrito#{populares.productosByIdProducto.idProducto}" class="button full bg-white purple ease-300" href="#">Ordenar</a>
+                            </div>
+                        </div>
                     </div>
-                    <img class="w-60pc mb-10" src="assets/images/Hamburguesa.png" alt=""/>
                 </div>
-            </div>
-            <div class="flex ">
-                <div class="w-75pc bg-purple-300 br-8 border m-3 flex flex-column items-center">
-                    <center>
-                        <div class="w-66pc p-5">
-                            <h2 class="black fs-m2 fw-600">Ramen Orienal</h2>
+
+                <div id="carrito#{populares.productosByIdProducto.idProducto}" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+                    <div class="bg-white mx-auto mt-l5 w-50pc border br-8 overflow-hidden">
+                        <div class="">
+                            <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
+                                <h3 class="black opacity-80">Orden</h3>
+                                <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
+                            </div>
+                            <div class="m-l2 flex flex-column ">
+                                <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">#{populares.productosByIdProducto.nombre}</h1>
+                                <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
+                                <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0" class="full mb-l1 rounded-md border-gray-400"
+                                               requiredMessage="Debes ingresar una cantidad"
+                                               validatorMessage="El minimo de productos es 1">
+                                    <f:validateLongRange minimum="1"  />
+                                </p:inputNumber>
+
+                                <h1 class="black fs-l3 mt-2 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Especificaciones de la orden:</h1>
+                                <h:inputText id="comentario" value="#{ordenManaged.orden.comentario}" placeholder="Escriba especificaciones para la orden"/>
+                            </div>
+
                         </div>
-                        <img class="w-60pc mb-10" src="assets/images/Ramen.png" alt=""/>
-                    </center>
-                </div>
-            </div>
-            <div class="flex ">
-                <div class="w-75pc bg-purple-300 br-8 border m-3 flex flex-column items-center">
-                    <center>
-                        <div class="w-66pc p-5">
-                            <h2 class="black fs-m2 fw-600">Desayunos Culinarios</h2>
+                        <div class="px-5 py-3 border-t flex justify-between items-center">
+                            <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,populares.productosByIdProducto.idProducto,populares.productosByIdProducto.precio)}">
+                                <f:ajax execute="comentario cantidad" render="@all"/>
+                            </h:commandButton>
+                            <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
                         </div>
-                        <img class="w-60pc mb-10" src="assets/images/Desayuno.png" alt=""/>
-                    </center>
+                    </div>
                 </div>
-            </div>
+            </ui:repeat>
         </div>
     </div>
 </ui:define>
