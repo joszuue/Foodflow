@@ -25,7 +25,7 @@ $(document).ready(function () {
         dots: false,
         arrows: false,
         infinite: true,
-        slidesToShow: 3,
+        slidesToShow: 2,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 2000,

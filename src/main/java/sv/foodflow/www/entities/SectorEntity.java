@@ -7,8 +7,9 @@ import java.util.Collection;
 @Entity
 @Table(name = "sector", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="findAll", query = "SELECT s FROM SectorEntity s"),
-        @NamedQuery(name="validacion", query = "SELECT s FROM SectorEntity s WHERE s.nombre = :nombre")
+        @NamedQuery(name="findAll", query = "SELECT s FROM SectorEntity s WHERE s.estado <> 'Eliminada'"),
+        @NamedQuery(name="validacion", query = "SELECT s FROM SectorEntity s WHERE s.nombre = :nombre AND s.estado <> 'Eliminada'"),
+        @NamedQuery(name="showSector", query = "SELECT DISTINCT s FROM SectorEntity s JOIN s.mesasByIdSector m  WHERE s.estado = 'activa'")
 })
 public class SectorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

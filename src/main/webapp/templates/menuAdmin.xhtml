@@ -62,7 +62,7 @@
             <h:panelGroup styleClass="form-inline my-2 my-lg-0">
                 <input type="hidden" name="accion" value="finalizar"/>
                 <div class="col-mb-4 d-flex align-items-center">
-                    <h:outputText styleClass="text-black mr-3 lead" value="#{sessionScope.emple.nombre1} #{sessionScope.emple.apellido1}"/>
+                    <h:outputText styleClass="text-black mr-3 lead" value="#{sessionScope.emple.nombre1} #{sessionScope.emple.apellido1} - #{sessionScope.emple.rol}"/>
                     <h:form>
                         <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Cerrar Sesión" action="#{loginManaged.logOut()}"/>
                     </h:form>

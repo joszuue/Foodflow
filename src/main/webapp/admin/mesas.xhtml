@@ -33,8 +33,10 @@
                 </p:inputNumber>
             </h:panelGrid>
             <br/><br/>
-            <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
-            <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" />
+            <center>
+                <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
+                <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" rendered="#{mesasManaged.mesa.idMesa > 0}"/>
+            </center>
         </h:form>
         <br/><br/>
         <div class="table-responsive">
@@ -60,7 +62,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{mesasManaged.data(mesa, mesa.sectorByIdSector.idSector)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa.idMesa)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa, mesa.sectorByIdSector.idSector)}"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

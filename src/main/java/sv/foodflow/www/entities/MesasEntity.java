@@ -7,7 +7,10 @@ import java.util.Collection;
 @Entity
 @Table(name = "mesas", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="MesasEntity.findAll", query = "SELECT m FROM MesasEntity m")
+        @NamedQuery(name="MesasEntity.findAll", query = "SELECT m FROM MesasEntity m WHERE m.estado <> 'Eliminada'"),
+        @NamedQuery(name="disponibles", query = "SELECT m FROM MesasEntity m WHERE m.estado <> 'Eliminada' AND m.estado = 'Disponible'"),
+        @NamedQuery(name="obtenerMesa", query = "SELECT m FROM MesasEntity m WHERE m.sectorByIdSector.idSector = :id AND m.estado <> 'Eliminada'"),
+        @NamedQuery(name="disponiblesFiltradas", query = "SELECT m FROM MesasEntity m WHERE m.estado <> 'Eliminada' AND m.estado = 'Disponible' AND m.sectorByIdSector.idSector = :id")
 })
 public class MesasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

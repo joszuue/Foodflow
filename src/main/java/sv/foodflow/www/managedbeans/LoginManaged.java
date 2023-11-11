@@ -33,20 +33,28 @@ public class LoginManaged {
         if (verify){
             EmpleadosEntity empleLogin = model.datosSession(empleado.getCodigo());
             if (empleLogin != null){
-                FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emple", empleLogin);
-                if (empleLogin.getEstado().equals("no")){
-                    pagina = "/contra?faces-redirect=true";
+                if (empleLogin.equals("Eliminado")){
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No tienes acceso al sistema."));
                 }else{
-                    switch (empleLogin.getRol()){
-                        case "Admin":
-                            pagina = "/admin/inicio?faces-redirect=true";
-                            break;
-                        case "Jefe de cocina":
-                            pagina = "/jefeCocina/inicio?faces-redirect=true";
-                            break;
-                        case "Mesero":
-                            pagina = "/mesero/inicio?faces-redirect=true";
-                            break;
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emple", empleLogin);
+                    if (empleLogin.getEstado().equals("no")){
+                        pagina = "/contra?faces-redirect=true";
+                    }else{
+                        switch (empleLogin.getRol()){
+                            case "Administrador":
+                                pagina = "/admin/inicio?faces-redirect=true";
+                                break;
+                            case "Jefe de cocina":
+                                pagina = "/jefeCocina/inicio?faces-redirect=true";
+                                break;
+                            case "Mesero":
+                                pagina = "/mesero/inicio?faces-redirect=true";
+                                break;
+                            case "Recepcionista":
+                                pagina = "/recepcion/inicio?faces-redirect=true";
+                                break;
+                        }
                     }
                 }
             }else {

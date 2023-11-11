@@ -12,49 +12,38 @@
         </p:messages>
         <hr class="my-4"/>
         <br/>
-            <div class="row">
-                <ui:repeat value="#{mesasManaged.listMesas()}" var="mesa" id="repeatToUpdate">
-                    <div class="col-md-4">
-                        <ui:fragment rendered="#{mesa.estado eq 'Disponible'}">
-                            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-                                <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
-                                <div class="card-body">
-                                    <h5 class="card-title text-center">Registrar Cliente</h5>
-                                    <h:form id="cliente#{mesa.idMesa}">
-                                        <h:outputLabel styleClass="lead" value="Apellido: "/>
-                                        <h:inputText styleClass="form-control" value="#{clientesManaged.cliente.apellido}"/>
-                                        <br/>
-                                        <center>
-                                            <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa, mesa.sectorByIdSector.idSector)}">
-                                                <f:ajax execute="@form" render=":repeatToUpdate :mesaOcupada"/>
-                                            </h:commandButton>
-                                        </center>
-                                    </h:form>
-                                </div>
-                            </div>
-                        </ui:fragment>
-                        <ui:fragment rendered="#{mesa.estado eq 'Ocupada'}">
-                            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-                                <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
-                                <div class="card-body">
-                                    <h:form id="mesaOcupada">
-                                        <ui:repeat value="#{clientesManaged.obtenerClient(mesa.idMesa)}" var="client" id="updateMesa">
-                                            <h:form id="cerrar#{mesa.idMesa}">
-                                                <h5 class="card-title text-center">Familia: #{client.apellido}</h5>
-                                                <br/>
-                                                <center>
-                                                    <h:commandButton styleClass="btn btn-outline-light"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, mesa, mesa.sectorByIdSector.idSector)}">
-                                                        <f:ajax execute="@form" render=":repeatToUpdate mesaOcupada"/>
-                                                    </h:commandButton>
-                                                </center>
-                                            </h:form>
-                                        </ui:repeat>
-                                    </h:form>
-                                </div>
-                            </div>
-                        </ui:fragment>
-                    </div>
-                </ui:repeat>
+        <div class="container">
+            <div class="form-group narrow-div float-right" style="width: 25%;">
+                <h:form>
+                    <h:outputText value="Filtrar Sectores:" class="lead font-weight-bold"/>
+                    <h:selectOneMenu class="form-control float-right" id="ordenar" value="#{clientesManaged.idSector}" immediate="true">
+                        <f:selectItem itemLabel="Todas" itemValue="#{0}"/>
+                        <f:selectItems value="#{clientesManaged.modelo.listarMesaCliente(sessionScope.emple.codigo)}" var="s" itemLabel="#{s.mesasByIdMesa.sectorByIdSector.nombre}" itemValue="#{s.mesasByIdMesa.sectorByIdSector.idSector}"/>
+                        <f:ajax event="change" render=":updateOcupado" execute="ordenar" listener="#{clientesManaged.mesasMesero(sessionScope.emple.codigo)}"/>
+                    </h:selectOneMenu>
+                </h:form>
             </div>
+        </div>
+        <br/><br/><br/><br/>
+        <h:form id="updateOcupado" class="row">
+            <ui:repeat value="#{clientesManaged.mesasMesero(sessionScope.emple.codigo)}" var="client">
+                <div class="col-md-4">
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center"><b>Mesa: </b>##{client.mesasByIdMesa.idMesa} - <b>Capacidad:</b> #{client.mesasByIdMesa.capacidad} personas</div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Familia: #{client.apellido}</h5>
+                            <h5 class="card-title text-center">Código: #{client.codigoClient}</h5>
+                            <h5 class="card-title text-center">Atendido por: #{client.empleadoByCodigo.nombre1} #{client.empleadoByCodigo.apellido2}</h5>
+                            <br/>
+                            <center>
+                                <h:commandButton id="enviar" styleClass="btn btn-outline-light"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, client.mesasByIdMesa, client.mesasByIdMesa.sectorByIdSector.idSector)}">
+                                    <f:ajax execute="@form" render="updateOcupado"/>
+                                </h:commandButton>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+        </h:form>
     </ui:define>
 </ui:composition>

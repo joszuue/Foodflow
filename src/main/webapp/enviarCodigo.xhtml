@@ -10,7 +10,7 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-    <title>Inicio de Sesión</title>
+    <title>Restaurar Contraseña</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
@@ -25,18 +25,17 @@
         <div class="jumbotron">
             <h:form>
                 <div class="form-group">
-                    <h1 class="display-4 text-center">Inicio de Sesión</h1>
-                    <p:inputText  placeholder="Ingrese su código de empleado" styleClass="form-control" value="#{loginManaged.empleado.codigo}"/>
-                </div>
-                <div class="form-group">
-                    <p:password  placeholder="Ingrese su contraseña" styleClass="form-control" value="#{loginManaged.empleado.contraseña}"/>
+                    <h1 class="display-4 text-center">¿Tienes problemas para entrar?</h1>
+                    <center>
+                        <p class="lead" style="color: white">Introduce tu correo electrónico y te enviaremos un código para que cambies la contraseña de tu cuenta.</p>
+                    </center>
+                    <p:inputText placeholder="Correo electrónico" styleClass="form-control" value="#{empleadoManaged.correoContra}"/>
                 </div>
                 <p:messages id="messages" showDetail="true">
                     <p:autoUpdate/>
                 </p:messages>
                 <center>
-                    <h:commandButton value="Iniciar Sesión" class="btn btn-outline-light mr-5" action="#{loginManaged.login()}"/>
-                    <h:commandButton value="Olvide mi contraseña" class="btn btn-outline-danger" action="enviarCodigo"/>
+                    <h:commandButton value="Enviar" class="btn btn-outline-light" action="#{empleadoManaged.enviarCodigo()}"/>
                 </center>
             </h:form>
         </div>

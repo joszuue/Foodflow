@@ -3,6 +3,7 @@ package sv.foodflow.www.managedbeans;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import sv.foodflow.www.entities.CategoriasEntity;
 import sv.foodflow.www.entities.MesasEntity;
@@ -11,7 +12,7 @@ import sv.foodflow.www.models.CategoriaModel;
 import java.util.List;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class CategoriaManaged {
     CategoriaModel modelo = new CategoriaModel();
     private CategoriasEntity categoria;

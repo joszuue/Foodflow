@@ -3,6 +3,7 @@ package sv.foodflow.www.managedbeans;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import sv.foodflow.www.entities.SectorEntity;
 import sv.foodflow.www.models.SectorModel;
@@ -10,7 +11,7 @@ import sv.foodflow.www.models.SectorModel;
 import java.util.List;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class SectorManaged {
     private SectorEntity sector;
     SectorModel modelo = new SectorModel();
@@ -61,13 +62,19 @@ public class SectorManaged {
         sector = sectoor;
     }
 
-    public void eliminarSector(int id){
-        if (modelo.eliminarSector(id) > 0){
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El sector se ha eliminado correctamente."));
+    public void eliminarSector(SectorEntity sec){
+        if (modelo.obtenerMesa(sec.getIdSector()).size() == 0){
+            sec.setEstado("Eliminada");
+            if (modelo.modificarSector(sec) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "Se ha eliminado el sector."));
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El sector no se ha podido eliminar."));
+            }
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El sector no se ha podido eliminar porque posee mesas asociadas"));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El sector no se ha podido eliminar posee mesas asociadas"));
         }
         sector = new SectorEntity();
     }

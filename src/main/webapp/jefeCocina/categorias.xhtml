@@ -18,8 +18,10 @@
             <h:outputLabel for="nombre_de_categoria" styleClass="lead" value="Nombre de la categoria: "/>
             <h:inputText id="nombre_de_categoria" styleClass="form-control" value="${categoriaManaged.categoria.nombre}" validator="validaciones" />
             <br/>
-            <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
-            <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
+            <center>
+                <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
+                <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
+            </center>
         </h:form>
         <br/><br/>
         <div class="table-responsive">

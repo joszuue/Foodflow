@@ -20,18 +20,20 @@ public class ClientesManaged {
     private ClientesEntity cliente;
 
     private String ape;
+
+    private int idSector;
     public ClientesManaged(){
         cliente = new ClientesEntity();
     }
 
-    public String guardarCliente(MesasEntity mesa, int idSector) {
+    public void guardarCliente(MesasEntity mesa, int idSector, String codigoEmple) {
         if (cliente.getApellido().isEmpty()){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe de ingresar un apellido."));
         }else {
             cliente.setEstado("Activo");
             cliente.setCodigoClient(generarCodigo());
-            if (modelo.insertarCliente(cliente, mesa.getIdMesa()) != 1) {
+            if (modelo.insertarCliente(cliente, mesa.getIdMesa(), codigoEmple) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar."));
             } else {
@@ -42,10 +44,8 @@ public class ClientesManaged {
                         FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha registrado correctamente. El código de cliente es: " + cliente.getCodigoClient()));
             }
         }
-        return "/clientes?faces-redirect=true";
+        cliente = new ClientesEntity();
     }
-
-
 
     public String generarCodigo() {
         String caracteresPermitidos = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -59,6 +59,15 @@ public class ClientesManaged {
             codigo.append(caracterAleatorio);
         }
         return codigo.toString();
+    }
+
+    public List<ClientesEntity> mesasMesero(String codigo){
+        if (idSector == 0){
+            return modelo.listarMesaCliente(codigo);
+        }else {
+            return modelo.listarMesaSector(codigo,idSector);
+        }
+
     }
 
     public List<ClientesEntity> listClientes(){
@@ -121,5 +130,13 @@ public class ClientesManaged {
 
     public void setApe(String ape) {
         this.ape = ape;
+    }
+
+    public int getIdSector() {
+        return idSector;
+    }
+
+    public void setIdSector(int idSector) {
+        this.idSector = idSector;
     }
 }

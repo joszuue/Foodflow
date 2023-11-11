@@ -25,6 +25,22 @@ public class EmpleadoModel {
         }
     }
 
+    public EmpleadosEntity buscarCorreo(String correo) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("buscarCorreo");
+            consulta.setParameter("correo", correo); // Agregar parámetro
+            EmpleadosEntity empleado = (EmpleadosEntity) consulta.getSingleResult();
+            em.close();
+            return empleado;
+        } catch (Exception e) {
+            // Manejar otras excepciones
+            em.close();
+            return null;
+        }
+    }
+
+
     public int insertarEmpleado(EmpleadosEntity empleado) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();

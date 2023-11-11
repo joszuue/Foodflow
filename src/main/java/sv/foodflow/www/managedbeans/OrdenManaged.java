@@ -15,6 +15,8 @@ public class OrdenManaged {
     private OrdenEntity orden;
     private OrdenModel modelo = new OrdenModel();
 
+    private double totalCarrito;
+
     public OrdenManaged(){
         orden = new OrdenEntity();
     }
@@ -67,10 +69,16 @@ public class OrdenManaged {
         orden = new OrdenEntity();
     }
 
+    //OTRAS FUNCIONES
     public Date fecha(){
         Date fechaHoraActual = new Date();
         return fechaHoraActual;
     }
+
+    public void sumar(double subtotal){totalCarrito += subtotal;}
+
+    public void reiniciarSuma(){totalCarrito = 0;}
+
 
     public OrdenEntity getOrden() {
         return orden;
@@ -86,5 +94,13 @@ public class OrdenManaged {
 
     public void setModelo(OrdenModel modelo) {
         this.modelo = modelo;
+    }
+
+    public double getTotalCarrito() {
+        return totalCarrito;
+    }
+
+    public void setTotalCarrito(double totalCarrito) {
+        this.totalCarrito = totalCarrito;
     }
 }

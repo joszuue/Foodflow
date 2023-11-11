@@ -76,7 +76,8 @@
                             <h:selectOneMenu class="form-control" id="rol" value="#{empleadoManaged.empleado.rol}" >
                                 <f:selectItem itemValue="Mesero" itemLabel="Mesero" />
                                 <f:selectItem itemValue="Jefe de cocina" itemLabel="Jefe de cocina" />
-                                <f:selectItem itemValue="Admin" itemLabel="Administrador" />
+                                <f:selectItem itemValue="Administrador" itemLabel="Administrador" />
+                                <f:selectItem itemValue="Recepcionista" itemLabel="Recepcionista" />
                             </h:selectOneMenu>
                         </div>
                     </div>
@@ -159,7 +160,7 @@
                                     <h:panelGrid columns="3">
                                         <h:commandButton value="Ver perfil" class="btn btn-outline-success" action="#{empleadoManaged.verPerfil(emple)}"/>
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{empleadoManaged.data(emple)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple.codigo)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple)}"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

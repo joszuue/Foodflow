@@ -3,6 +3,7 @@ package sv.foodflow.www.managedbeans;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.RequestScoped;
+import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import org.mindrot.jbcrypt.BCrypt;
 import sv.foodflow.www.entities.EmpleadosEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 @ManagedBean
-@RequestScoped
+@SessionScoped
 public class MesasManaged {
     private MesasEntity mesa;
     MesasModel modelo = new MesasModel();
@@ -24,7 +25,7 @@ public class MesasManaged {
         mesa = new MesasEntity();
     }
 
-    private int idSector;
+    private int idSector = 0;
 
     public void guardarMesa() {
         mesa.setEstado("Disponible");
@@ -40,6 +41,16 @@ public class MesasManaged {
 
     public List<MesasEntity> listMesas(){
         return modelo.listarMesa();
+    }
+
+
+    public List<MesasEntity> mesasDisponibles(){
+        if (idSector == 0){
+            return modelo.mesasDisponibles();
+        }else {
+            return modelo.mesasDisponiblesSector(idSector);
+        }
+
     }
 
     public void modificarMesa(){
@@ -58,13 +69,19 @@ public class MesasManaged {
         idSector = id;
     }
 
-    public void eliminarMesa(int id){
-        if (modelo.eliminarMesa(id) > 0){
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha eliminado correctamente."));
+    public void eliminarMesa(MesasEntity mesaa, int idSector){
+        if (mesaa.getEstado().equals("Disponible")){
+            mesaa.setEstado("Eliminada");
+            if (modelo.modificarMesa(mesaa, idSector) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La mesa se ha eliminado correctamente."));
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se ha podido eliminar."));
+            }
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se ha podido eliminar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "La mesa no se puede eliminar ya que esta ocupada."));
         }
         mesa = new MesasEntity();
     }

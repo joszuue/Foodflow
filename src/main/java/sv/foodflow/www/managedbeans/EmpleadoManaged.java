@@ -9,7 +9,9 @@ import jakarta.faces.event.AjaxBehaviorEvent;
 import org.mindrot.jbcrypt.BCrypt;
 import sv.foodflow.www.entities.EmpleadosEntity;
 import sv.foodflow.www.models.EmpleadoModel;
+import sv.foodflow.www.utils.EnviarCorreo;
 
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,6 +26,12 @@ public class EmpleadoManaged {
     private String contraTemp2;
 
     private String contraTemp3;
+
+    private String codigoCorreo;
+
+    private String codigoCorreo2;
+
+    private String correoContra;
 
     private ArrayList<String> departamentoList = new ArrayList<>();
     private ArrayList<String> municipioList = new ArrayList<>();
@@ -42,6 +50,7 @@ public class EmpleadoManaged {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
             } else {
+                enviarCorreo();
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha registrado correctamente."));
             }
@@ -83,6 +92,19 @@ public class EmpleadoManaged {
         empleado = new EmpleadosEntity();
     }
 
+    public void eliminarEmpleado(EmpleadosEntity emple){
+        emple.setEstado("Eliminado");
+        if (modelo.modificarEmpleado(emple) == 1){
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha eliminado correctamente."));
+        }else {
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido eliminar."));
+        }
+        empleado = new EmpleadosEntity();
+    }
+
+    //OTRAS FUNCIONES
     public void data(EmpleadosEntity emple){
         empleado = emple;
     }
@@ -107,18 +129,6 @@ public class EmpleadoManaged {
         return "perfil.xhtml";
     }
 
-
-    public void eliminarEmpleado(String codigo){
-        if (modelo.eliminarEmpleado(codigo) > 0){
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha eliminado correctamente."));
-        }else {
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido eliminar."));
-        }
-        empleado = new EmpleadosEntity();
-    }
-
     public String cambiarContra(){
         String pagina = "";
         empleado = (EmpleadosEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emple");
@@ -130,14 +140,17 @@ public class EmpleadoManaged {
                     FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                             FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La contraseña se ha cambiado correctamente."));
                     switch (empleado.getRol()){
-                        case "Admin":
+                        case "Administrador":
                             pagina = "/admin/inicio?faces-redirect=true";
                             break;
-                        case "Cocina":
+                        case "Jefe de cocina":
                             pagina = "/jefeCocina/inicio?faces-redirect=true";
                             break;
                         case "Mesero":
                             pagina = "/mesero/inicio?faces-redirect=true";
+                            break;
+                        case "Recepcionista":
+                            pagina = "/recepcion/inicio?faces-redirect=true";
                             break;
                     }
                 }else {
@@ -155,6 +168,101 @@ public class EmpleadoManaged {
             pagina = "/contraseña?faces-redirect=true";
         }
         return pagina;
+    }
+
+    public String enviarCodigo(){
+        if (modelo.buscarCorreo(correoContra) == null){
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El correo no se encuentra registrado."));
+            return null;
+        }else {
+            codigoCorreo = generarCodigo();
+            String asunto = "Solicitud para restablecer contraseña de FoodFlow";
+            String contenido = "<center><img src='https://drive.google.com/uc?id=1DPULY6d7ITdJEzqXodn_b1eIFkV241vl' width='1000px' height='220px'/></center>"
+                    + "<h2>Hola, <b>" + correoContra + ".</b></h2>"
+                    + "<h2>Recibimos una solicitud para restablecer tu contraseña de FoodFlow.\n" +
+                    "Ingresa el siguiente código para restablecer la contraseña:</h2>"
+                    +"<center><h1>" + codigoCorreo +"</h1></center>"
+                    + "<img src='https://drive.google.com/uc?id=14amyQ84zTZ47460dx7vh3DC0wNSYkz9D'/>";
+            EnviarCorreo correo = new EnviarCorreo(correoContra, asunto, contenido);
+            correo.createEmail();
+            correo.sendEmail();
+            return "/confirmarCodigo?faces-redirect=true";
+        }
+    }
+
+    public String confirmarCodigo(){
+        if (codigoCorreo.equals(codigoCorreo2)){
+            return "/restablecerContra?faces-redirect=true";
+        }else{
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El código no coicide."));
+            return null;
+        }
+    }
+
+    public String restablecerContra(){
+        String pagina = "";
+        empleado = modelo.buscarCorreo(correoContra);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("emple", empleado);
+        if (contraTemp2.equals(contraTemp3)){
+            empleado.setContraseña(BCrypt.hashpw(contraTemp2, BCrypt.gensalt()));
+            empleado.setEstado("si");
+            if (modelo.modificarEmpleado(empleado) == 1){
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La contraseña se ha cambiado correctamente."));
+                switch (empleado.getRol()){
+                    case "Admin":
+                        pagina = "/admin/inicio?faces-redirect=true";
+                        break;
+                    case "Cocina":
+                        pagina = "/jefeCocina/inicio?faces-redirect=true";
+                        break;
+                    case "Mesero":
+                        pagina = "/mesero/inicio?faces-redirect=true";
+                        break;
+                }
+            }else {
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Ha ocurrido un error la contraseña no ha sido modificada."));
+            }
+        }else{
+            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Las nuevas contraseñas no coiciden."));
+        }
+        return pagina;
+    }
+
+    public String generarCodigo() {
+        String caracteresPermitidos = "0123456789";
+        int longitud = 6;
+        SecureRandom random = new SecureRandom();
+        StringBuilder codigo = new StringBuilder();
+
+        for (int i = 0; i < longitud; i++) {
+            int indice = random.nextInt(caracteresPermitidos.length());
+            char caracterAleatorio = caracteresPermitidos.charAt(indice);
+            codigo.append(caracterAleatorio);
+        }
+        return codigo.toString();
+    }
+
+
+    public void enviarCorreo() {
+        String asunto = "Credenciales para el acceso a FoodFlow";
+        String contenido = "<center><h1>Bienvenido/a a FoodFlow!!</h1></center>"
+                + "<center><img src='https://drive.google.com/uc?id=1DPULY6d7ITdJEzqXodn_b1eIFkV241vl' width='1000px' height='220px'/></center>"
+                + "<h2>Estimado/a <b>" + empleado.getNombre1() + " " + empleado.getNombre2() + " " + empleado.getApellido1() + " " + empleado.getApellido2() + ".</b></h2>"
+                + "<h2>Con el cargo de: <b>"+ empleado.getRol() +"</b></h2>"
+                + "<h2>Nos complace confirmar que tu registro en FoodFlow ha sido exitoso."
+                + "Bienvenido/a a nuestra comunidad de FoodFlow! A continuaci&oacute;n, encontrar&aacute;s "
+                + "tus credenciales temporales de inicio de sesi&oacute;n, posteriormente podras cambiar la contrase&ntilde;a:</h2>"
+                + "<h2><b>C&oacute;digo: </b>"+ empleado.getCodigo() +"</h2>"
+                + "<h2><b>Contrase&ntilde;a: </b>" + empleado.getCodigo() +"</h2>"
+                + "<img src='https://drive.google.com/uc?id=14amyQ84zTZ47460dx7vh3DC0wNSYkz9D'/>";
+        EnviarCorreo correo = new EnviarCorreo(empleado.getCorreo(), asunto, contenido);
+        correo.createEmail();
+        correo.sendEmail();
     }
 
     public EmpleadoModel getModelo() {
@@ -211,6 +319,30 @@ public class EmpleadoManaged {
 
     public void setMunicipioList(ArrayList<String> municipioList) {
         this.municipioList = municipioList;
+    }
+
+    public String getCorreoContra() {
+        return correoContra;
+    }
+
+    public void setCorreoContra(String correoContra) {
+        this.correoContra = correoContra;
+    }
+
+    public String getCodigoCorreo() {
+        return codigoCorreo;
+    }
+
+    public void setCodigoCorreo(String codigoCorreo) {
+        this.codigoCorreo = codigoCorreo;
+    }
+
+    public String getCodigoCorreo2() {
+        return codigoCorreo2;
+    }
+
+    public void setCodigoCorreo2(String codigoCorreo2) {
+        this.codigoCorreo2 = codigoCorreo2;
     }
 
     public void departamentos(){

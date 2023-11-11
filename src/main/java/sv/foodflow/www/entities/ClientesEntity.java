@@ -8,6 +8,8 @@ import java.util.Collection;
 @Table(name = "clientes", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="ClientesEntity.findAll", query = "SELECT c FROM ClientesEntity c"),
+        @NamedQuery(name="clientesMesa", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.empleadoByCodigo.codigo = :codigo"),
+        @NamedQuery(name="mesaSector", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.empleadoByCodigo.codigo = :codigo AND c.mesasByIdMesa.sectorByIdSector.idSector = :id"),
         @NamedQuery(name="ClientesEntity.findByMesa", query = "SELECT c FROM ClientesEntity c WHERE c.mesasByIdMesa = :idMesa AND c.estado = 'Activo'"),
         @NamedQuery(name="ClientesEntity.findByCodigoyEstado", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.codigoClient = :codigo")
 })
@@ -26,6 +28,10 @@ public class ClientesEntity {
     private MesasEntity mesasByIdMesa;
     @OneToMany(mappedBy = "clientesByCodigoClient")
     private Collection<OrdenEntity> ordensByCodigoClient;
+
+    @ManyToOne
+    @JoinColumn(name = "codigo", referencedColumnName = "codigo", nullable = false)
+    private EmpleadosEntity empleadoByCodigo;
 
     public String getApellido() {
         return apellido;
@@ -87,5 +93,11 @@ public class ClientesEntity {
         this.codigoClient = codigoClient;
     }
 
+    public EmpleadosEntity getEmpleadoByCodigo() {
+        return empleadoByCodigo;
+    }
 
+    public void setEmpleadoByCodigo(EmpleadosEntity empleadoByCodigo) {
+        this.empleadoByCodigo = empleadoByCodigo;
+    }
 }

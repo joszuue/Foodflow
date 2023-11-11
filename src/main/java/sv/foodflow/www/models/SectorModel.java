@@ -4,7 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import sv.foodflow.www.entities.MesasEntity;
+import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.entities.SectorEntity;
+import sv.foodflow.www.managedbeans.MesasManaged;
 import sv.foodflow.www.utils.JpaUtil;
 
 import java.util.List;
@@ -14,6 +17,19 @@ public class SectorModel {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             Query consulta = em.createNamedQuery("findAll");
+            List<SectorEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
+    public List<SectorEntity> listarSectoresMesas() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("showSector");
             List<SectorEntity> lista = consulta.getResultList();
             em.close();
             return lista;
@@ -84,6 +100,20 @@ public class SectorModel {
         } catch (Exception e) {
             em.close();
             return 0;
+        }
+    }
+
+    public List<MesasEntity> obtenerMesa(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("obtenerMesa");
+            consulta.setParameter("id", id);
+            List<MesasEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
         }
     }
 }

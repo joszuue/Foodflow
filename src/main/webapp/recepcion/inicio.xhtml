@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuRecepcion.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <ui:define name="content">
+        <h1 class="display-4">Hola #{sessionScope.emple.nombre1} #{sessionScope.emple.apellido1}!</h1>
+        <p class="lead">¡Bienvenid@ a FoodFlow! Aquí, podrás administrar aperturar y asignar una mesa a los clientes.</p>
+        <hr class="my-4"/>
+        <br/>
+        <center>
+        <div class="card-deck">
+            <div class="card">
+                <br/>
+                <h:commandLink action="empleados.xhtml">
+                    <h1 class="text-center movimiento"><i class="fa-solid fa-users fa-2xl" style="color: #45448d;"></i></h1>
+                </h:commandLink>
+                <div class="card-body">
+                    <h5 class="card-title lead text-center fade-text">CUENTA DE CLIENTES</h5>
+                </div>
+            </div>
+        </div>
+        </center>
+    </ui:define>
+</ui:composition>

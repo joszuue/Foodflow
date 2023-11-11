@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuRecepcion.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <h1 class="display-4 text-center">Registrar Clientes</h1>
+        <p class="lead">Las fichas en color verde son las mesas que se encuentran disponibles.</p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
+        <hr class="my-4"/>
+        <br/>
+        <div class="container">
+            <div class="form-group narrow-div float-right" style="width: 25%;">
+                <h:form>
+                    <h:outputText value="Filtrar Sectores:" class="lead font-weight-bold"/>
+                    <h:selectOneMenu class="form-control float-right" id="ordenar" value="#{mesasManaged.idSector}" immediate="true">
+                        <f:selectItem itemLabel="Todas" itemValue="#{0}"/>
+                        <f:selectItems value="#{sectorManaged.modelo.listarSectoresMesas()}" var="s" itemLabel="#{s.nombre}" itemValue="#{s.idSector}"/>
+                        <f:ajax event="change" render=":updateDisponible" execute="ordenar" listener="#{mesasManaged.mesasDisponibles()}"/>
+                    </h:selectOneMenu>
+                </h:form>
+            </div>
+        </div>
+        <br/><br/><br/><br/>
+        <h:form id="updateDisponible" class="row">
+            <ui:repeat value="#{mesasManaged.mesasDisponibles()}" var="mesa">
+                <div class="col-md-4">
+                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                        <div class="card-header text-center"><b>Mesa: </b>##{mesa.idMesa} - <b>Capacidad:</b> #{mesa.capacidad} personas</div>
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Registrar Cliente</h5>
+                            <h:outputLabel styleClass="lead" value="Apellido: "/>
+                            <h:inputText id="apellido" styleClass="form-control" value="#{clientesManaged.cliente.apellido}"/>
+                            <br/>
+                            <center>
+                                <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa, mesa.sectorByIdSector.idSector, sessionScope.emple.codigo)}">
+                                    <f:ajax execute="apellido" render="updateDisponible"/>
+                                </h:commandButton>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </ui:repeat>
+        </h:form>
+    </ui:define>
+</ui:composition>

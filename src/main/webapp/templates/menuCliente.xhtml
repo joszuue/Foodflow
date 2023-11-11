@@ -78,9 +78,11 @@
       <div class="bg-white mx-auto mt-l5 w-60pc border br-8 overflow-hidden">
          <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">
             <h3 class="black opacity-80">Listado de Compras</h3>
+
             <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
          </div>
          <div class="scrollable-content">
+            #{ordenManaged.reiniciarSuma()}
             <ui:repeat value="#{ordenManaged.modelo.carrito(sessionScope.cliente.codigoClient)}" var="carrito">
                <div class="flex m-l2">
                   <div class="w-100pc br-8 border m-3 flex items-stretch">
@@ -90,6 +92,7 @@
                         <h2 class="gray-darkest fs-m2 fw-600">Cantidad: #{carrito.cantidad}</h2>
                         <h2 class="gray-darkest fs-m2 fw-600">Precio unitario: $#{carrito.total}</h2>
                         <h2 class="gray-darkest fs-m2 fw-600">SubTotal: $#{carrito.total * carrito.cantidad}</h2>
+                        #{ordenManaged.sumar(carrito.total * carrito.cantidad)}
                         <p class="black">
                            Especificaciones:
                         </p>
@@ -160,6 +163,7 @@
             <h:form>
                <h:commandButton data-dismiss="modal" class="button bg-green" value="Enviar pedido" action="#{ordenManaged.realizarPedido(sessionScope.cliente.codigoClient)}"/>
             </h:form>
+            <h2 class="gray-darkest fs-m2 fw-600">TOTAL: $#{ordenManaged.totalCarrito}</h2>
             <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
          </div>
       </div>

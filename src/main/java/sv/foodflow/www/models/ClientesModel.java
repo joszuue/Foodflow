@@ -45,18 +45,50 @@ public class ClientesModel {
         }
     }
 
-    public int insertarCliente(ClientesEntity cliente, int idMesa) {
+    public List<ClientesEntity> listarMesaCliente(String codigo) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("clientesMesa");
+            consulta.setParameter("codigo", codigo);
+            List<ClientesEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
+    public List<ClientesEntity> listarMesaSector(String codigo, int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("mesaSector");
+            consulta.setParameter("codigo", codigo);
+            consulta.setParameter("id", id);
+            List<ClientesEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
+    public int insertarCliente(ClientesEntity cliente, int idMesa, String codigo) {
         MesasEntity mesaTemporal;
+        EmpleadosEntity empleTemporal;
 
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();
         try {
             //Encontrando las instancias de cada clave foranea
             mesaTemporal = em.find(MesasEntity.class,idMesa);
+            empleTemporal = em.find(EmpleadosEntity.class, codigo);
             tran.begin();//Iniciando transacción
 
             //Incluyendo en instancia de LibroEntity las instancias que corresponden a sus claves foraneas
             cliente.setMesasByIdMesa(mesaTemporal);
+            cliente.setEmpleadoByCodigo(empleTemporal);
             //Persistiendo entidad libro con todos los datos posibles asignados
             em.persist(cliente); //Guardando el objeto en la BD
             tran.commit();//Confirmando la transacción

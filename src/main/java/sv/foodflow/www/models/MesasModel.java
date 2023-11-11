@@ -22,6 +22,36 @@ public class MesasModel {
         }
     }
 
+    //MESAS PARA MESEROS Y RECEPCION
+    public List<MesasEntity> mesasDisponibles() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("disponibles");
+            List<MesasEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
+    public List<MesasEntity> mesasDisponiblesSector(int id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("disponiblesFiltradas");
+            consulta.setParameter("id", id);
+            List<MesasEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
+    //FIN
+
     public int insertarMesa(MesasEntity mesa, int idSector) {
         SectorEntity sector;
 
