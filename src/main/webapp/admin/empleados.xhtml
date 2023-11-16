@@ -155,17 +155,79 @@
                         <td>#{emple.apellido1} #{emple.apellido2}</td>
                         <td>#{emple.rol}</td>
                         <td>
-                            <h:form>
-                                <center>
+                            <center>
+                                <h:form>
                                     <h:panelGrid columns="3">
-                                        <h:commandButton value="Ver perfil" class="btn btn-outline-success" action="#{empleadoManaged.verPerfil(emple)}"/>
+                                        <a data-toggle="modal" data-target="#exampleModal#{emple.codigo}" class="btn btn-outline-success" href="#">Ver perfil</a>
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{empleadoManaged.data(emple)}"/>
                                         <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple)}"/>
                                     </h:panelGrid>
-                                </center>
-                            </h:form>
+                                </h:form>
+                            </center>
                         </td>
                     </tr>
+                    <div class="modal fade" id="exampleModal#{emple.codigo}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Información General</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">x</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="container">
+                                        <br/>
+                                        <h1 class="display-4 text-center">#{emple.nombre1} #{emple.nombre2} #{emple.apellido1} #{emple.apellido2}</h1>
+                                        <p class="lead text-center">#{emple.codigo}</p>
+                                        <hr class="my-4"/>
+                                        <h1 class="display-4">Datos Básicos</h1>
+                                        <dl class="row lead">
+                                            <dt class="col-sm-5 text-right">Documento Único de identidad (DUI):</dt>
+                                            <dd class="col-sm-7">#{emple.dui}</dd>
+
+                                            <dt class="col-sm-5 text-right">Fecha de nacimiento:</dt>
+                                            <dd class="col-sm-7">#{emple.fechaNac}</dd>
+
+                                            <dt class="col-sm-5 text-right">Sexo:</dt>
+                                            <dd class="col-sm-7">#{emple.sexo}</dd>
+
+                                            <dt class="col-sm-5 text-right">Cargo:</dt>
+                                            <dd class="col-sm-7">#{emple.rol}</dd>
+                                        </dl>
+                                        <hr class="my-4"/>
+                                        <h1 class="display-4">Datos Generales</h1>
+                                        <dl class="row lead">
+                                            <dt class="col-sm-5 text-right">Dirección:</dt>
+                                            <dd class="col-sm-7">#{emple.direccion}</dd>
+
+                                            <dt class="col-sm-5 text-right">Departamento:</dt>
+                                            <dd class="col-sm-7">#{emple.departamento}</dd>
+
+                                            <dt class="col-sm-5 text-right">Municipio:</dt>
+                                            <dd class="col-sm-7">#{emple.municipio}</dd>
+
+                                            <dt class="col-sm-5 text-right">Estado civil:</dt>
+                                            <dd class="col-sm-7">#{emple.estadoCivil}</dd>
+                                        </dl>
+                                        <hr class="my-4"/>
+                                        <h1 class="display-4">Datos de Contacto</h1>
+                                        <dl class="row lead">
+                                            <dt class="col-sm-5 text-right">Telefono:</dt>
+                                            <dd class="col-sm-7">#{emple.telefono}</dd>
+
+                                            <dt class="col-sm-5 text-right">Correo electrónico:</dt>
+                                            <dd class="col-sm-7">#{emple.correo}</dd>
+                                        </dl>
+                                        <br/>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </ui:repeat>
                 </tbody>
             </table>

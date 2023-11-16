@@ -285,7 +285,6 @@ public class OrdenModel {
                 ") Meses\n" +
                 "LEFT JOIN orden ON Meses.NumeroMes = MONTH(fecha) AND estado = 'Finalizado' AND YEAR(fecha) = " +anio+" GROUP BY Mes";
         Query query = em.createNativeQuery(nativeQuery);
-        @SuppressWarnings("unchecked")
         List<Object[]> result = query.getResultList();
         return result;
     }
@@ -303,10 +302,9 @@ public class OrdenModel {
 
     public List<Object[]> años() {
         EntityManager em = JpaUtil.getEntityManager();
-        String nativeQuery = "SELECT DISTINCT YEAR(orden.fecha) AS Anio FROM orden WHERE orden.estado = 'Finalizado'";
+        String nativeQuery = "SELECT DISTINCT YEAR(orden.fecha) AS Anio FROM orden WHERE orden.estado = 'Finalizado' ORDER BY Anio DESC";
         Query query = em.createNativeQuery(nativeQuery);
 
-        @SuppressWarnings("unchecked")
         List<Object[]> result = query.getResultList();
         return result;
     }

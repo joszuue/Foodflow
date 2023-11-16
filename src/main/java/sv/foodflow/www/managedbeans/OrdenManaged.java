@@ -38,7 +38,7 @@ public class OrdenManaged {
 
     private int idProdu = 0;
 
-    private int anioo = anioActual();
+    private int anioo = 0;
 
     public OrdenManaged(){
         orden = new OrdenEntity();
@@ -181,7 +181,12 @@ public class OrdenManaged {
     //INFORME MENSUAL
 
     public List<Object[]> informeMensual(){
-        return modelo.generarReporteMensual(anioo);
+        if (anioo == 0){
+            return modelo.generarReporteMensual(anioActual());
+        }else {
+            return modelo.generarReporteMensual(anioo);
+        }
+
     }
 
     public int anioActual(){

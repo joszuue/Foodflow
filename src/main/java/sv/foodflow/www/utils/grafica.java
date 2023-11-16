@@ -31,9 +31,10 @@ public class grafica implements Serializable {
 
     private DonutChartModel donutModel;
 
+
     private BarChartModel mixedModel;
-    private String fecha1 = "no";
-    private String fecha2 = "no";
+
+
 
     private List<OrdenEntity> listInforme;
 
@@ -48,16 +49,6 @@ public class grafica implements Serializable {
     public void init() {
         createDonutModel();
         createMixedModel();
-    }
-
-    public List<OrdenEntity> reporte(int id){
-        if (fecha1.equals("no") && fecha2.equals("no")){
-            return modelo.reporte(id);
-        }else{
-            fecha1 = ""+fecha1.replace("T", " ")+":00";
-            fecha2 = ""+fecha2.replace("T", " ")+":00";
-            return modelo.reporte2(id, fecha1, fecha2);
-        }
     }
 
     //GRAFICAS PRINCIPALES DE VENTAS
@@ -79,17 +70,21 @@ public class grafica implements Serializable {
         donutModel.setOptions(options);
 
         DonutChartDataSet dataSet = new DonutChartDataSet();
-
-        List<Number> copy = new ArrayList<>(values);
-        Collections.sort(copy, Collections.reverseOrder());
-        List<Number> topNNumbers = copy.subList(0, Math.min(4, copy.size()));
-
-        dataSet.setData(topNNumbers);
+        dataSet.setData(values);
 
         List<String> bgColors = new ArrayList<>();
-        bgColors.add("rgb(255, 99, 132)");
-        bgColors.add("rgb(54, 162, 235)");
-        bgColors.add("rgb(255, 205, 86)");
+        bgColors.add("rgb(205, 97, 85)");
+        bgColors.add("rgb(241, 148, 138)");
+        bgColors.add("rgb(175, 122, 197)");
+        bgColors.add("rgb(142, 68, 173)");
+        bgColors.add("rgb(84, 153, 199)");
+        bgColors.add("rgb(133, 193, 233)");
+        bgColors.add("rgb(22, 160, 133)");
+        bgColors.add("rgb(72, 201, 176)");
+        bgColors.add("rgb(82, 190, 128)");
+        bgColors.add("rgb(244, 208, 63)");
+        bgColors.add("rgb(243, 156, 18)");
+        bgColors.add("rgb(220, 118, 51)");
         dataSet.setBackgroundColor(bgColors);
 
         data.addChartDataSet(dataSet);
@@ -103,34 +98,12 @@ public class grafica implements Serializable {
         ChartData data = new ChartData();
 
         BarChartDataSet dataSet = new BarChartDataSet();
-        values.add(10);
-        values.add(20);
-        values.add(30);
-        values.add(40);
         dataSet.setData(values);
-        dataSet.setLabel("Bar Dataset");
+        dataSet.setLabel("Ganancia $");
         dataSet.setBorderColor("rgb(255, 99, 132)");
         dataSet.setBackgroundColor("rgba(255, 99, 132, 0.2)");
 
-        LineChartDataSet dataSet2 = new LineChartDataSet();
-        List<Object> values2 = new ArrayList<>();
-        values2.add(50);
-        values2.add(50);
-        values2.add(50);
-        values2.add(50);
-        dataSet2.setData(values2);
-        dataSet2.setLabel("Line Dataset");
-        dataSet2.setFill(false);
-        dataSet2.setBorderColor("rgb(54, 162, 235)");
-
         data.addChartDataSet(dataSet);
-        data.addChartDataSet(dataSet2);
-
-        List<String> labels = new ArrayList<>();
-        labels.add("January");
-        labels.add("February");
-        labels.add("March");
-        labels.add("April");
         data.setLabels(labels);
 
         mixedModel.setData(data);
@@ -149,28 +122,13 @@ public class grafica implements Serializable {
         mixedModel.setOptions(options);
     }
 
+
     public DonutChartModel getDonutModel() {
         return donutModel;
     }
 
     public void setDonutModel(DonutChartModel donutModel) {
         this.donutModel = donutModel;
-    }
-
-    public String getFecha1() {
-        return fecha1;
-    }
-
-    public void setFecha1(String fecha1) {
-        this.fecha1 = fecha1;
-    }
-
-    public String getFecha2() {
-        return fecha2;
-    }
-
-    public void setFecha2(String fecha2) {
-        this.fecha2 = fecha2;
     }
 
     public List<OrdenEntity> getListInforme() {
@@ -196,4 +154,5 @@ public class grafica implements Serializable {
     public void setMixedModel(BarChartModel mixedModel) {
         this.mixedModel = mixedModel;
     }
+
 }

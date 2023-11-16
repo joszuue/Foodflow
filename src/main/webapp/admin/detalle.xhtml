@@ -42,6 +42,9 @@
             </h:form>
         </div>
         <br/><br/><br/><br/>
+        <h:form>
+            <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('detalle',0)}" class="btn btn-outline-success"/>
+        </h:form>
         <h:form id="detalle">
             <table class="table text-center">
                 <thead class="thead-dark">
@@ -56,6 +59,7 @@
                 </thead>
                 <tbody>
                 #{ordenManaged.reiniciarSuma2()}
+                #{descargarReporte.limpiarLista()}
                 <ui:repeat value="#{ordenManaged.listDetalle(param['id'])}" var="p" varStatus="loop">
                     <tr>
                         <th scope="row">#{loop.index+1}</th>
@@ -68,6 +72,7 @@
                         #{ordenManaged.totalRepor(p.total * p.cantidad)}
                         <td>$#{ordenManaged.totalCarrito}</td>
                     </tr>
+                    #{descargarReporte.listaDetalle(loop.index+1, p.productosByIdProducto.nombre, p.fecha.replace("T", " "), p.total, p.cantidad, ordenManaged.totalCarrito)}
                 </ui:repeat>
                 </tbody>
             </table>

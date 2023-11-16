@@ -33,64 +33,70 @@
             <ui:fragment rendered="#{sessionScope.emple.rol eq 'Administrador'}">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/inicio.xhtml">Inicio</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="empleados.xhtml">Empleados</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/empleados.xhtml">Empleados</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="mesas.xhtml">Mesas</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/mesas.xhtml">Mesas</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="sectores.xhtml">Sectores</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/sectores.xhtml">Sectores</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="#">Ventas</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/ventas.xhtml">Ventas</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="productos.xhtml">Productos</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="admin/productos.xhtml">Productos</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value="perfil.xhtml">Mi perfil</h:outputLink>
                     </li>
                 </ul>
             </ui:fragment>
             <ui:fragment rendered="#{sessionScope.emple.rol eq 'Jefe de cocina'}">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="jefeCocina/inicio.xhtml">Inicio</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="categorias.xhtml">Gestionar Categorias</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="jefeCocina/categorias.xhtml">Gestionar Categorias</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="productos.xhtml">Gestionar Productos</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="jefeCocina/productos.xhtml">Gestionar Productos</h:outputLink>
                     </li>
                     <li class="nav-item active">
                         <h:outputLink styleClass="nav-link" value="#">Pedidos</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="../contra.xhtml">Cambiar Contraseña</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="perfil.xhtml">Mi perfil</h:outputLink>
                     </li>
                 </ul>
             </ui:fragment>
             <ui:fragment rendered="#{sessionScope.emple.rol eq 'Mesero'}">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="mesero/inicio.xhtml">Inicio</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="clientes.xhtml">Cuenta de Clientes</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="mesero/clientes.xhtml">Cuenta de Clientes</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="../contra.xhtml">Cambiar Contraseña</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="perfil.xhtml">Mi perfil</h:outputLink>
                     </li>
                 </ul>
             </ui:fragment>
             <ui:fragment rendered="#{sessionScope.emple.rol eq 'Recepcionista'}">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="inicio.xhtml">Inicio</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="recepcion/inicio.xhtml">Inicio</h:outputLink>
                     </li>
                     <li class="nav-item active">
-                        <h:outputLink styleClass="nav-link" value="crearCliente.xhtml">Asignar Mesa</h:outputLink>
+                        <h:outputLink styleClass="nav-link" value="recepcion/crearCliente.xhtml">Asignar Mesa</h:outputLink>
+                    </li>
+                    <li class="nav-item active">
+                        <h:outputLink styleClass="nav-link" value=" perfil.xhtml">Mi perfil</h:outputLink>
                     </li>
                 </ul>
             </ui:fragment>

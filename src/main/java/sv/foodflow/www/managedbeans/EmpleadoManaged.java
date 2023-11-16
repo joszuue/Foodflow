@@ -118,17 +118,6 @@ public class EmpleadoManaged {
         empleado = new EmpleadosEntity();
     }
 
-    public String regresar(){
-        empleado = new EmpleadosEntity();
-        return "empleados.xhtml";
-    }
-
-    public String verPerfil(EmpleadosEntity emple) {
-        this.empleado = emple;
-        // Realiza alguna lógica aquí si es necesario
-        return "perfil.xhtml";
-    }
-
     public String cambiarContra(){
         String pagina = "";
         empleado = (EmpleadosEntity) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("emple");
