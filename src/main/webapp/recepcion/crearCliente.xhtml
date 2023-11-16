@@ -35,15 +35,43 @@
                             <h:outputLabel styleClass="lead" value="Apellido: "/>
                             <h:inputText id="apellido" styleClass="form-control" value="#{clientesManaged.cliente.apellido}"/>
                             <br/>
+                            <h:outputLabel styleClass="lead" value="Mesero: "/>
+                            <h:selectOneMenu id="mesero" styleClass="form-control" value="#{clientesManaged.codigoMesero}">
+                                <f:selectItems value="#{empleadoManaged.modelo.listarMeseros()}" var="e" itemValue="#{e.codigo}" itemLabel="#{e.nombre1} #{e.apellido1}"/>
+                            </h:selectOneMenu>
+                            <br/>
                             <center>
-                                <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa, mesa.sectorByIdSector.idSector, sessionScope.emple.codigo)}">
-                                    <f:ajax execute="apellido" render="updateDisponible"/>
+                                <h:commandButton styleClass="btn btn-outline-light"  value="Aperturar Cuenta" action="#{clientesManaged.guardarCliente(mesa, mesa.sectorByIdSector.idSector)}">
+                                    <f:ajax execute="apellido mesero" render="updateDisponible :meserosYmesas"/>
                                 </h:commandButton>
                             </center>
                         </div>
                     </div>
                 </div>
             </ui:repeat>
+        </h:form>
+        <h:form id="meserosYmesas">
+            <div class="custom-modal" id="customModal">
+                <span class="close-modal" onclick="toggleCustomModal()">x</span>
+                <ui:repeat value="#{empleadoManaged.modelo.listarMeseros()}" var="e" >
+                    <ui:repeat value="#{clientesManaged.modelo.listarMesaCliente(e.codigo)}" var="f" varStatus="loop">
+                        <ui:fragment rendered="#{loop.last}">
+                            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                                <div class="card-header">#{e.codigo}</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">#{e.nombre1} #{e.nombre2} #{e.apellido1} #{e.apellido2}</h5>
+                                    <p class="card-text"><b>Cantidad de mesas:</b> #{loop.index + 1}</p>
+                                </div>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{clientesManaged.modelo.listarMesaCliente(e.codigo).size() == 0}">
+                            <h1 class="lead"><b>No hay clientes activos.</b></h1>
+                        </ui:fragment>
+                    </ui:repeat>
+                </ui:repeat>
+            </div>
+
+            <div class="overlay" id="overlay" onclick="toggleCustomModal()"></div>
         </h:form>
     </ui:define>
 </ui:composition>

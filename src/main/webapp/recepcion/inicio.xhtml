@@ -20,5 +20,28 @@
             </div>
         </div>
         </center>
+        <h:form id="meserosYmesas">
+            <div class="custom-modal" id="customModal">
+                <span class="close-modal" onclick="toggleCustomModal()"><b>X</b></span>
+                <ui:repeat value="#{empleadoManaged.modelo.listarMeseros()}" var="e" >
+                    <ui:repeat value="#{clientesManaged.modelo.listarMesaCliente(e.codigo)}" var="f" varStatus="loop">
+                        <ui:fragment rendered="#{loop.last}">
+                            <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                                <div class="card-header">#{e.codigo}</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">#{e.nombre1} #{e.nombre2} #{e.apellido1} #{e.apellido2}</h5>
+                                    <p class="card-text"><b>Cantidad de mesas:</b> #{loop.index + 1}</p>
+                                </div>
+                            </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{clientesManaged.modelo.listarMesaCliente(e.codigo).size() == 0}">
+                            <h1 class="lead"><b>No hay clientes activos.</b></h1>
+                        </ui:fragment>
+                    </ui:repeat>
+                </ui:repeat>
+            </div>
+
+            <div class="overlay" id="overlay" onclick="toggleCustomModal()"></div>
+        </h:form>
     </ui:define>
 </ui:composition>

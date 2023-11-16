@@ -54,6 +54,9 @@ public class LoginManaged {
                             case "Recepcionista":
                                 pagina = "/recepcion/inicio?faces-redirect=true";
                                 break;
+                            case "Pedidos":
+                                pagina = "/pedidos/pedidos?faces-redirect=true";
+                                break;
                         }
                     }
                 }

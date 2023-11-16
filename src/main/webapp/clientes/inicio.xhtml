@@ -86,7 +86,7 @@
 
                     </div>
                     <div class="px-5 py-3 border-t flex justify-between items-center">
-                        <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,populares.productosByIdProducto.idProducto,populares.productosByIdProducto.precio)}">
+                        <h:commandButton data-dismiss="modal" class="button bg-green" value="Guardar Orden" action="#{ordenManaged.carrito(sessionScope.cliente.codigoClient,populares.productosByIdProducto.idProducto,populares.productosByIdProducto.precio, produ.tiempo)}">
                             <f:ajax execute="comentario cantidad" render="@all"/>
                         </h:commandButton>
                         <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>

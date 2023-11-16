@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuAdmin.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="content">
+        #{ordenManaged.reiniciarFecha()}
+        <h1 class="text-center display-4">Ventas</h1>
+        <p class="lead">En este apartado podrás visualizar un informe sobre las ventas que se han realizado.
+        </p>
+        <hr class="my-4"/>
+        <br/>
+        <h1 class="text-center display-4">Detalle del producto: #{param['nombre']}</h1>
+        <br/>
+        <div class="container">
+            <h:form styleClass="float-right" id="formulario2">
+                <h:outputText value="Filtrar información:" class="lead font-weight-bold"/>
+                <div class="form-row">
+                    <div class="col">
+                        <h:outputLabel for="fecha1" styleClass="lead" value="Fecha de inicio: "/>
+                        <h:inputText id="fecha1" a:type="datetime-local" value="#{ordenManaged.fecha1}" styleClass="form-control"/>
+                    </div>
+                    <div class="col">
+                        <h:outputLabel for="fecha2" styleClass="lead" value="Fecha de fin: "/>
+                        <h:inputText id="fecha2" a:type="datetime-local" value="#{ordenManaged.fecha2}" styleClass="form-control"/>
+                    </div>
+                    <h:inputHidden id="idd" value="#{ordenManaged.idProdu = param['id']}"/>
+                    <div class="col">
+                        <br/>
+                        <h:commandButton value="Filtrar" class="btn btn-outline-primary mr-2" id="filtrarr">
+                            <f:ajax event="click" render=":detalle" execute="fecha1 fecha2 idd filtrarr " listener="#{ordenManaged.listDetalle(param['id'])}"/>
+                        </h:commandButton>
+
+                        <h:commandButton value="Todas" class="btn btn-outline-primary" id="todaas">
+                            <f:ajax event="click" render=":detalle" execute="todaas" listener="#{ordenManaged.reiniciarFecha()}"/>
+                        </h:commandButton>
+                    </div>
+                </div>
+                <br/><br/>
+            </h:form>
+        </div>
+        <br/><br/><br/><br/>
+        <h:form id="detalle">
+            <table class="table text-center">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                #{ordenManaged.reiniciarSuma2()}
+                <ui:repeat value="#{ordenManaged.listDetalle(param['id'])}" var="p" varStatus="loop">
+                    <tr>
+                        <th scope="row">#{loop.index+1}</th>
+                        <td>#{p.productosByIdProducto.nombre}</td>
+                        <td>#{p.fecha.replace("T", " ")}</td>
+                        <td>$#{p.total}</td>
+                        <td>#{p.cantidad}</td>
+                        #{ordenManaged.reiniciarSuma()}
+                        #{ordenManaged.sumar(p.total * p.cantidad)}
+                        #{ordenManaged.totalRepor(p.total * p.cantidad)}
+                        <td>$#{ordenManaged.totalCarrito}</td>
+                    </tr>
+                </ui:repeat>
+                </tbody>
+            </table>
+            <br/>
+            <h1 class="lead text-center"><b>VENTA TOTAL: $#{ordenManaged.totalReporte}</b></h1>
+            <br/>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -159,6 +159,9 @@ public class ProductoManaged {
             if (nombreTempImg != null){
                 if (validarFormato() == true){
                     producto.setImagen(guardarImagen());
+                    if (producto.getEstado().equals("Rechazado")){
+                        producto.setEstado("Pendiente");
+                    }
                     if (modelo.modificarProducto(producto, idCategoria) == 1){
                         FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                                 FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto se ha modificado correctamente."));

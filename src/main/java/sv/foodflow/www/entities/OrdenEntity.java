@@ -4,15 +4,24 @@ import jakarta.persistence.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
 @Table(name = "orden", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="carrito", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Carrito' AND o.clientesByCodigoClient.codigoClient = :id"),
-        @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' ORDER BY o.idOrden ASC"),
+        @NamedQuery(name="ordenes", query = "SELECT o FROM OrdenEntity o WHERE o.estado = :estado AND o.clientesByCodigoClient.codigoClient = :id"),
+        @NamedQuery(name="pedidos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = :estado"),
+        @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado <> 'Finalizado' AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'"),
-        @NamedQuery(name = "populares", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' GROUP BY o.productosByIdProducto.idProducto ORDER BY SUM(o.cantidad) DESC")
+        @NamedQuery(name = "populares", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' OR o.estado = 'Entregado' OR o.estado = 'Finalizado' GROUP BY o.productosByIdProducto.idProducto ORDER BY SUM(o.cantidad) DESC"),
+        @NamedQuery(name="cerrarOrden", query = "UPDATE OrdenEntity o SET o.estado = :estado WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Entregado'"),
+        @NamedQuery(name="productosReporte", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Finalizado' AND o.fecha >= :fecha1 AND o.fecha <= :fecha2 GROUP BY o.productosByIdProducto.idProducto"),
+        @NamedQuery(name="productosReporte2", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Finalizado' GROUP BY o.productosByIdProducto.idProducto"),
+        @NamedQuery(name="detalle", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Finalizado' AND o.fecha >= :fecha1 AND o.fecha <= :fecha2 AND o.productosByIdProducto.idProducto = :id"),
+        @NamedQuery(name="detalle2", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Finalizado' AND o.productosByIdProducto.idProducto = :id"),
+        @NamedQuery(name="reporte", query = "SELECT o FROM OrdenEntity o WHERE o.productosByIdProducto.idProducto = :id AND o.estado = 'Finalizado'"),
+        @NamedQuery(name="reporte2", query = "SELECT o FROM OrdenEntity o WHERE o.productosByIdProducto.idProducto = :id AND o.fecha >= :fecha1 AND o.fecha <= :fecha2 AND o.estado = 'Finalizado'")
 })
 public class OrdenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +33,10 @@ public class OrdenEntity {
     private int cantidad;
     @Basic
     @Column(name = "fecha", nullable = false)
-    private Date fecha;
+    private String fecha;
     @Basic
     @Column(name = "tiempoEspera", nullable = true)
-    private Time tiempoEspera;
+    private LocalTime tiempoEspera;
     @Basic
     @Column(name = "total", nullable = false, precision = 0)
     private double total;
@@ -60,19 +69,19 @@ public class OrdenEntity {
         this.cantidad = cantidad;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public Time getTiempoEspera() {
+    public LocalTime getTiempoEspera() {
         return tiempoEspera;
     }
 
-    public void setTiempoEspera(Time tiempoEspera) {
+    public void setTiempoEspera(LocalTime tiempoEspera) {
         this.tiempoEspera = tiempoEspera;
     }
 

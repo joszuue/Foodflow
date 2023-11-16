@@ -2,6 +2,7 @@ package sv.foodflow.www.entities;
 
 import jakarta.persistence.*;
 
+import java.sql.Time;
 import java.util.Collection;
 
 @Entity
@@ -32,6 +33,10 @@ public class ProductosEntity {
     @Basic
     @Column(name = "estado", nullable = false, length = 25)
     private String estado;
+
+    @Basic
+    @Column(name = "tiempo", nullable = false)
+    private String tiempo;
     @OneToMany(mappedBy = "productosByIdProducto")
     private Collection<OrdenEntity> ordensByIdProducto;
     @ManyToOne
@@ -84,6 +89,14 @@ public class ProductosEntity {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
     }
 
     @Override

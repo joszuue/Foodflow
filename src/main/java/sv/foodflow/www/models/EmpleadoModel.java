@@ -25,6 +25,19 @@ public class EmpleadoModel {
         }
     }
 
+    public List<EmpleadosEntity> listarMeseros() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("meseros");
+            List<EmpleadosEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public EmpleadosEntity buscarCorreo(String correo) {
         EntityManager em = JpaUtil.getEntityManager();
         try {

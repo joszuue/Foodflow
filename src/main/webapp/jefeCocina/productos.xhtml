@@ -3,7 +3,8 @@
                 template="../templates/menuCocina.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <ui:define name="content">
         <h1 class="text-center display-4">Gestionar Productos</h1>
         <p class="lead">En este apartado usted podrá crear, actualizar o eliminar productos que se mostraran en el menú, en la parte inferior usted puede visualizar los productos que se encuentran registrados.
@@ -23,9 +24,13 @@
             <h:inputText id="descripción_del_producto" styleClass="form-control" value="${productoManaged.producto.descripcion}" validator="validaciones"/>
             <br/>
             <h:outputLabel for="precio_del_producto" styleClass="lead" value="Precio del producto: "/>
-            <br/>
+            <br/><br/>
             <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" disabled="#{productoManaged.producto.estado eq 'Aceptado'}"/>
             <br/><br/>
+            <h:outputLabel for="tiempo_preparacion" styleClass="lead" value="Tiempo de espera: "/>
+            <span>Tiempo aproximado de espera para este producto.</span>
+            <h:inputText id="tiempo_preparacion" a:type="time" value="#{productoManaged.producto.tiempo}" validator="validaciones" styleClass="form-control"/>
+            <br/>
             <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
             <div class="custom-file">
                 <h:inputFile id="imagen" class="custom-file-input" lang="es" value="${productoManaged.nombreTempImg}"/>

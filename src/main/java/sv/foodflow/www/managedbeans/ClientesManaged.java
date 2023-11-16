@@ -9,8 +9,10 @@ import sv.foodflow.www.entities.ClientesEntity;
 import sv.foodflow.www.entities.MesasEntity;
 import sv.foodflow.www.models.ClientesModel;
 import sv.foodflow.www.models.MesasModel;
+import sv.foodflow.www.models.OrdenModel;
 
 import java.security.SecureRandom;
+import java.util.Date;
 import java.util.List;
 
 @ManagedBean
@@ -22,18 +24,21 @@ public class ClientesManaged {
     private String ape;
 
     private int idSector;
+
+    private String codigoMesero;
+
     public ClientesManaged(){
         cliente = new ClientesEntity();
     }
 
-    public void guardarCliente(MesasEntity mesa, int idSector, String codigoEmple) {
+    public void guardarCliente(MesasEntity mesa, int idSector) {
         if (cliente.getApellido().isEmpty()){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Debe de ingresar un apellido."));
         }else {
             cliente.setEstado("Activo");
             cliente.setCodigoClient(generarCodigo());
-            if (modelo.insertarCliente(cliente, mesa.getIdMesa(), codigoEmple) != 1) {
+            if (modelo.insertarCliente(cliente, mesa.getIdMesa(), codigoMesero) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar."));
             } else {
@@ -93,12 +98,16 @@ public class ClientesManaged {
         cliente = client;
     }
 
-    public void cerrarCuenta(ClientesEntity client, MesasEntity mesas, int idSector){
+    public void cerrarCuenta(ClientesEntity client, MesasEntity mesas, int idSector, Date fecha){
         client.setEstado("Inactivo");
         if (modelo.modificarCliente(client) == 1){
             MesasModel mesasModel = new MesasModel();
+            OrdenModel ordenModel = new OrdenModel();
+
             mesas.setEstado("Disponible");
             mesasModel.modificarMesa(mesas, idSector);
+            ordenModel.cerrarOrden("Finalizado", client.getCodigoClient());
+
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La cuenta del cliente ha sido cerrada correctamente."));
         }else {
@@ -107,6 +116,7 @@ public class ClientesManaged {
         }
         cliente = new ClientesEntity();
     }
+
 
     public ClientesModel getModelo() {
         return modelo;
@@ -139,4 +149,13 @@ public class ClientesManaged {
     public void setIdSector(int idSector) {
         this.idSector = idSector;
     }
+
+    public String getCodigoMesero() {
+        return codigoMesero;
+    }
+
+    public void setCodigoMesero(String codigoMesero) {
+        this.codigoMesero = codigoMesero;
+    }
+
 }

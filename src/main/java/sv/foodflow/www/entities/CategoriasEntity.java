@@ -9,7 +9,7 @@ import java.util.Collection;
 @NamedQueries({
         @NamedQuery(name="CategoriasEntity.findAll", query = "SELECT c FROM CategoriasEntity c WHERE c.estado = 'Disponible'"),
         @NamedQuery(name="CategoriasEntity.ValidateCate", query = "SELECT c FROM CategoriasEntity c WHERE c.nombre = :nombre and c.estado = 'Disponible'"),
-        @NamedQuery(name="showCategoria", query = "SELECT DISTINCT c FROM CategoriasEntity c JOIN c.productosByIdCategoria p  WHERE c.estado = 'Disponible'")
+        @NamedQuery(name="showCategoria", query = "SELECT DISTINCT c FROM CategoriasEntity c JOIN c.productosByIdCategoria p  WHERE c.estado = 'Disponible' AND p.estado = 'Aceptado'")
 })
 public class CategoriasEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

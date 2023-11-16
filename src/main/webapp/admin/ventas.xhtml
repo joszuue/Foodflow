@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../templates/menuAdmin.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:define name="content">
+        #{ordenManaged.reiniciarFecha()}
+        <h1 class="text-center display-4">Ventas</h1>
+        <p class="lead">En este apartado podrás visualizar un informe sobre las ventas que se han realizado.
+        </p>
+        <p:messages id="messages" showDetail="true" showIcon="false">
+            <p:autoUpdate/>
+        </p:messages>
+        <hr class="my-4"/>
+        <br/>
+        <ul class="nav nav-tabs" id="pills-tab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Informe por productos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Informe de ventas</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <br/>
+                <h1 class="text-center display-4">Informe por productos</h1>
+                <br/>
+                <div class="container">
+                    <h:form styleClass="float-right" id="formulario">
+                        <h:outputText value="Filtrar información:" class="lead font-weight-bold"/>
+                        <div class="form-row">
+                            <div class="col">
+                                <h:outputLabel for="fecha1" styleClass="lead" value="Fecha de inicio: "/>
+                                <h:inputText id="fecha1" a:type="datetime-local" value="#{ordenManaged.fecha1}" styleClass="form-control"/>
+                            </div>
+                            <div class="col">
+                                <h:outputLabel for="fecha2" styleClass="lead" value="Fecha de fin: "/>
+                                <h:inputText id="fecha2" a:type="datetime-local" value="#{ordenManaged.fecha2}" styleClass="form-control"/>
+                            </div>
+                            <div class="col">
+                                <br/>
+                                <h:commandButton value="Filtrar" class="btn btn-outline-primary mr-2">
+                                    <f:ajax event="click" render=":informe" execute="formulario" listener="#{ordenManaged.listInforme()}"/>
+                                </h:commandButton>
+
+                                <h:commandButton value="Todas" class="btn btn-outline-primary">
+                                    <f:ajax event="click" render=":informe" execute="formulario" listener="#{ordenManaged.reiniciarFecha()}"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                        <br/><br/>
+                    </h:form>
+                </div>
+                <br/><br/><br/><br/>
+                <h:form id="informe">
+                    <table class="table text-center">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Precio inicial</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Subtotal</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        #{ordenManaged.reiniciarSuma2()}
+                        #{grafica.limpiarLista()}
+                        <ui:repeat value="#{ordenManaged.listInforme()}" var="p" varStatus="loop">
+                            <tr>
+                                <th scope="row">#{loop.index+1}</th>
+                                <td>
+                                    <h:outputLink value="detalle.xhtml">
+                                        #{p.productosByIdProducto.nombre}
+                                        <f:param name="id" value="#{p.productosByIdProducto.idProducto}"/>
+                                        <f:param name="nombre" value="#{p.productosByIdProducto.nombre}"/>
+                                    </h:outputLink>
+                                </td>
+                                <td>#{p.fecha.replace("T", " ")}</td>
+                                <td>$#{p.total}</td>
+                                #{ordenManaged.reiniciarSuma()}
+                                <ui:repeat value="#{ordenManaged.reporte(p.productosByIdProducto.idProducto)}" var="r">
+                                    #{ordenManaged.sumar(r.total * r.cantidad)}
+                                    #{ordenManaged.sumarCantidad(r.cantidad)}
+                                    #{ordenManaged.totalRepor(r.total * r.cantidad)}
+                                </ui:repeat>
+                                <td>#{ordenManaged.totalCantidad}</td>
+                                <td>$#{ordenManaged.totalCarrito}</td>
+                                #{grafica.lista(ordenManaged.totalCarrito, p.productosByIdProducto.nombre)}
+                            </tr>
+                        </ui:repeat>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <h1 class="lead text-center"><b>VENTA TOTAL: $#{ordenManaged.totalReporte}</b></h1>
+                    <br/>
+                    <h1 class="text-center display-4">Productos con más ganancia</h1>
+                    <div class="ui-g">
+                        <div class="ui-g-6">
+                            <p:panel>
+                                <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;"/>
+                            </p:panel>
+                        </div>
+                        <div class="ui-g-6">
+                            <p:panel>
+                                <p:barChart model="#{grafica.mixedModel}" style="width: 100%; height: 200px;"/>
+                            </p:panel>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <br/>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical" style="width: 200px;">
+                                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Mensual</a>
+                                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Anual</a>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content" id="v-pills-tabContent">
+                                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                    <h1 class="text-center display-4">Informe de ventas</h1>
+                                    <br/>
+                                    <div class="container">
+                                        <div class="form-group narrow-div float-right" style="width: 25%;">
+                                            <h:form>
+                                                <h:outputText value="Seleccionar año:" class="lead font-weight-bold"/>
+                                                <h:selectOneMenu class="form-control float-right" id="ordenar" value="#{ordenManaged.anioo}" immediate="true">
+                                                    <f:selectItems value="#{ordenManaged.modelo.años()}" var="a" itemLabel="#{a}"/>
+                                                    <f:ajax event="change" render=":mensual" execute="ordenar" listener="#{ordenManaged.informeMensual()}"/>
+                                                </h:selectOneMenu>
+                                            </h:form>
+                                        </div>
+                                    </div>
+                                    <h:form id="mensual">
+                                        <br/><br/>
+                                        <p class="lead text-center"><b>Reporte mensual del año #{ordenManaged.anioo}</b></p>
+                                        <br></br>
+                                        <table class="table text-center">
+                                            <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Mes</th>
+                                                <th scope="col">Venta del mes</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            #{ordenManaged.reiniciarSuma()}
+                                            <ui:repeat value="#{ordenManaged.informeMensual()}" var="m">
+                                                #{ordenManaged.sumar(m[1])}
+                                                <tr>
+                                                    <td>#{m[0]}</td>
+                                                    <td>$#{m[1]}</td>
+                                                </tr>
+                                            </ui:repeat>
+                                            </tbody>
+                                        </table>
+                                        <br/>
+                                        <p class="lead text-center"><b>Venta total del año #{ordenManaged.anioo}: $#{ordenManaged.totalCarrito}</b></p>
+                                    </h:form>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                    <h1 class="text-center display-4">Informe de ventas</h1>
+                                    <br/>
+                                    <p class="lead text-center"><b>Reporte Anual</b></p>
+                                    <br></br>
+                                    <table class="table text-center">
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th scope="col">Año</th>
+                                            <th scope="col">Venta del año</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        #{ordenManaged.reiniciarSuma()}
+                                        <ui:repeat value="#{ordenManaged.modelo.informeAnual()}" var="m">
+                                            #{ordenManaged.sumar(m[1])}
+                                            <tr>
+                                                <td>#{m[0]}</td>
+                                                <td>$#{m[1]}</td>
+                                            </tr>
+                                        </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                    <br/>
+                                    <p class="lead text-center"><b>Venta total: $#{ordenManaged.totalCarrito}</b></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </ui:define>
+</ui:composition>

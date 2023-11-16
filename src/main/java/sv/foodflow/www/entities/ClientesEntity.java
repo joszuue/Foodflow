@@ -7,7 +7,7 @@ import java.util.Collection;
 @Entity
 @Table(name = "clientes", schema = "food_flow")
 @NamedQueries({
-        @NamedQuery(name="ClientesEntity.findAll", query = "SELECT c FROM ClientesEntity c"),
+        @NamedQuery(name = "ClientesEntity.findAll", query = "SELECT DISTINCT c FROM ClientesEntity c JOIN OrdenEntity o ON c.codigoClient = o.clientesByCodigoClient.codigoClient WHERE c.estado = 'Activo' AND o.estado = 'Enviado'"),
         @NamedQuery(name="clientesMesa", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.empleadoByCodigo.codigo = :codigo"),
         @NamedQuery(name="mesaSector", query = "SELECT c FROM ClientesEntity c WHERE c.estado = 'Activo' AND c.empleadoByCodigo.codigo = :codigo AND c.mesasByIdMesa.sectorByIdSector.idSector = :id"),
         @NamedQuery(name="ClientesEntity.findByMesa", query = "SELECT c FROM ClientesEntity c WHERE c.mesasByIdMesa = :idMesa AND c.estado = 'Activo'"),
