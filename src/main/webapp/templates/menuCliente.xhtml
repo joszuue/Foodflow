@@ -82,6 +82,7 @@
       <span class="close-modal" onclick="toggleCustomModal()">x</span>
       <br/>
       <h1 class="text-center purple"><b>Familia: #{sessionScope.cliente.apellido} - Código: #{sessionScope.cliente.codigoClient}</b></h1>
+      <h1 class="text-center purple"><b>#{clientesManaged.tiempoEstimado(sessionScope.cliente.tiempo)}</b></h1>
       <br/>
       <div class="table-container table-head cell-border">
          <table class="table table-sm">
@@ -104,11 +105,15 @@
                </tr>
                #{ordenManaged.sumar(carrito.total * carrito.cantidad)}
             </ui:repeat>
+            <tr>
+               <td> - </td>
+               <td><b>Propina: $#{ordenManaged.totalCarrito * 0.1}</b></td>
+               <td><b>Subtotal: $#{ordenManaged.totalCarrito}</b></td>
+               <td><b>TOTAL: $#{ordenManaged.totalCarrito + (ordenManaged.totalCarrito * 0.1)}</b></td>
+            </tr>
             </tbody>
          </table>
       </div>
-      <br/>
-      <h1 class="purple"><b>TOTAL: $#{ordenManaged.totalCarrito}</b></h1>
    </div>
 
    <div id="compra" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
@@ -199,7 +204,7 @@
          </div>
          <div class="px-5 py-3 border-t flex justify-between items-center">
             <h:form>
-               <h:commandButton data-dismiss="modal" class="button bg-green" value="Enviar pedido" action="#{ordenManaged.realizarPedido(sessionScope.cliente.codigoClient)}"/>
+               <h:commandButton data-dismiss="modal" class="button bg-green" value="Enviar pedido" action="#{ordenManaged.realizarPedido(sessionScope.cliente.codigoClient,sessionScope.cliente)}"/>
             </h:form>
             <h2 class="gray-darkest fs-m2 fw-600">TOTAL: $#{ordenManaged.totalCarrito}</h2>
             <button data-dismiss="modal" class="button bg-purple-lightest purple"> Close</button>
@@ -209,7 +214,6 @@
 
 
    <div class="overlay" id="overlay" onclick="toggleCustomModal()"></div>
-
 </h:body>
 
 </html>

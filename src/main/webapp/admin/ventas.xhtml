@@ -31,7 +31,7 @@
                 <h:form>
                     <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('productos',0)}" class="btn btn-outline-success mr-2" rendered="#{ordenManaged.listInforme().size() > 0}"/>
 
-                    <h:commandButton value="Informe Completo" action="#{descargarReporte.descargarTodo()}" class="btn btn-outline-success" rendered="#{ordenManaged.listInforme().size() > 0}"/>
+                    <h:commandButton value="Informe Completo" action="#{descargarReporte.descargarTodo()}" class="btn btn-outline-success" rendered="#{ordenManaged.listInforme().size() > 0 and ordenManaged.modelo.años().size() > 0}"/>
                 </h:form>
                 <div class="container">
                     <h:form styleClass="float-right" id="formulario">
@@ -105,13 +105,111 @@
                     <br/>
                     <h1 class="lead text-center"><b>VENTA TOTAL: $#{ordenManaged.totalReporte}</b></h1>
                     <br/>
+                </h:form>
+                <h1 class="text-center display-4">Sección de Gráficas</h1>
+                <hr class="my-4"/>
+                <h:form id="grafiTodas">
+                    #{grafica.limpiarLista()}
+                    <ui:repeat value="#{ordenManaged.listInforme()}" var="p" varStatus="loop">
+                        #{ordenManaged.reiniciarSuma()}
+                        <ui:repeat value="#{ordenManaged.reporte(p.productosByIdProducto.idProducto)}" var="r">
+                            #{ordenManaged.sumar(r.total * r.cantidad)}
+                            #{ordenManaged.sumarCantidad(r.cantidad)}
+                            #{ordenManaged.totalRepor(r.total * r.cantidad)}
+                        </ui:repeat>
+                        #{grafica.lista(ordenManaged.totalCarrito, p.productosByIdProducto.nombre)}
+                    </ui:repeat>
+                    <br/>
                     <a onclick="descargarTodo('Productos_Ganancias')" class="btn btn-primary" style="float: right;" href="#">Descargar Gráfica</a>
+                    <br/>
+                    <div class="container">
+                        <h:outputText value="Filtrar información:" class="lead font-weight-bold"/>
+                        <div class="form-row">
+                            <div class="col">
+                                <h:outputLabel for="fecha11" styleClass="lead" value="Fecha de inicio: "/>
+                                <h:inputText id="fecha11" a:type="datetime-local" value="#{ordenManaged.fecha1}" styleClass="form-control"/>
+                            </div>
+                            <div class="col">
+                                <h:outputLabel for="fecha22" styleClass="lead" value="Fecha de fin: "/>
+                                <h:inputText id="fecha22" a:type="datetime-local" value="#{ordenManaged.fecha2}" styleClass="form-control"/>
+                            </div>
+                            <div class="col">
+                                <br/>
+                                <h:commandButton value="Filtrar" class="btn btn-outline-primary mr-2">
+                                    <f:ajax event="click" render="grafiTodas" execute="fecha11 fecha22" listener="#{ordenManaged.listInforme()}"/>
+                                </h:commandButton>
+
+                                <h:commandButton value="Todas" class="btn btn-outline-primary">
+                                    <f:ajax event="click" render="grafiTodas" execute="fecha11 fecha22" listener="#{ordenManaged.reiniciarFecha()}"/>
+                                </h:commandButton>
+                            </div>
+                        </div>
+                    </div>
                     <div id="todo">
+                        <br/>
                         <h1 class="text-center display-4">Gráfica de Productos y Ganancias</h1>
                         <div class="ui-g">
                             <div class="ui-g-6">
                                 <p:panel>
-                                    <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;"/>
+                                    <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;" />
+                                </p:panel>
+                            </div>
+                            <div class="ui-g-6">
+                                <p:panel>
+                                    <p:barChart model="#{grafica.mixedModel}" style="width: 100%; height: 200px;"/>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <br/><br/>
+                <h:form id="graficas">
+                    #{grafica.limpiarLista()}
+                    <ui:repeat value="#{ordenManaged.informeMensual()}" var="m" varStatus="loop">
+                        #{grafica.lista(m[1], m[0])}
+                    </ui:repeat>
+                    <a onclick="descargarMes('Gráfica_Mensual')" class="btn btn-primary" style="float: right;" href="#">Descargar Gráfica</a>
+                    <br/>
+                    <div id="mes">
+                        <div class="container">
+                            <div class="form-group narrow-div float-right" style="width: 25%;">
+                                <h:outputText value="Seleccionar año:" class="lead font-weight-bold"/>
+                                <h:selectOneMenu class="form-control float-right" id="ordenaar" value="#{ordenManaged.anioo}">
+                                    <f:selectItems value="#{ordenManaged.modelo.años()}" var="a" itemLabel="#{a}"/>
+                                    <f:ajax event="change" render="graficas" process="ordenaar" listener="#{ordenManaged.informeMensual()}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                        <br/>
+                        <h1 class="text-center display-4">Gráfica Mensual</h1>
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <p:panel>
+                                    <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;" />
+                                </p:panel>
+                            </div>
+                            <div class="ui-g-6">
+                                <p:panel>
+                                    <p:barChart model="#{grafica.mixedModel}" style="width: 100%; height: 200px;"/>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+                <br/>
+                <h:form id="anio">
+                    #{grafica.limpiarLista()}
+                    <ui:repeat value="#{ordenManaged.modelo.informeAnual()}" var="m" varStatus="loop">
+                        #{grafica.lista(m[1], m[0])}
+                    </ui:repeat>
+                    <a onclick="descargarAnio('Gráfica_Año')" class="btn btn-primary" style="float: right;" href="#">Descargar Gráfica</a>
+                    <br/>
+                    <div id="anioo">
+                        <h1 class="text-center display-4">Gráfica Anual</h1>
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <p:panel>
+                                    <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;" />
                                 </p:panel>
                             </div>
                             <div class="ui-g-6">
@@ -124,8 +222,6 @@
                 </h:form>
             </div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <!-- <h:form> -->
-                <br/>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-md-3">
@@ -140,7 +236,7 @@
                                     <h1 class="text-center display-4">Informe de ventas Mensual</h1>
                                     <br/>
                                     <h:form>
-                                        <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('mes',ordenManaged.anioo)}" class="btn btn-outline-success"/>
+                                        <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('mes',ordenManaged.anioo)}" class="btn btn-outline-success" rendered="#{ordenManaged.modelo.años().size() > 0}"/>
                                     </h:form>
                                     <br/>
                                     <div class="container">
@@ -154,7 +250,7 @@
                                             </h:form>
                                         </div>
                                     </div>
-                                    <h:form id="mensual">
+                                    -<h:form id="mensual">
                                         <br/><br/>
                                         <ui:fragment rendered="#{ordenManaged.anioo == 0}">
                                             <p class="lead text-center"><b>Reporte mensual del año #{ordenManaged.anioActual()}</b></p>
@@ -171,7 +267,6 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            #{grafica.limpiarLista()}
                                             #{ordenManaged.reiniciarSuma()}
                                             #{descargarReporte.limpiarLista2()}
                                             <ui:repeat value="#{ordenManaged.informeMensual()}" var="m" varStatus="loop">
@@ -180,7 +275,6 @@
                                                     <td>#{m[0]}</td>
                                                     <td>$#{m[1]}</td>
                                                 </tr>
-                                                #{grafica.lista(m[1], m[0])}
                                                 #{descargarReporte.listaMes(loop.index+1, m[0],m[1])}
                                             </ui:repeat>
                                             </tbody>
@@ -192,6 +286,18 @@
                                         <ui:fragment rendered="#{ordenManaged.anioo > 0}">
                                             <p class="lead text-center"><b>Venta total del año #{ordenManaged.anioo}: $#{ordenManaged.totalCarrito}</b></p>
                                         </ui:fragment>
+                                        <div class="ui-g">
+                                            <div class="ui-g-6">
+                                                <p:panel>
+                                                    <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;" />
+                                                </p:panel>
+                                            </div>
+                                            <div class="ui-g-6">
+                                                <p:panel>
+                                                    <p:barChart model="#{grafica.mixedModel}" style="width: 100%; height: 200px;"/>
+                                                </p:panel>
+                                            </div>
+                                        </div>
                                     </h:form>
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -200,7 +306,7 @@
                                     <p class="lead text-center"><b>Reporte Anual</b></p>
                                     <br></br>
                                     <h:form>
-                                        <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('anioooo',ordenManaged.anioo)}" class="btn btn-outline-success"/>
+                                        <h:commandButton value="Descargar Informe" action="#{descargarReporte.descargarInforme('anioooo',ordenManaged.anioo)}" class="btn btn-outline-success" rendered="#{ordenManaged.modelo.años().size() > 0}"/>
                                     </h:form>
                                     <br/>
                                     <table class="table text-center">
@@ -211,7 +317,6 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        #{grafica.limpiarLista()}
                                         #{ordenManaged.reiniciarSuma()}
                                         #{descargarReporte.limpiarLista1()}
                                         <ui:repeat value="#{ordenManaged.modelo.informeAnual()}" var="m" varStatus="loop">
@@ -220,7 +325,6 @@
                                                 <td>#{m[0]}</td>
                                                 <td>$#{m[1]}</td>
                                             </tr>
-                                            #{grafica.lista(m[1], m[0])}
                                             #{descargarReporte.listaAnio(loop.index+1, m[0],m[1])}
                                         </ui:repeat>
                                         </tbody>
@@ -233,27 +337,42 @@
                     </div>
                 </div>
                 <br/>
-
-                    <h1 class="text-center display-4">Gráficas</h1>
-                    <div class="ui-g">
-                        <div class="ui-g-6">
-                            <p:panel>
-                                <p:donutChart model="#{grafica.donutModel}" style="width: 100%; height: 200px;"/>
-                            </p:panel>
-                        </div>
-                        <div class="ui-g-6">
-                            <p:panel>
-                                <p:barChart model="#{grafica.mixedModel}" style="width: 100%; height: 200px;"/>
-                            </p:panel>
-                        </div>
-                    </div>
-                <!-- </h:form> -->
             </div>
         </div>
         <h:outputScript>
             function descargarTodo(titulo) {
                 // Captura el gráfico y crea una imagen base64
                 html2canvas(document.getElementById('todo')).then(function(canvas) {
+                    var imageData = canvas.toDataURL();
+
+                    // Crea un enlace de descarga
+                    var link = document.createElement('a');
+                    link.href = imageData;
+                    link.download = titulo+'.png';
+
+                    // Simula un clic en el enlace para iniciar la descarga
+                    link.click();
+                });
+            }
+
+            function descargarMes(titulo) {
+                // Captura el gráfico y crea una imagen base64
+                html2canvas(document.getElementById('mes')).then(function(canvas) {
+                    var imageData = canvas.toDataURL();
+
+                    // Crea un enlace de descarga
+                    var link = document.createElement('a');
+                    link.href = imageData;
+                    link.download = titulo+'.png';
+
+                    // Simula un clic en el enlace para iniciar la descarga
+                    link.click();
+                });
+            }
+
+            function descargarAnio(titulo) {
+                // Captura el gráfico y crea una imagen base64
+                html2canvas(document.getElementById('anioo')).then(function(canvas) {
                     var imageData = canvas.toDataURL();
 
                     // Crea un enlace de descarga

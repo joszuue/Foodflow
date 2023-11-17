@@ -86,10 +86,12 @@
                                 </ui:repeat>
                                 </tbody>
                             </table>
-                            <p class="lead text-center" ><b>#{c.tiempo}</b></p>
+                            <p class="lead text-center" >Tiempo estimado de espera: <b>#{clientesManaged.tiempoEstimado(c.tiempo)}</b></p>
                             <br/>
                             <h:outputLabel for="tiempo" styleClass="lead" value="Cambiar tiempo: "/>
-                            <h:inputText id="tiempo" a:type="time" value="#{clientesManaged.tiempo}" validator="validaciones" styleClass="form-control"/>
+                            <h:selectOneMenu value="#{clientesManaged.tiempo}" id="tiempo" styleClass="form-control">
+                                <f:selectItems value="#{clientesManaged.minutos}"/>
+                            </h:selectOneMenu>
                             <center>
                                 <h:commandButton value="Enviar" class="btn btn-outline-primary" action="#{clientesManaged.modificarCliente(c)}">
                                     <f:ajax execute="tiempo" render="pedidos"/>
@@ -101,8 +103,6 @@
             </ui:repeat>
         </h:form>
     </div>
-    <br/><br/>
-
 </h:body>
 
 </html>

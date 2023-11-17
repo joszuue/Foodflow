@@ -13,6 +13,7 @@ import sv.foodflow.www.utils.EnviarCorreo;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -32,10 +33,20 @@ public class ClientesManaged {
 
     private String correo = "";
 
-    private String tiempo;
+    private int tiempo;
+
+    private List<Integer> minutos;
 
     public ClientesManaged(){
         cliente = new ClientesEntity();
+        minutos = new ArrayList<>();
+        for (int i = 1; i <= 59; i++) {
+            minutos.add(i);
+        }
+    }
+
+    public List<Integer> getMinutos() {
+        return minutos;
     }
 
     public void guardarCliente(MesasEntity mesa, int idSector) {
@@ -45,7 +56,7 @@ public class ClientesManaged {
         }else {
             cliente.setEstado("Activo");
             cliente.setCodigoClient(generarCodigo());
-            cliente.setTiempo("00:15:00");
+            cliente.setTiempo(0);
             if (modelo.insertarCliente(cliente, mesa.getIdMesa(), codigoMesero) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar."));
@@ -92,7 +103,7 @@ public class ClientesManaged {
     }
 
     public void modificarCliente(ClientesEntity client){
-        client.setTiempo(tiempo+":00");
+        client.setTiempo(client.getTiempo()+tiempo);
         if (modelo.modificarCliente(client) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha modificado correctamente."));
@@ -100,11 +111,28 @@ public class ClientesManaged {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido modificar."));
         }
-        tiempo = "";
+        tiempo = 0;
     }
 
     public void data(ClientesEntity client){
         cliente = client;
+    }
+
+    public String tiempoEstimado(int minutos){
+        if (minutos < 0) {
+            return " ";
+        }
+
+        int horas = minutos / 60;
+        int minutosRestantes = minutos % 60;
+
+        if (horas == 0) {
+            return "Tiempo estimado de entrega: "+minutos + " minutos";
+        } else if (minutosRestantes == 0) {
+            return "Tiempo estimado de entrega: "+ horas + " horas";
+        } else {
+            return "Tiempo estimado de entrega: "+ horas + " horas y " + minutosRestantes + " minutos";
+        }
     }
 
     public void cerrarCuenta(ClientesEntity client, MesasEntity mesas, int idSector, Date fecha, String accion){
@@ -169,10 +197,11 @@ public class ClientesManaged {
                 total += orden.getCantidad() * orden.getTotal();
             }
         }
+        double totaaal = total + (total * 0.1);
         contenido += "<tr><td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'> - </td>" +
                 "<td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'><b>Propina: $" + total * 0.1 + "</b></td>" +
                 "<td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'><b>SubTotal: $" + total + "</b></td>" +
-                "<td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'><b>Total: $" + total + total * 0.1 +"</b></td></tr>"
+                "<td style='border: 1px solid #dddddd; text-align: left; padding: 8px;'><b>Total: $" + totaaal +"</b></td></tr>"
                 + "</tbody></table>"
                 + "<img src='https://drive.google.com/uc?id=14amyQ84zTZ47460dx7vh3DC0wNSYkz9D'/>";
         EnviarCorreo correo2 = new EnviarCorreo(correo, asunto, contenido);
@@ -246,11 +275,11 @@ public class ClientesManaged {
         this.correo = correo;
     }
 
-    public String getTiempo() {
+    public int getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(String tiempo) {
+    public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 }

@@ -8,6 +8,7 @@ import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpServletRequest;
 import sv.foodflow.www.entities.ClientesEntity;
 import sv.foodflow.www.entities.OrdenEntity;
+import sv.foodflow.www.models.ClientesModel;
 import sv.foodflow.www.models.OrdenModel;
 
 import javax.swing.text.DateFormatter;
@@ -20,6 +21,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @ManagedBean
 @SessionScoped
@@ -73,8 +75,11 @@ public class OrdenManaged {
         orden = new OrdenEntity();
     }
 
-    public void realizarPedido(String codigo) {
+    public void realizarPedido(String codigo, ClientesEntity clie) {
         if (modelo.carritoOrden("Enviado", codigo, fecha()) > 0) {
+            ClientesModel moClien = new ClientesModel();
+            clie.setTiempo(clie.getTiempo()+15);
+            moClien.modificarCliente(clie);
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La orden ha sido enviada a cocina"));
         } else {
@@ -172,12 +177,14 @@ public class OrdenManaged {
     public List<OrdenEntity> listDetalle(int id){
         if (fecha1.equals("no") && fecha2.equals("no")){
             return modelo.productosDetalle(id);
-        }else if (id == 0){
+        }else{
             fecha1 = ""+fecha1.replace("T", " ")+":00";
             fecha2 = ""+fecha2.replace("T", " ")+":00";
-            return modelo.informeDetalle(idProdu, fecha1, fecha2);
+            FacesContext context = FacesContext.getCurrentInstance();
+            Map<String, String> paramMap = context.getExternalContext().getRequestParameterMap();
+            int id2 = Integer.parseInt(paramMap.get("id"));
+            return modelo.informeDetalle(id2, fecha1, fecha2);
         }
-        return null;
     }
 
 

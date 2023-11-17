@@ -15,12 +15,15 @@ public class Validaciones implements Validator {
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String componentId = component.getId();
 
-        //Valida que todos los campos que ingresen no esten vacíos
-        if (value == null || value.toString().trim().isEmpty()) {
-            String nombre = componentId.replace("_", " ");
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo " + nombre + " no puede quedar vacío");
-            throw new ValidatorException(message);
+        if (!componentId.equals("comentario2")){
+            //Valida que todos los campos que ingresen no esten vacíos
+            if (value == null || value.toString().trim().isEmpty()) {
+                String nombre = componentId.replace("_", " ");
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo " + nombre + " no puede quedar vacío");
+                throw new ValidatorException(message);
+            }
         }
+
 
         if(componentId.equals("DUI_del_empleado")){
             String valor = value.toString();
@@ -40,6 +43,28 @@ public class Validaciones implements Validator {
 
             if (!matcher.matches()) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato del Telefono es incorrecto");
+                throw new ValidatorException(message);
+            }
+        }
+
+        if(componentId.equals("correo")){
+            String valor = value.toString();
+            Pattern patron = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+            Matcher matcher = patron.matcher(valor);
+
+            if (!matcher.matches()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato del Correo es incorrecto");
+                throw new ValidatorException(message);
+            }
+        }
+
+        if(componentId.equals("comentario2")){
+            String valor = value.toString();
+            Pattern patron = Pattern.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+            Matcher matcher = patron.matcher(valor);
+
+            if (!matcher.matches()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato del Correo es incorrecto");
                 throw new ValidatorException(message);
             }
         }

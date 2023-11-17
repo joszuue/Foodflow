@@ -35,7 +35,7 @@ public class ClientesEntity {
 
     @Basic
     @Column(name = "tiempo", nullable = true, length = 25)
-    private String tiempo;
+    private int tiempo;
 
     public String getApellido() {
         return apellido;
@@ -105,11 +105,11 @@ public class ClientesEntity {
         this.empleadoByCodigo = empleadoByCodigo;
     }
 
-    public String getTiempo() {
+    public int getTiempo() {
         return tiempo;
     }
 
-    public void setTiempo(String tiempo) {
+    public void setTiempo(int tiempo) {
         this.tiempo = tiempo;
     }
 }

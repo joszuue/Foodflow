@@ -26,16 +26,19 @@
                         <h:outputLabel for="fecha2" styleClass="lead" value="Fecha de fin: "/>
                         <h:inputText id="fecha2" a:type="datetime-local" value="#{ordenManaged.fecha2}" styleClass="form-control"/>
                     </div>
-                    <h:inputHidden id="idd" value="#{ordenManaged.idProdu = param['id']}"/>
+
                     <div class="col">
                         <br/>
-                        <h:commandButton value="Filtrar" class="btn btn-outline-primary mr-2" id="filtrarr">
-                            <f:ajax event="click" render=":detalle" execute="fecha1 fecha2 idd filtrarr " listener="#{ordenManaged.listDetalle(param['id'])}"/>
+                        <h:commandButton value="Filtrar" class="btn btn-outline-primary mr-2" id="filtrarr" action="#{ordenManaged.listDetalle(param['id'])}">
+                            <f:param name="id" value="#{param['id']}" />
+                            <f:ajax event="click" render=":detalle" execute="formulario2" />
                         </h:commandButton>
 
-                        <h:commandButton value="Todas" class="btn btn-outline-primary" id="todaas">
-                            <f:ajax event="click" render=":detalle" execute="todaas" listener="#{ordenManaged.reiniciarFecha()}"/>
-                        </h:commandButton>
+                        <h:outputLink value="detalle.xhtml" class="btn btn-outline-primary">
+                            Todas
+                            <f:param name="id" value="#{param['id']}"/>
+                            <f:param name="nombre" value="#{param['nombre']}"/>
+                        </h:outputLink>
                     </div>
                 </div>
                 <br/><br/>

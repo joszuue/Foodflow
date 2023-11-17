@@ -151,6 +151,9 @@
             <div class="container">
                 <br/>
                 <ui:fragment rendered="#{empty empleadoManaged.empleado.codigo}">
+                    <p:messages id="messages" showDetail="true" showIcon="false">
+                        <p:autoUpdate/>
+                    </p:messages>
                     <h1 class="display-4 text-center">#{sessionScope.emple.nombre1} #{sessionScope.emple.nombre2} #{sessionScope.emple.apellido1} #{sessionScope.emple.apellido2}</h1>
                     <p class="lead text-center">#{sessionScope.emple.codigo}</p>
                     <hr class="my-4"/>
