@@ -38,6 +38,8 @@ public class SectorManaged {
 
     }
 
+    public void cancelar(){sector = new SectorEntity();}
+
     public List<SectorEntity> listSector(){
         return modelo.listarSectores();
     }

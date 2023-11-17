@@ -43,8 +43,9 @@
             </h:selectOneMenu>
             <br/><br/>
             <center>
-                <h:commandButton value="Ingresar Producto" class="btn btn-outline-success" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
-                <h:commandButton value="Modificar Producto" class="btn btn-outline-success" action="#{productoManaged.modificarProducto()}" rendered="#{productoManaged.producto.idProducto > 0}"/>
+                <h:commandButton value="Ingresar Producto" class="btn btn-outline-success mr-2" action="#{productoManaged.guardarProducto()}" rendered="#{productoManaged.producto.idProducto == 0}"/>
+                <h:commandButton value="Modificar Producto" class="btn btn-outline-success mr-2" action="#{productoManaged.modificarProducto()}" rendered="#{productoManaged.producto.idProducto > 0}"/>
+                <h:commandButton value="Cancelar" class="btn btn-outline-danger" action="#{productoManaged.cancelar()}" rendered="#{productoManaged.producto.idProducto > 0}"/>
             </center>
         </h:form>
         <br/>
@@ -120,7 +121,6 @@
                             </ui:fragment>
 
                             <p class="card-text">#{produ.descripcion}</p>
-                            <p class="card-text"><b>ID:</b> #{produ.idProducto}</p>
                             <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
                             <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
                         </div>

@@ -128,7 +128,7 @@
                     </div>
                     <br/><br/>
                     <center>
-                        <h:commandButton value="Registrar Empleado" class="btn btn-outline-success" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
+                        <h:commandButton value="Registrar Empleado" class="btn btn-outline-success mr-2" action="#{empleadoManaged.guardarEmple()}" rendered="#{empty empleadoManaged.empleado.codigo}"/>
                         <h:commandButton value="Modificar Empleado" class="btn btn-outline-success mr-2" action="#{empleadoManaged.modificarEmpleado()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
                         <h:commandButton class="btn btn-outline-danger" value="Cancelar" action="#{empleadoManaged.cancelar()}" rendered="#{not empty empleadoManaged.empleado.codigo}"/>
                     </center>

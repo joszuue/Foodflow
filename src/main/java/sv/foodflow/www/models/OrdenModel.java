@@ -140,7 +140,7 @@ public class OrdenModel {
         try {
             Query consulta = em.createNamedQuery("populares");
             consulta.setFirstResult(0); // La posición inicial (0 para el primer resultado)
-            consulta.setMaxResults(6);
+            consulta.setMaxResults(4);
             List<OrdenEntity> lista = consulta.getResultList();
             em.close();
             return lista;

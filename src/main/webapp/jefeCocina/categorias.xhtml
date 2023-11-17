@@ -19,8 +19,9 @@
             <h:inputText id="nombre_de_categoria" styleClass="form-control" value="${categoriaManaged.categoria.nombre}" validator="validaciones" />
             <br/>
             <center>
-                <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
-                <h:commandButton value="Modificar Modificar" class="btn btn-outline-success" action="#{categoriaManaged.modificarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
+                <h:commandButton value="Ingresar Categoria" class="btn btn-outline-success mr-2" action="#{categoriaManaged.guardarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria == 0}"/>
+                <h:commandButton value="Modificar Modificar" class="btn btn-outline-success mr-2" action="#{categoriaManaged.modificarCategoria()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
+                <h:commandButton value="Cancelar" class="btn btn-outline-danger" action="#{categoriaManaged.cancelar()}" rendered="#{categoriaManaged.categoria.idCategoria > 0}"/>
             </center>
         </h:form>
         <br/><br/>

@@ -13,20 +13,16 @@ import org.primefaces.model.charts.bar.BarChartOptions;
 import org.primefaces.model.charts.donut.DonutChartDataSet;
 import org.primefaces.model.charts.donut.DonutChartModel;
 import org.primefaces.model.charts.donut.DonutChartOptions;
-import org.primefaces.model.charts.line.LineChartDataSet;
-import org.primefaces.model.charts.scatter.ScatterChartModel;
 import sv.foodflow.www.entities.OrdenEntity;
-import sv.foodflow.www.entities.ProductosEntity;
 import sv.foodflow.www.models.OrdenModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Named
 @RequestScoped
-public class grafica implements Serializable {
+public class Grafica implements Serializable {
 
 
     private DonutChartModel donutModel;

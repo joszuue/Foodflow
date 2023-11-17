@@ -10,7 +10,7 @@ import jakarta.faces.validator.ValidatorException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class validaciones implements Validator {
+public class Validaciones implements Validator {
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         String componentId = component.getId();
@@ -20,6 +20,17 @@ public class validaciones implements Validator {
             String nombre = componentId.replace("_", " ");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El campo " + nombre + " no puede quedar vacío");
             throw new ValidatorException(message);
+        }
+
+        if(componentId.equals("DUI_del_empleado")){
+            String valor = value.toString();
+            Pattern patron = Pattern.compile("^\\d{8}-\\d$");
+            Matcher matcher = patron.matcher(valor);
+
+            if (!matcher.matches()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato del DUI es incorrecto");
+                throw new ValidatorException(message);
+            }
         }
 
     }

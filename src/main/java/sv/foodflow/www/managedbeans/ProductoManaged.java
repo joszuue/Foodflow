@@ -122,6 +122,10 @@ public class ProductoManaged {
         return nombreArchivo.substring(lastIndex);
     }
 
+    public void cancelar(){
+        producto = new ProductosEntity();
+    }
+
     public boolean validarFormato() {
         try (InputStream input = nombreTempImg.getInputStream()) {
             String fileName = nombreTempImg.getSubmittedFileName();
@@ -221,11 +225,12 @@ public class ProductoManaged {
         produ.setEstado("Rechazado");
         comentario.setIdProducto(produ.getIdProducto());
         String mensaje = "Solicitud de aprobación denegada - " + comentario.getComentario();
+        mensaje += "\nFecha y Hora: " + fecha();
         comentario.setComentario(mensaje);
         if (modelo.insertarComentario(comentario) == 1){
             if (modelo.modificarProducto(produ, idCate) == 1){
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + "ha sido rechazado. Se ha enviado las observaciones al jefe de cocina.,"));
+                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El producto "+ produ.getNombre() + " ha sido rechazado. Se ha enviado las observaciones al jefe de cocina.,"));
 
             }else {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
@@ -239,10 +244,21 @@ public class ProductoManaged {
         producto = new ProductosEntity();
     }
 
+    public static String fecha() {
+        Date fechaHoraActual = new Date();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        String formattedDate = formatter.format(fechaHoraActual);
+
+        return formattedDate;
+    }
+
     public void denegarProducto(ProductosEntity produ, int idCate){
         produ.setEstado("Pendiente");
         comentario.setIdProducto(produ.getIdProducto());
         String mensaje = "Solicitud de eliminación denegada - " + comentario.getComentario();
+        mensaje += "\nFecha y Hora: " + fecha();
         comentario.setComentario(mensaje);
         if (modelo.insertarComentario(comentario) == 1){
             if (modelo.modificarProducto(produ, idCate) == 1){

@@ -26,7 +26,7 @@
         </div>
         <br/><br/><br/><br/>
         <h:form id="updateOcupado" class="row">
-            <ui:repeat value="#{clientesManaged.mesasMesero(sessionScope.emple.codigo)}" var="client">
+            <ui:repeat value="#{clientesManaged.mesasMesero(sessionScope.emple.codigo)}" var="client" varStatus="loop">
                 <div class="col-md-4">
                     <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                         <div class="card-header text-center"><b>Mesa: </b>##{client.mesasByIdMesa.idMesa} - <b>Capacidad:</b> #{client.mesasByIdMesa.capacidad} personas</div>
@@ -74,10 +74,16 @@
                                         </ui:repeat>
                                     </tbody>
                                 </table>
-                                <p><b>TOTAL: $#{ordenManaged.totalCarrito}</b></p>
+                                <p><b>Propina: $#{(ordenManaged.totalCarrito * 0.1)}</b></p>
+                                <p><b>SubTotal: $#{ordenManaged.totalCarrito}</b></p>
+                                <p><b>Total: $#{ordenManaged.totalCarrito + ordenManaged.totalCarrito * 0.1}</b></p>
+                                <br/><br/>
+                                <h:outputLabel for="comentario2" styleClass="lead" value="Correo Electronico del cliente: "/>
+                                <h:inputText id="comentario2" styleClass="form-control" value="${clientesManaged.correo}" />
+                                <span class="lead">Opcional en el caso en que el cliente quiera su factura electronica.*</span>
                             </div>
                             <div class="modal-footer">
-                                <h:commandButton id="enviar" styleClass="btn btn-outline-danger"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, client.mesasByIdMesa, client.mesasByIdMesa.sectorByIdSector.idSector, carrito.fecha)}">
+                                <h:commandButton id="enviar" styleClass="btn btn-outline-danger"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, client.mesasByIdMesa, client.mesasByIdMesa.sectorByIdSector.idSector, carrito.fecha,'Entregado')}">
                                     <f:ajax execute="@form" render="@all"/>
                                 </h:commandButton>
                             </div>

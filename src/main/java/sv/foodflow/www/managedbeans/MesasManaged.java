@@ -43,6 +43,8 @@ public class MesasManaged {
         return modelo.listarMesa();
     }
 
+    public void cancelar(){mesa = new MesasEntity();}
+
 
     public List<MesasEntity> mesasDisponibles(){
         if (idSector == 0){

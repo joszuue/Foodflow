@@ -13,6 +13,9 @@ import sv.foodflow.www.utils.EnviarCorreo;
 
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @ManagedBean
@@ -43,23 +46,32 @@ public class EmpleadoManaged {
 
     public void guardarEmple() {
         if (modelo.validarEmple(empleado.getDui()) == null){
-            empleado.setCodigo(generateCodigo());
-            empleado.setContraseña(BCrypt.hashpw(empleado.getCodigo(), BCrypt.gensalt()));
-            empleado.setEstado("no");
-            if (modelo.insertarEmpleado(empleado) != 1) {
+            if (esMayorDeEdad() >= 18){
+                if (modelo.buscarCorreo(empleado.getCorreo()) == null){
+                    empleado.setCodigo(generateCodigo());
+                    empleado.setContraseña(BCrypt.hashpw(empleado.getCodigo(), BCrypt.gensalt()));
+                    empleado.setEstado("no");
+                    if (modelo.insertarEmpleado(empleado) != 1) {
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
+                    } else {
+                        enviarCorreo();
+                        FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                                FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha registrado correctamente."));
+                    }
+                    empleado = new EmpleadosEntity();
+                }else{
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El correo ya se encuentra registrado."));
+                }
+            }else {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido registrar."));
-            } else {
-                enviarCorreo();
-                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                        FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha registrado correctamente."));
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado debe de ser mayor de edad."));
             }
-            empleado = new EmpleadosEntity();
         }else{
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Los nombres y los apellidos de este empleado coiciden con uno de los empleados."));
         }
-
     }
 
     public String generateCodigo(){
@@ -82,14 +94,25 @@ public class EmpleadoManaged {
     }
 
     public void modificarEmpleado(){
-        if (modelo.modificarEmpleado(empleado) == 1){
+        EmpleadosEntity vali = modelo.buscarCorreo(empleado.getCorreo());
+        if (vali == null || vali.getCodigo().equals(empleado.getCodigo())){
+            if (esMayorDeEdad() >= 18){
+                if (modelo.modificarEmpleado(empleado) == 1){
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha modificado correctamente."));
+                }else {
+                    FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                            FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido modificar."));
+                }
+                empleado = new EmpleadosEntity();
+            }else{
+                FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
+                        FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado debe de ser mayor de edad."));
+            }
+        }else{
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El empleado se ha modificado correctamente."));
-        }else {
-            FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
-                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El empleado no se ha podido modificar."));
+                    FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El correo ya se encuentra registrado."));
         }
-        empleado = new EmpleadosEntity();
     }
 
     public void eliminarEmpleado(EmpleadosEntity emple){
@@ -159,6 +182,19 @@ public class EmpleadoManaged {
         return pagina;
     }
 
+    public int esMayorDeEdad() {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String fech = empleado.getFechaNac();
+        LocalDate fechaNacimiento = LocalDate.parse(fech, formatoFecha);
+
+        LocalDate fechaActual = LocalDate.now();
+
+        int edad = fechaActual.getYear() - fechaNacimiento.getYear();
+
+        return edad;
+    }
+
+
     public String enviarCodigo(){
         if (modelo.buscarCorreo(correoContra) == null){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
@@ -209,6 +245,9 @@ public class EmpleadoManaged {
                         break;
                     case "Mesero":
                         pagina = "/mesero/inicio?faces-redirect=true";
+                        break;
+                    case "Recepcionista":
+                        pagina = "/recepcion/inicio?faces-redirect=true";
                         break;
                 }
             }else {

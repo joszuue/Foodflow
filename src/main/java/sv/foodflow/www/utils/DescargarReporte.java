@@ -1,7 +1,6 @@
 package sv.foodflow.www.utils;
 
 import jakarta.faces.bean.ManagedBean;
-import jakarta.faces.bean.ManagedProperty;
 import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
@@ -17,7 +16,7 @@ import java.util.List;
 
 @ManagedBean
 @SessionScoped
-public class descargarReporte {
+public class DescargarReporte {
     private List<List<String>> informeProductos = new ArrayList<>();
 
     private List<List<String>> informeMes = new ArrayList<>();

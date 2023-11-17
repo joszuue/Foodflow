@@ -84,7 +84,6 @@
                                 </ui:fragment>
                             </ui:fragment>
                             <p class="card-text">#{produ.descripcion}</p>
-                            <p class="card-text"><b>ID:</b> #{produ.idProducto}</p>
                             <p class="card-text"><b>Categoria:</b> #{produ.categoriasByIdCategoria.nombre}</p>
                             <p class="card-text"><b>Precio:</b> $#{produ.precio}</p>
                             <h:outputLabel rendered="#{produ.estado eq 'Pendiente' or produ.estado eq 'Aceptado' or produ.estado eq 'Quitar'}" for="precio_del_producto" styleClass="lead" value="Precio del producto: " />

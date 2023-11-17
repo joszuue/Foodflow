@@ -39,6 +39,10 @@ public class CategoriaManaged {
 
     }
 
+    public void cancelar(){
+        categoria = new CategoriasEntity();
+    }
+
     public List<CategoriasEntity> listCategorias(){
         return modelo.listarCategorias();
     }

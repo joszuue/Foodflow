@@ -5,7 +5,7 @@
                                   https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_3_0.xsd">
     <validator>
         <validator-id>validaciones</validator-id>
-        <validator-class>sv.foodflow.www.utils.validaciones</validator-class>
+        <validator-class>sv.foodflow.www.utils.Validaciones</validator-class>
     </validator>
     <navigation-rule>
         <from-view-id>*</from-view-id>

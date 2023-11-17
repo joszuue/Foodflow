@@ -34,8 +34,9 @@
             </h:panelGrid>
             <br/><br/>
             <center>
-                <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
-                <h:commandButton value="Modificar Mesa" class="btn btn-outline-success" action="#{mesasManaged.modificarMesa()}" rendered="#{mesasManaged.mesa.idMesa > 0}"/>
+                <h:commandButton value="Ingresar Mesa" class="btn btn-outline-success mr-2" action="#{mesasManaged.guardarMesa()}" rendered="#{mesasManaged.mesa.idMesa == 0}"/>
+                <h:commandButton value="Modificar Mesa" class="btn btn-outline-success mr-2" action="#{mesasManaged.modificarMesa()}" rendered="#{mesasManaged.mesa.idMesa > 0}"/>
+                <h:commandButton value="Cancelar" class="btn btn-outline-danger" action="#{mesasManaged.cancelar()}" rendered="#{mesasManaged.mesa.idMesa > 0}"/>
             </center>
         </h:form>
         <br/><br/>

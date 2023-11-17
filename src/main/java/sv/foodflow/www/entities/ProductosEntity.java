@@ -9,7 +9,7 @@ import java.util.Collection;
 @Table(name = "productos", schema = "food_flow")
 @NamedQueries({
         @NamedQuery(name="ProductosEntity.findAll", query = "SELECT p FROM ProductosEntity p WHERE p.estado <> 'Eliminado' AND p.estado =:estado"),
-        @NamedQuery(name="ProductosEntity.validateInsertProdu", query = "SELECT p FROM ProductosEntity p WHERE p.nombre = :nombre"),
+        @NamedQuery(name="ProductosEntity.validateInsertProdu", query = "SELECT p FROM ProductosEntity p WHERE p.nombre = :nombre AND p.estado <> 'Eliminado'"),
         @NamedQuery(name="obtenerCate", query = "SELECT p FROM ProductosEntity p WHERE p.categoriasByIdCategoria.idCategoria = :id AND p.estado <> 'Eliminado'"),
         @NamedQuery(name="produCliente", query = "SELECT p FROM ProductosEntity p WHERE p.estado = 'Aceptado' AND p.categoriasByIdCategoria.idCategoria = :id")
 })

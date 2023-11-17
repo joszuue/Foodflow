@@ -30,8 +30,9 @@
             <h:inputText id="descripcion" styleClass="form-control" value="${sectorManaged.sector.descripcion}" validator="validaciones"/>
             <br/><br/>
             <center>
-                <h:commandButton value="Ingresar Sector" class="btn btn-outline-success" action="#{sectorManaged.guardarSector()}" rendered="#{sectorManaged.sector.idSector == 0}"/>
-                <h:commandButton value="Modificar Sector" class="btn btn-outline-success" action="#{sectorManaged.modificarSector()}" rendered="#{sectorManaged.sector.idSector > 0}"/>
+                <h:commandButton value="Ingresar Sector" class="btn btn-outline-success mr-2" action="#{sectorManaged.guardarSector()}" rendered="#{sectorManaged.sector.idSector == 0}"/>
+                <h:commandButton value="Modificar Sector" class="btn btn-outline-success mr-2" action="#{sectorManaged.modificarSector()}" rendered="#{sectorManaged.sector.idSector > 0}"/>
+                <h:commandButton value="Cancelar" class="btn btn-outline-danger" action="#{sectorManaged.cancelar()}" rendered="#{sectorManaged.sector.idSector > 0}"/>
             </center>
         </h:form>
         <br/><br/>
