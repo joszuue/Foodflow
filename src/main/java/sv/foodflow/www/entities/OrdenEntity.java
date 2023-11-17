@@ -14,6 +14,7 @@ import java.util.Date;
         @NamedQuery(name="pedidos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = :estado"),
         @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado <> 'Finalizado' AND o.estado = 'Enviado' AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'"),
+        @NamedQuery(name="entregado", query = "UPDATE OrdenEntity o SET o.estado = :estado WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Enviado'"),
         @NamedQuery(name = "populares", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' OR o.estado = 'Entregado' OR o.estado = 'Finalizado' GROUP BY o.productosByIdProducto.idProducto ORDER BY SUM(o.cantidad) DESC"),
         @NamedQuery(name="cerrarOrden", query = "UPDATE OrdenEntity o SET o.estado = :estado WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Entregado'"),
         @NamedQuery(name="productosReporte", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Finalizado' AND o.fecha >= :fecha1 AND o.fecha <= :fecha2 GROUP BY o.productosByIdProducto.idProducto"),

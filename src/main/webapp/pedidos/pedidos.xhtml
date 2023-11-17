@@ -34,7 +34,7 @@
                 <input type="hidden" name="accion" value="finalizar"/>
                 <div class="col-mb-4 d-flex align-items-center">
                     <h:form>
-                        <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Salir" action="#{loginManaged.logOut()}"/>
+                        <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Salir" action="#{loginManaged.logOut()}" style="float: right;"/>
                     </h:form>
                 </div>
             </h:panelGroup>
@@ -43,7 +43,7 @@
     <br/><br/>
     <div style="margin: 10px;">
         <h1 class="display-4 text-center" style="color: white;">Comandas</h1>
-        <h:form id="pedidos" class="row mr-2">
+        <h:form id="pedidos" class="row">
             <ui:repeat value="#{clientesManaged.modelo.listarClientes()}" var="c">
                 <div class="col-md-4 ">
                     <div class="card bg-light mb-3 mr-2" style="width: 25rem;">
@@ -69,6 +69,9 @@
                                 </tbody>
                             </table>
                             <p class="lead text-center" ><b>#{c.tiempo}</b></p>
+                            <center>
+                                <h:commandButton value="Finalizado" class="btn btn-outline-primary" action="#{ordenManaged.modelo.entregadoOrden('Entregado', c.codigoClient)}"/>
+                            </center>
                         </div>
                     </div>
                 </div>

@@ -137,7 +137,7 @@ public class DescargarReporte {
                 nombre = "Informe Mensual";
                 informeGeneral = informeMes;
                 break;
-            case "ani":
+            case "anioooo":
                 datos.add(Arrays.asList("#","Año","Venta del mes"));
                 nombre = "Informe Anual - " + anio;
                  informeGeneral = informeAnio;

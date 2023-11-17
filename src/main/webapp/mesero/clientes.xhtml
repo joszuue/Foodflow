@@ -83,8 +83,8 @@
                                 <span class="lead">Opcional en el caso en que el cliente quiera su factura electronica.*</span>
                             </div>
                             <div class="modal-footer">
-                                <h:commandButton id="enviar" styleClass="btn btn-outline-danger"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, client.mesasByIdMesa, client.mesasByIdMesa.sectorByIdSector.idSector, carrito.fecha,'Entregado')}">
-                                    <f:ajax execute="@form" render="@all"/>
+                                <h:commandButton styleClass="btn btn-outline-danger"  value="Cerrar Cuenta" action="#{clientesManaged.cerrarCuenta(client, client.mesasByIdMesa, client.mesasByIdMesa.sectorByIdSector.idSector, carrito.fecha,'Entregado')}">
+                                    <f:ajax execute="@this" render="@all"/>
                                 </h:commandButton>
                             </div>
                         </div>

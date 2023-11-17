@@ -224,6 +224,25 @@ public class OrdenModel {
         }
     }
 
+    public int entregadoOrden(String estado, String codigoCliente) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tran = em.getTransaction();
+        try {
+            tran.begin();//Iniciando transacción
+            Query query = em.createNamedQuery("entregado");
+            query.setParameter("estado", estado);
+            query.setParameter("codigo", codigoCliente);
+            int filasActualizadas = query.executeUpdate();
+
+            tran.commit(); // Confirmando la transacción
+            em.close();
+            return 1; // Devuelve la cantidad de filas actualizadas
+        } catch (Exception e) {
+            em.close();
+            return 0;
+        }
+    }
+
     public int cerrarOrden(String estado, String codigoCliente) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction tran = em.getTransaction();

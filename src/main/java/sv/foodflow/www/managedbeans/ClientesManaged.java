@@ -32,6 +32,8 @@ public class ClientesManaged {
 
     private String correo = "";
 
+    private String tiempo;
+
     public ClientesManaged(){
         cliente = new ClientesEntity();
     }
@@ -89,15 +91,16 @@ public class ClientesManaged {
         return modelo.obtenerCliente(idMesa);
     }
 
-    public void modificarCliente(){
-        if (modelo.modificarCliente(cliente) == 1){
+    public void modificarCliente(ClientesEntity client){
+        client.setTiempo(tiempo+":00");
+        if (modelo.modificarCliente(client) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "El cliente se ha modificado correctamente."));
         }else {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido modificar."));
         }
-        cliente = new ClientesEntity();
+        tiempo = "";
     }
 
     public void data(ClientesEntity client){
@@ -241,5 +244,13 @@ public class ClientesManaged {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
     }
 }

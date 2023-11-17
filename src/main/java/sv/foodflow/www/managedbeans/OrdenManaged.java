@@ -6,6 +6,7 @@ import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.SessionScoped;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.http.HttpServletRequest;
+import sv.foodflow.www.entities.ClientesEntity;
 import sv.foodflow.www.entities.OrdenEntity;
 import sv.foodflow.www.models.OrdenModel;
 
@@ -41,21 +42,6 @@ public class OrdenManaged {
     private int idProdu = 0;
 
     private int anioo = 0;
-
-    private LocalDateTime dateTime;
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
-    }
-
-    @PostConstruct
-    public void init() {
-        dateTime  = LocalDateTime.now().plusYears(37).plusMonths(3).withHour(0).withMinute(15).withSecond(0);;
-    }
 
     public OrdenManaged(){
         orden = new OrdenEntity();
@@ -131,6 +117,7 @@ public class OrdenManaged {
 
         return formattedDate;
     }
+
 
     public LocalTime converTime(String timeString, int cant){
         try {
