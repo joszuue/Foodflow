@@ -69,6 +69,7 @@ public class SectorModel {
         }
     }
 
+
     public int validar(String nombre) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
@@ -115,5 +116,15 @@ public class SectorModel {
             em.close();
             return null;
         }
+    }
+
+    public List<Object[]> sectoresFiltrados() {
+        EntityManager em = JpaUtil.getEntityManager();
+        String nativeQuery = "SELECT s.* FROM sector s LEFT JOIN ( SELECT id_Sector, COUNT(*) as cantidad_mesas FROM mesas WHERE estado <> 'Eliminada' GROUP BY id_Sector ) m " +
+                "ON s.id_Sector = m.id_Sector WHERE s.estado <> 'Eliminada' AND (m.cantidad_mesas IS NULL OR m.cantidad_mesas < s.capacidad)";
+        Query query = em.createNativeQuery(nativeQuery);
+
+        List<Object[]> result = query.getResultList();
+        return result;
     }
 }

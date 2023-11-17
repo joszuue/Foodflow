@@ -21,7 +21,7 @@
             <br/>
             <h:outputLabel for="sector" styleClass="lead" value="Sector de la mesa: "/>
             <h:selectOneMenu class="form-control" id="sector" value="#{mesasManaged.idSector}" >
-                <f:selectItems value="#{sectorManaged.listSector()}" var="sec" itemValue="#{sec.idSector}" itemLabel="#{sec.nombre}" />
+                <f:selectItems value="#{sectorManaged.modelo.sectoresFiltrados()}" var="sec" itemValue="#{sec[0]}" itemLabel="#{sec[1]}" />
             </h:selectOneMenu>
             <br/>
             <h:panelGrid columns="2">
@@ -63,7 +63,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{mesasManaged.data(mesa, mesa.sectorByIdSector.idSector)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa, mesa.sectorByIdSector.idSector)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{mesasManaged.eliminarMesa(mesa, mesa.sectorByIdSector.idSector)}" onclick="if (! confirm('¿Quieres eliminar esta mesa?')) return false"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

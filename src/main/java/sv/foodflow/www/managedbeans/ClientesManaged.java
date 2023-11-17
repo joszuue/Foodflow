@@ -43,6 +43,7 @@ public class ClientesManaged {
         }else {
             cliente.setEstado("Activo");
             cliente.setCodigoClient(generarCodigo());
+            cliente.setTiempo("00:15:00");
             if (modelo.insertarCliente(cliente, mesa.getIdMesa(), codigoMesero) != 1) {
                 FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                         FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El cliente no se ha podido registrar."));

@@ -1,5 +1,6 @@
 package sv.foodflow.www.managedbeans;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.bean.ManagedBean;
 import jakarta.faces.bean.SessionScoped;
@@ -13,6 +14,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -40,17 +42,41 @@ public class OrdenManaged {
 
     private int anioo = 0;
 
+    private LocalDateTime dateTime;
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    @PostConstruct
+    public void init() {
+        dateTime  = LocalDateTime.now().plusYears(37).plusMonths(3).withHour(0).withMinute(15).withSecond(0);;
+    }
+
     public OrdenManaged(){
         orden = new OrdenEntity();
         fecha1 = "no";
         fecha2 ="no";
     }
 
+    public void data(OrdenEntity ord){
+        orden = ord;
+    }
+
+    public void limpiar(){
+        orden = new OrdenEntity();
+    }
+
+
     public void carrito(String codigo, int idProdu, double precio, String tiempo) {
         orden.setFecha(fecha());
         orden.setEstado("Carrito");
         orden.setTotal(precio);
-        orden.setTiempoEspera(converTime(tiempo, orden.getCantidad()));
+        orden.setTiempoEspera("00:00:00");
         if (modelo.insertarOrden(orden, codigo, idProdu) != 1) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se ha podido registrar el producto"));
@@ -62,7 +88,7 @@ public class OrdenManaged {
     }
 
     public void realizarPedido(String codigo) {
-        if (modelo.carritoOrden("Enviado", codigo, fecha()) != 1) {
+        if (modelo.carritoOrden("Enviado", codigo, fecha()) > 0) {
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
                     FacesMessage(FacesMessage.SEVERITY_INFO, "Éxito", "La orden ha sido enviada a cocina"));
         } else {
@@ -276,4 +302,5 @@ public class OrdenManaged {
     public void setAnioo(int anioo) {
         this.anioo = anioo;
     }
+
 }

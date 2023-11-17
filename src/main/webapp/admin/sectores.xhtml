@@ -59,7 +59,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{sectorManaged.data(sec)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{sectorManaged.eliminarSector(sec)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{sectorManaged.eliminarSector(sec)}" onclick="if (! confirm('¿Quieres eliminar este sector?')) return false"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

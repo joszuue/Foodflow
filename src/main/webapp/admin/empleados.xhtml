@@ -160,7 +160,7 @@
                                     <h:panelGrid columns="3">
                                         <a data-toggle="modal" data-target="#exampleModal#{emple.codigo}" class="btn btn-outline-success" href="#">Ver perfil</a>
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{empleadoManaged.data(emple)}"/>
-                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple)}"/>
+                                        <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{empleadoManaged.eliminarEmpleado(emple)}" onclick="if (! confirm('¿Quieres eliminar a este empleado?')) return false"/>
                                     </h:panelGrid>
                                 </h:form>
                             </center>

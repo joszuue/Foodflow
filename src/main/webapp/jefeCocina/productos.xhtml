@@ -17,6 +17,7 @@
         <h:form enctype="multipart/form-data" id="formulario">
             <h:inputHidden value="#{productoManaged.producto.idProducto}"/>
             <h:inputHidden value="#{productoManaged.producto.estado}"/>
+            <h:inputHidden value="#{productoManaged.producto.tiempo}"/>
             <h:outputLabel for="nombre_del_producto" styleClass="lead" value="Nombre del producto: "/>
             <h:inputText styleClass="form-control" id="nombre_del_producto" value="${productoManaged.producto.nombre}" disabled="#{productoManaged.producto.estado eq 'Aceptado'}" />
             <br/>
@@ -27,10 +28,6 @@
             <br/><br/>
             <p:inputNumber id="precio_del_producto" value="#{productoManaged.producto.precio}" minValue="0" decimalPlaces="1" disabled="#{productoManaged.producto.estado eq 'Aceptado'}"/>
             <br/><br/>
-            <h:outputLabel for="tiempo_preparacion" styleClass="lead" value="Tiempo de espera: "/>
-            <span>Tiempo aproximado de espera para este producto.</span>
-            <h:inputText id="tiempo_preparacion" a:type="time" value="#{productoManaged.producto.tiempo}" validator="validaciones" styleClass="form-control"/>
-            <br/>
             <h:outputLabel for="imagen" styleClass="lead" value="Imagen: "/>
             <div class="custom-file">
                 <h:inputFile id="imagen" class="custom-file-input" lang="es" value="${productoManaged.nombreTempImg}"/>
@@ -130,19 +127,19 @@
                                     <h:commandButton rendered="#{produ.estado eq 'Pendiente' or produ.estado eq 'Aceptado' or produ.estado eq 'Quitar' or produ.estado eq 'Rechazado'}" value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.data(produ)}">
                                         <f:ajax execute="@form" render=":formulario"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{produ.estado eq 'Pendiente'}" value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}">
+                                    <h:commandButton rendered="#{produ.estado eq 'Pendiente'}" value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}" onclick="if (! confirm('¿Estas seguro de eliminar este producto?')) return false">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado' or produ.estado eq 'Quitar'}" value="Eliminar" data-toggle="tooltip" data-placement="top" title="Se enviará una solicitud al administrador para eliminar este producto." class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eli')}">
+                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eli')}" onclick="if (! confirm('Se enviará una solicitud al administrador para eliminar este producto.')) return false">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Retirar" class="btn btn-outline-warning" data-toggle="tooltip" data-placement="top" title="Este producto no será visible para los clientes" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Quitar')}">
+                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Retirar" class="btn btn-outline-warning"  action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Quitar')}" onclick="if (! confirm('Este producto ya no será visible para los clientes')) return false">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
                                     <h:commandButton rendered="#{produ.estado eq 'Quitar'}" value="Restaurar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Aceptado')}">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{produ.estado eq 'Eli'}" value="Cancelar" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" title="El producto regresara a estar en un estado pendiente" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Pendiente')}">
+                                    <h:commandButton rendered="#{produ.estado eq 'Eli'}" value="Cancelar" class="btn btn-outline-danger"  action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Aceptado')}">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
                                 </h:panelGrid>

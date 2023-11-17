@@ -18,30 +18,65 @@
     <script type="text/javascript" src="https://kit.fontawesome.com/f7c3a2243e.js"></script>
     <link rel="shortcut icon" href="../resources/img/mini.png" />
     <h:outputStylesheet name="css/admin.css" />
+    <h:outputScript name="js/temp.js"/>
 </h:head>
 
 <h:body>
+    <div class="navbar navbar-expand-lg navbar-light bg-light lead">
+        <h:commandLink styleClass="navbar-brand" action="inicio.xhtml">
+            <h:graphicImage url="../resources/img/logo.png" width="100" height="50"/>
+        </h:commandLink>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <h:panelGroup styleClass="collapse navbar-collapse" id="navbarSupportedContent">
+            <h:panelGroup styleClass="form-inline my-2 my-lg-0">
+                <input type="hidden" name="accion" value="finalizar"/>
+                <div class="col-mb-4 d-flex align-items-center">
+                    <h:form>
+                        <h:commandButton styleClass="btn btn-outline-dark my-2 my-sm-0"  value="Salir" action="#{loginManaged.logOut()}"/>
+                    </h:form>
+                </div>
+            </h:panelGroup>
+        </h:panelGroup>
+    </div>
     <br/><br/>
-
-            <h1 class="display-4 text-center">Pedidos</h1>
-            <h:form id="pedidos" class="row">
-                <ui:repeat value="#{clientesManaged.modelo.listarClientes()}" var="c">
-                    <div class="col-md-4 ">
-                        <div class="card bg-light mb-3 mr-2" style="width: 25rem;">
-                            <div class="card-header text-center"><b>MESA: ##{c.mesasByIdMesa.idMesa} - #{c.mesasByIdMesa.sectorByIdSector.nombre}</b></div>
-                            <div class="card-body lead">
-                                <h5 class="card-title text-center">Familia: #{c.apellido} - Código: #{c.codigoClient}</h5>
+    <div style="margin: 10px;">
+        <h1 class="display-4 text-center" style="color: white;">Comandas</h1>
+        <h:form id="pedidos" class="row mr-2">
+            <ui:repeat value="#{clientesManaged.modelo.listarClientes()}" var="c">
+                <div class="col-md-4 ">
+                    <div class="card bg-light mb-3 mr-2" style="width: 25rem;">
+                        <div class="card-header text-center"><b>MESA: ##{c.mesasByIdMesa.idMesa} - #{c.mesasByIdMesa.sectorByIdSector.nombre}</b></div>
+                        <div class="card-body lead">
+                            <h5 class="card-title text-center">Familia: #{c.apellido} - Código: #{c.codigoClient}</h5>
+                            <table class="table table-sm">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Comentario</th>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <ui:repeat value="#{ordenManaged.modelo.carrito(c.codigoClient,'Enviado')}" var="p">
-                                    <p>#{p.cantidad} #{p.productosByIdProducto.nombre} | #{p.comentario}</p>
-                                    <p>----------------</p>
+                                    <tr>
+                                        <td>#{p.cantidad}</td>
+                                        <td>#{p.productosByIdProducto.nombre}</td>
+                                        <td>#{p.comentario}</td>
+                                    </tr>
                                 </ui:repeat>
-                            </div>
+                                </tbody>
+                            </table>
+                            <p class="lead text-center" ><b>#{c.tiempo}</b></p>
                         </div>
                     </div>
-                </ui:repeat>
-            </h:form>
-
+                </div>
+            </ui:repeat>
+        </h:form>
+    </div>
     <br/><br/>
+
 </h:body>
 
 </html>

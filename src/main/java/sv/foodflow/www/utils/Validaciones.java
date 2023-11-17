@@ -33,5 +33,16 @@ public class Validaciones implements Validator {
             }
         }
 
+        if(componentId.equals("telefono")){
+            String valor = value.toString();
+            Pattern patron = Pattern.compile("^\\d{4}-\\d{4}$");
+            Matcher matcher = patron.matcher(valor);
+
+            if (!matcher.matches()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "El formato del Telefono es incorrecto");
+                throw new ValidatorException(message);
+            }
+        }
+
     }
 }

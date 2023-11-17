@@ -44,7 +44,7 @@
                                 <center>
                                     <h:panelGrid columns="2">
                                         <h:commandButton value="Modificar" class="btn btn-outline-primary" action="#{categoriaManaged.data(cate)}"/>
-                                        <h:commandButton value="Eliminar" action="#{categoriaManaged.eliminarCategoria(cate)}" class="btn btn-outline-danger"/>
+                                        <h:commandButton value="Eliminar" action="#{categoriaManaged.eliminarCategoria(cate)}" class="btn btn-outline-danger" onclick="if (! confirm('¿Quieres eliminar esta categoria?')) return false"/>
                                     </h:panelGrid>
                                 </center>
                             </h:form>

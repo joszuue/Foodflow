@@ -11,7 +11,8 @@ import java.util.Collection;
         @NamedQuery(name="ProductosEntity.findAll", query = "SELECT p FROM ProductosEntity p WHERE p.estado <> 'Eliminado' AND p.estado =:estado"),
         @NamedQuery(name="ProductosEntity.validateInsertProdu", query = "SELECT p FROM ProductosEntity p WHERE p.nombre = :nombre AND p.estado <> 'Eliminado'"),
         @NamedQuery(name="obtenerCate", query = "SELECT p FROM ProductosEntity p WHERE p.categoriasByIdCategoria.idCategoria = :id AND p.estado <> 'Eliminado'"),
-        @NamedQuery(name="produCliente", query = "SELECT p FROM ProductosEntity p WHERE p.estado = 'Aceptado' AND p.categoriasByIdCategoria.idCategoria = :id")
+        @NamedQuery(name="produCliente", query = "SELECT p FROM ProductosEntity p WHERE p.estado = 'Aceptado' AND p.categoriasByIdCategoria.idCategoria = :id"),
+        @NamedQuery(name="eliminado", query = "SELECT p FROM ProductosEntity p WHERE p.estado = 'Eliminado'")
 })
 public class ProductosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

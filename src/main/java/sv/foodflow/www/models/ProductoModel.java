@@ -28,6 +28,19 @@ public class ProductoModel {
         }
     }
 
+    public List<ProductosEntity> eliminados() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("eliminado");
+            List<ProductosEntity> lista = consulta.getResultList();
+            em.close();
+            return lista;
+        } catch (Exception e) {
+            em.close();
+            return null;
+        }
+    }
+
     public List<ProductosEntity> menuCliente(int id) {
         EntityManager em = JpaUtil.getEntityManager();
         try {

@@ -65,6 +65,7 @@
     <h:form>
         <ui:repeat value="#{ordenManaged.modelo.populares()}" var="populares">
             <div id="carrito#{populares.productosByIdProducto.idProducto}" class="modal hidden absolute-full fixed z-10000 bg-black-50 ease-900">
+                #{ordenManaged.limpiar()}
                 <div class="bg-white mx-auto mt-l5 w-50pc border br-8 overflow-hidden">
                     <div class="">
                         <div class="px-5 py-3 bg-gray-lightest flex justify-between items-center border-b">

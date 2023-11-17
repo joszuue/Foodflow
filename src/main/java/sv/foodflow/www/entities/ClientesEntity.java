@@ -33,6 +33,10 @@ public class ClientesEntity {
     @JoinColumn(name = "codigo", referencedColumnName = "codigo", nullable = false)
     private EmpleadosEntity empleadoByCodigo;
 
+    @Basic
+    @Column(name = "tiempo", nullable = true, length = 25)
+    private String tiempo;
+
     public String getApellido() {
         return apellido;
     }
@@ -99,5 +103,13 @@ public class ClientesEntity {
 
     public void setEmpleadoByCodigo(EmpleadosEntity empleadoByCodigo) {
         this.empleadoByCodigo = empleadoByCodigo;
+    }
+
+    public String getTiempo() {
+        return tiempo;
+    }
+
+    public void setTiempo(String tiempo) {
+        this.tiempo = tiempo;
     }
 }

@@ -151,6 +151,7 @@
                               <button data-dismiss="modal" class="button p-0 bg-transparent gray after-times-large"></button>
                            </div>
                            <div class="m-l2 flex flex-column ">
+                              #{ordenManaged.data(carrito)}
                               <h1 class="black fs-l3 lh-2 md-fs-l2 md-lh-1 fw-900 mb-l1">#{carrito.productosByIdProducto.nombre}</h1>
                               <h1 class="black fs-l3 lh-2 md-fs-m2 md-lh-1 fw-900 mb-l1">Cantidad:</h1>
                               <p:inputNumber id="cantidad" value="#{ordenManaged.orden.cantidad}" minValue="1" decimalPlaces="0" class="full mb-l1 rounded-md border-gray-400"

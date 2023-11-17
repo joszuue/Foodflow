@@ -12,7 +12,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name="ordenes", query = "SELECT o FROM OrdenEntity o WHERE o.estado = :estado AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="pedidos", query = "SELECT o FROM OrdenEntity o WHERE o.estado = :estado"),
-        @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado <> 'Finalizado' AND o.clientesByCodigoClient.codigoClient = :id"),
+        @NamedQuery(name="todos", query = "SELECT o FROM OrdenEntity o WHERE o.estado <> 'Finalizado' AND o.estado = 'Enviado' AND o.clientesByCodigoClient.codigoClient = :id"),
         @NamedQuery(name="update", query = "UPDATE OrdenEntity o SET o.estado = :estado, o.fecha = :fecha WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Carrito'"),
         @NamedQuery(name = "populares", query = "SELECT o FROM OrdenEntity o WHERE o.estado = 'Enviado' OR o.estado = 'Entregado' OR o.estado = 'Finalizado' GROUP BY o.productosByIdProducto.idProducto ORDER BY SUM(o.cantidad) DESC"),
         @NamedQuery(name="cerrarOrden", query = "UPDATE OrdenEntity o SET o.estado = :estado WHERE o.clientesByCodigoClient.codigoClient = :codigo AND o.estado = 'Entregado'"),
@@ -36,7 +36,7 @@ public class OrdenEntity {
     private String fecha;
     @Basic
     @Column(name = "tiempoEspera", nullable = true)
-    private LocalTime tiempoEspera;
+    private String tiempoEspera;
     @Basic
     @Column(name = "total", nullable = false, precision = 0)
     private double total;
@@ -77,11 +77,11 @@ public class OrdenEntity {
         this.fecha = fecha;
     }
 
-    public LocalTime getTiempoEspera() {
+    public String getTiempoEspera() {
         return tiempoEspera;
     }
 
-    public void setTiempoEspera(LocalTime tiempoEspera) {
+    public void setTiempoEspera(String tiempoEspera) {
         this.tiempoEspera = tiempoEspera;
     }
 

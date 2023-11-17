@@ -44,6 +44,7 @@ public class ProductoManaged {
             if (nombreTempImg != null){
                 if (validarFormato() == true){
                     producto.setEstado("Pendiente");
+                    producto.setTiempo("00:00:00");
                     producto.setImagen(guardarImagen());
                     if (modelo.insertarProducto(producto, idCategoria) != 1) {
                         FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new
@@ -193,6 +194,10 @@ public class ProductoManaged {
     }
 
     public void updateEstado(ProductosEntity produ, int idcate, String estado){
+        if (estado.equals("Eliminado")){
+            String name = produ.getNombre()+"(Eliminado)";
+            produ.setNombre(name);
+        }
         produ.setEstado(estado);
         if (modelo.modificarProducto(produ, idcate) == 1){
             FacesContext.getCurrentInstance().addMessage("SEVERITY_ERROR", new

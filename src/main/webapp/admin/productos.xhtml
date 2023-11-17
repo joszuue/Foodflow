@@ -104,7 +104,7 @@
                                     <h:commandButton rendered="#{produ.estado eq 'Aceptado' or produ.estado eq 'Quitar'}" value="Modificar" class="btn btn-outline-primary" action="#{productoManaged.aceptarProducto(produ, produ.categoriasByIdCategoria.idCategoria)}">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
-                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Retirar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Quitar')}">
+                                    <h:commandButton rendered="#{produ.estado eq 'Aceptado'}" value="Retirar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Quitar')}" onclick="if (! confirm('Este producto ya no será visible para los clientes')) return false">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
                                     <h:commandButton rendered="#{produ.estado eq 'Quitar'}" value="Restaurar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Aceptado')}">
@@ -112,7 +112,7 @@
                                     </h:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid columns="2" rendered="#{produ.estado eq 'Eli'}">
-                                    <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}">
+                                    <h:commandButton value="Eliminar" class="btn btn-outline-danger" action="#{productoManaged.updateEstado(produ, produ.categoriasByIdCategoria.idCategoria, 'Eliminado')}" onclick="if (! confirm('¿Estas seguro de eliminar este producto?')) return false">
                                         <f:ajax execute="precio_del_producto" render="updateProducts"/>
                                     </h:commandButton>
                                     <a class="btn btn-outline-primary" data-toggle="collapse" href="#collapseExample2#{produ.idProducto}" role="button" aria-expanded="false" aria-controls="collapseExample">

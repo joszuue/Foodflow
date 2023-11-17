@@ -140,7 +140,7 @@ public class OrdenModel {
         try {
             Query consulta = em.createNamedQuery("populares");
             consulta.setFirstResult(0); // La posición inicial (0 para el primer resultado)
-            consulta.setMaxResults(4);
+            consulta.setMaxResults(5);
             List<OrdenEntity> lista = consulta.getResultList();
             em.close();
             return lista;
@@ -217,7 +217,7 @@ public class OrdenModel {
 
             tran.commit(); // Confirmando la transacción
             em.close();
-            return filasActualizadas; // Devuelve la cantidad de filas actualizadas
+            return 1; // Devuelve la cantidad de filas actualizadas
         } catch (Exception e) {
             em.close();
             return 0;
